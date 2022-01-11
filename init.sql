@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS user_master(
+    user_id VARCHAR(255) NOT NULL PRIMARY DEFAULT ' ',
+    password VARCHAR(255) NOT NULL DEFAULT ' ',
+    user_name VARCHAR(255) NOT NULL DEFAULT ' ',
+    create_date VARCHAR(255) NOT NULL DEFAULT '1998-07-05',
+    create_user VARCHAR(255) NOT NULL DEFAULT ' ',
+    update_date VARCHAR(255) NOT NULL DEFAUTL '1998-07-05',
+    update_user VARCHAR(255) NOT NULL DEFAULT ' ',
+    version INT NOT NULL DEFAULT 1,
+    delete_flag VARCHAR(1) NOT NULL DEFAULT 0
+);
+
