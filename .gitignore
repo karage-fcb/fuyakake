@@ -23,6 +23,6 @@
 hs_err_pid*
 
 # Docker DB
-docker/db/data
+docker/db/data/
 
 .vscode
