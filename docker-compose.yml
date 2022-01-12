@@ -7,8 +7,9 @@ services:
     depends_on:
       - db
     volumes: 
-      - "./fuyakake/build/libs/app.jar:/tmp/app.jar"
-    entrypoint: "java -Djava.security.egd=file:/dev/./urandom -jar /tmp/app.jar"
+    #- "./fuyakake/build/libs/app.jar:/tmp/app.jar"
+      - ../fuyakake:/srv:cached
+        #entrypoint: "java -Djava.security.egd=file:/dev/./urandom -jar /tmp/app.jar"
   db:
     image: postgres:11.5
     environment:
