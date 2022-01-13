@@ -1,0 +1,21 @@
+INSERT INTO user_master(
+    user_id,
+    password,
+    user_name,
+    create_date,
+    create_user,
+    update_date,
+    update_user,
+    version,
+    delete_flag
+)VALUES(
+    'uhablog',
+    'password',
+    'ユーハブログ',
+    current_timestamp,
+    'uhablog',
+    current_timestamp,
+    'uhablog',
+    DEFAULT,
+    DEFAULT
+)
