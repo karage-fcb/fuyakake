@@ -1,0 +1,27 @@
+INSERT INTO incom(
+    incom_money,
+    account_id,
+    user_id,
+    category_id,
+    memo,
+    date,
+    create_date,
+    create_user,
+    update_date,
+    update_user,
+    version,
+    delete_flag
+)VALUES(
+    200000,
+    1,
+    'uhablog',
+    1,
+    '給料',
+    now(),
+    current_timestamp,
+    'uhablog',
+    current_timestamp,
+    'uhablog',
+    1,
+    'false'
+);

@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"> -->
+    <link th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link href="/src/main/resources/static/css/blog.css" rel="stylesheet">
+
+    <title>トップページ</title>
+  </head>
+  <body>
+    <div class="container">
+        <header class="blog-header py-3">
+            <div class="row flex-nowrap justify-content-between align-items-center">
+                <div class="col-4"></div>
+                <div class="col-4 text-center">
+                    <a class="blog-header-logo text-dark">フヤカケ</a>
+                </div>
+                <div class="col-4 d-flex justify-content-end align-items-center">本田圭佑</div>
+            </div>
+        </header>
+        <div class="nav-scroller py-1 mb-2">
+          <nav class="nav d-flex justify-content-between">
+            <a class="p-2 link-secondary">トップページ</a>
+            <a class="p-2 link-secondary">消費一覧</a>
+            <a class="p-2 link-secondary">口座一覧</a>
+            <a class="p-2 link-secondary">予算</a>
+          </nav>
+        </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-6">
+          <a>&lt;</a>
+          2022/01
+          <a>&gt;</a>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">収入</th>
+                <th scope="col">200,000</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row"></th>
+                <td>給料</td>
+                <td>195,000</td>
+              </tr>
+              <tr>
+                <th scope="row"></th>
+                <td>副業</td>
+                <td>5,000</td>
+              </tr>
+              <tr>
+                <th scope="row"></th>
+                <td>賞与</td>
+                <td>200,000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-6">
+          利益
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">投資</th>
+                <th scope="col">33,000</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row"></th>
+                <td>投資信託</td>
+                <td>20,000</td>
+              </tr>
+              <tr>
+                <th scope="row"></th>
+                <td>自己投資</td>
+                <td>10,000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">消費</th>
+                <th scope="col">147,000円</th>
+                <th scope="col"><a href="#">消費一覧</a></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row"></th>
+                <td>家賃</td>
+                <td>50,000</td>
+              </tr>
+              <tr>
+                <th scope="row"></th>
+                <td>食費</td>
+                <td>25,000</td>
+              </tr>
+              <tr>
+                <th scope="row"></th>
+                <td>ボドゲ</td>
+                <td>10,000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-6">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">貯金</th>
+                <th scope="col">20,000円</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">利益</th>
+                <th scope="col">53,000</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row"></th>
+                <td>投資</td>
+                <td>33,000</td>
+              </tr>
+              <tr>
+                <th scope="row"></th>
+                <td>貯金</td>
+                <td>20,000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-6">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">保有資産</th>
+                <th scope="col">1,000,000円</th>
+                <th scope="col"><a href="#">保有資産閲覧</a></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">現金</th>
+                <td>800,000</td>
+                <td>80%</td>
+              </tr>
+              <tr>
+                <th scope="row">投資信託</th>
+                <td>200,000円</td>
+                <td>20%</td>
+              </tr>
+              <tr>
+                <th scope="row">債権</th>
+                <td>100円</td>
+                <td>20%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#inputModal">入力</button>
+      </div>
+      <div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script> -->
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script> -->
+
+    <!-- webjar -->
+    <script th:href="@{/webjars/jquery/3.3.1/js/jquery.min.js}"></script>
+    <script th:href="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}"></script>
+  </body>
+</html>

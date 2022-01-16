@@ -16,7 +16,7 @@ public class TestController {
         this.repository = repository;
     }
 
-    @RequestMapping("/")
+    @RequestMapping("/test")
     public String test() {
         return String.valueOf(repository.findAll());
     }
