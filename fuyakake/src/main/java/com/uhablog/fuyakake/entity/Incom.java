@@ -6,6 +6,8 @@ import java.sql.Timestamp;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -37,9 +39,11 @@ public class Incom {
     private String userId;
 
     /**
-     * カテゴリID
+     * カテゴリ
      */
-    private int cateogryId;
+    @ManyToOne
+    @JoinColumn(name="category_id")
+    private MiddleCategory cateogry;
 
     /**
      * メモ

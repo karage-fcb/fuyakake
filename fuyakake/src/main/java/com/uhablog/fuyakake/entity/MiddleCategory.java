@@ -54,7 +54,7 @@ public class MiddleCategory {
     /**
      * 更新者
      */
-    private Timestamp updateUser;
+    private String updateUser;
 
     /**
      * バージョン

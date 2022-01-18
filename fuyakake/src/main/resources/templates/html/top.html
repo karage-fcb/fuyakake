@@ -47,7 +47,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr th:each="element : ${model.incomInfoList}">
+                <th scope="row"></th>
+                <td>[[${element.categoryName}]]</td>
+                <td>[[${element.incomMoney}]]</td>
+              </tr>
+              <!-- <tr>
                 <th scope="row"></th>
                 <td>給料</td>
                 <td>195,000</td>
@@ -61,7 +66,7 @@
                 <th scope="row"></th>
                 <td>賞与</td>
                 <td>200,000</td>
-              </tr>
+              </tr> -->
             </tbody>
           </table>
         </div>

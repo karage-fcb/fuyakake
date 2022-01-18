@@ -1,7 +1,7 @@
 package com.uhablog.fuyakake.controller;
 
+import com.uhablog.fuyakake.model.ToppageModel;
 import com.uhablog.fuyakake.service.ToppageService;
-import com.uhablog.fuyakake.service.interfaceClass.IToppageService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +17,9 @@ public class TopPageController {
     @GetMapping("/")
     public String toppage(Model model) {
 
-        model.addAttribute(service.getToppageModel("uhablog"));
+        ToppageModel toppageModel = service.getToppageModel("uhablog");
+        System.out.println(toppageModel.getIncomInfoList().get(0));
+        model.addAttribute("model", toppageModel);
         return "html/top";
     }
     
