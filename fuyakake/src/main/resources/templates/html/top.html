@@ -52,21 +52,6 @@
                 <td>[[${element.categoryName}]]</td>
                 <td>[[${element.incomMoney}]]</td>
               </tr>
-              <!-- <tr>
-                <th scope="row"></th>
-                <td>給料</td>
-                <td>195,000</td>
-              </tr>
-              <tr>
-                <th scope="row"></th>
-                <td>副業</td>
-                <td>5,000</td>
-              </tr>
-              <tr>
-                <th scope="row"></th>
-                <td>賞与</td>
-                <td>200,000</td>
-              </tr> -->
             </tbody>
           </table>
         </div>
@@ -106,7 +91,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr th:each="element : ${model.consumptionList}">
+                <th scope="row"></th>
+                <td>[[${element.categoryName}]]</td>
+                <td>[[${element.consumptionMoney}]]</td>
+              </tr>
+              <!-- <tr>
                 <th scope="row"></th>
                 <td>家賃</td>
                 <td>50,000</td>
@@ -120,7 +110,7 @@
                 <th scope="row"></th>
                 <td>ボドゲ</td>
                 <td>10,000</td>
-              </tr>
+              </tr> -->
             </tbody>
           </table>
         </div>

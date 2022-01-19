@@ -6,6 +6,8 @@ import java.sql.Timestamp;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -39,7 +41,9 @@ public class Investment {
     /**
      * カテゴリID
      */
-    private int cateogryId;
+    @ManyToOne
+    @JoinColumn(name="cateogry_id")
+    private MiddleCategory cateogry;
 
     /**
      * メモ
