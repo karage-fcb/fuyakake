@@ -43,7 +43,7 @@ public class Consumption {
      * カテゴリID
      */
     @ManyToOne
-    @JoinColumn(name="cateogry_id")
+    @JoinColumn(name="category_id")
     private MiddleCategory cateogry;
 
     /**

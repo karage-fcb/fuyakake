@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class TopPageController {
@@ -18,14 +19,14 @@ public class TopPageController {
     private ToppageService service;
 
     @GetMapping("/")
-    public String toppage(Model model) {
+    public String toppage(@RequestParam(name = "displayMonth", required = false)String displayMonth, Model model) {
 
         // ログインユーザーID取得
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userId = auth.getName();
 
         // Topページ用のモデルを取得する
-        ToppageModel toppageModel = service.getToppageModel(userId);
+        ToppageModel toppageModel = service.getToppageModel(userId, "2022-01");
         model.addAttribute("model", toppageModel);
         return "html/top";
     }

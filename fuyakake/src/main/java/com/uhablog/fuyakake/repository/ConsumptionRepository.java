@@ -25,4 +25,17 @@ public interface ConsumptionRepository extends JpaRepository<Consumption, Intege
         + "  consumption.delete_flag = false ",
         nativeQuery = true)
     public List<Consumption> getConsumption(@Param("userId")String userId);
+
+    @Query(value = ""
+        + " SELECT "
+        + "  SUM(consumption_money) "
+        + " FROM "
+        + "  consumption "
+        + " WHERE "
+        + "  consumption.user_id = :userId "
+        + " AND "
+        + "  consumption.delete_flag = false ",
+        nativeQuery = true
+    )
+    public int getTotalConsumption(@Param("userId")String userId);
 }

@@ -22,7 +22,32 @@ public interface IncomRepository extends JpaRepository<Incom, Integer> {
         + " WHERE "
         + "  incom.user_id = :userId"
         + " AND "
-        + "  incom.delete_flag = false ",
+        + "  incom.delete_flag = false "
+        + " AND "
+        + "  date BETWEEN "
+        + "   :startDate "
+        + "  AND "
+        + "   :endDate "
+        + " ORDER BY date desc "
+        + " LIMIT "
+        + "  3 ",
         nativeQuery = true)
-    public List<Incom> getIncom(@Param("userId")String userId);
+    public List<Incom> getIncom(
+        @Param("userId")String userId,
+        @Param("startDate")String startDate,
+        @Param("endDate")String endDate
+    );
+
+    @Query(value = ""
+        + " SELECT "
+        + "  SUM(incom_money) "
+        + " FROM "
+        + "  incom "
+        + " WHERE "
+        + "  incom.user_id = :userId "
+        + " AND "
+        + "  incom.delete_flag = false ",
+        nativeQuery = true
+    )
+    public int getTotalIncom(@Param("userId")String userId);
 }
