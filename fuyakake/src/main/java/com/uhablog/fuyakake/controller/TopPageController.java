@@ -1,5 +1,7 @@
 package com.uhablog.fuyakake.controller;
 
+import java.text.ParseException;
+
 import com.uhablog.fuyakake.model.ToppageModel;
 import com.uhablog.fuyakake.service.ToppageService;
 
@@ -19,14 +21,17 @@ public class TopPageController {
     private ToppageService service;
 
     @GetMapping("/")
-    public String toppage(@RequestParam(name = "displayMonth", required = false)String displayMonth, Model model) {
+    public String toppage(
+        @RequestParam(name = "displayMonth", required = false)String displayMonth, 
+        Model model
+    ) {
 
         // ログインユーザーID取得
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userId = auth.getName();
 
         // Topページ用のモデルを取得する
-        ToppageModel toppageModel = service.getToppageModel(userId, "2022-01");
+        ToppageModel toppageModel = service.getToppageModel(userId, displayMonth);
         model.addAttribute("model", toppageModel);
         return "html/top";
     }

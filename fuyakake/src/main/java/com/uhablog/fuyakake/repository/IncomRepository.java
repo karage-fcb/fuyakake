@@ -1,5 +1,6 @@
 package com.uhablog.fuyakake.repository;
 
+import java.sql.Date;
 import java.util.List;
 
 import com.uhablog.fuyakake.entity.Incom;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Repository;
 public interface IncomRepository extends JpaRepository<Incom, Integer> {
     
     // Topページに表示するログインユーザーの収入情報を取得する
-    // TODO: 期間の指定、取得数の指定を行う
     @Query(value = ""
         + " SELECT "
         + "  * "
@@ -28,16 +28,22 @@ public interface IncomRepository extends JpaRepository<Incom, Integer> {
         + "   :startDate "
         + "  AND "
         + "   :endDate "
-        + " ORDER BY date desc "
+        + " ORDER BY incom.date desc "
         + " LIMIT "
         + "  3 ",
         nativeQuery = true)
     public List<Incom> getIncom(
         @Param("userId")String userId,
-        @Param("startDate")String startDate,
-        @Param("endDate")String endDate
+        @Param("startDate")Date startDate,
+        @Param("endDate")Date endDate
     );
 
+
+    /**
+     * 収入の合計値を取得する
+     * @param userId
+     * @return
+     */
     @Query(value = ""
         + " SELECT "
         + "  SUM(incom_money) "
@@ -46,8 +52,17 @@ public interface IncomRepository extends JpaRepository<Incom, Integer> {
         + " WHERE "
         + "  incom.user_id = :userId "
         + " AND "
-        + "  incom.delete_flag = false ",
+        + "  incom.delete_flag = false "
+        + " AND "
+        + "  date BETWEEN "
+        + "   :startDate "
+        + "  AND "
+        + "   :endDate ",
         nativeQuery = true
     )
-    public int getTotalIncom(@Param("userId")String userId);
+    public int getTotalIncom(
+        @Param("userId")String userId,
+        @Param("startDate")Date startDate,
+        @Param("endDate")Date endDate
+    );
 }

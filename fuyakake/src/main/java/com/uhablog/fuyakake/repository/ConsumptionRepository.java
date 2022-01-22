@@ -1,5 +1,6 @@
 package com.uhablog.fuyakake.repository;
 
+import java.sql.Date;
 import java.util.List;
 
 import com.uhablog.fuyakake.entity.Consumption;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Repository;
 public interface ConsumptionRepository extends JpaRepository<Consumption, Integer> {
 
     // Topページに表示するログインユーザーの収入情報を取得する
-    // TODO: 期間の指定、取得数の指定を行う 
     @Query(value = ""
         + " SELECT "
         + "  * "
@@ -22,9 +22,21 @@ public interface ConsumptionRepository extends JpaRepository<Consumption, Intege
         + " WHERE "
         + "  consumption.user_id = :userId"
         + " AND "
-        + "  consumption.delete_flag = false ",
+        + "  consumption.delete_flag = false "
+        + " AND "
+        + "  date BETWEEN "
+        + "   :startDate "
+        + "  AND "
+        + "   :endDate "
+        + " ORDER BY consumption.date desc "
+        + " LIMIT "
+        + "  3 ",
         nativeQuery = true)
-    public List<Consumption> getConsumption(@Param("userId")String userId);
+    public List<Consumption> getConsumption(
+        @Param("userId")String userId,
+        @Param("startDate")Date startDate,
+        @Param("endDate")Date endDate
+    );
 
     @Query(value = ""
         + " SELECT "
@@ -34,8 +46,17 @@ public interface ConsumptionRepository extends JpaRepository<Consumption, Intege
         + " WHERE "
         + "  consumption.user_id = :userId "
         + " AND "
-        + "  consumption.delete_flag = false ",
+        + "  consumption.delete_flag = false "
+        + " AND "
+        + "  date BETWEEN "
+        + "   :startDate "
+        + "  AND "
+        + "   :endDate ",
         nativeQuery = true
     )
-    public int getTotalConsumption(@Param("userId")String userId);
+    public int getTotalConsumption(
+        @Param("userId")String userId,
+        @Param("startDate")Date startDate,
+        @Param("endDate")Date endDate
+    );
 }

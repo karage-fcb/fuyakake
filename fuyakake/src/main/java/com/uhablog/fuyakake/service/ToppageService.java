@@ -1,6 +1,9 @@
 package com.uhablog.fuyakake.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 
 import com.uhablog.fuyakake.entity.Consumption;
@@ -34,13 +37,17 @@ public class ToppageService implements IToppageService {
      * 初期表示時のToppageモデルを取得する
      */
     @Override
-    public ToppageModel getToppageModel(String userId, String getMonth) {
+    public ToppageModel getToppageModel(String userId, String getMonth){
 
         // 返却用モデル
         ToppageModel model = new ToppageModel();
 
+        // 表示する年月の最初と末日を取得する
+        Date startDate = Date.valueOf("2022-01-01");
+        Date endDate = Date.valueOf("2022-01-31");
+
         // 収入情報取得
-        List<Incom> incomList = incomRepository.getIncom(userId, getMonth, getMonth);
+        List<Incom> incomList = incomRepository.getIncom(userId, startDate, endDate);
         List<ToppageIncom> toppageIncomList = new ArrayList<>();
 
         // Toppageに渡す収入情報のリストを作成
@@ -53,10 +60,11 @@ public class ToppageService implements IToppageService {
         model.setIncomInfoList(toppageIncomList);
 
         // 収入合計値取得
-        model.setTotalIncom(incomRepository.getTotalIncom(userId));
+        model.setTotalIncom(incomRepository.getTotalIncom(userId, startDate, endDate));
 
         // 消費情報取得
-        List<Consumption> consumptionList = consumptionRepository.getConsumption(userId);
+        // List<Consumption> consumptionList = consumptionRepository.getConsumption(userId);
+        List<Consumption> consumptionList = consumptionRepository.getConsumption(userId, startDate, endDate);
         List<ToppageConsumption> toppageConsumptionList = new ArrayList<>();
 
         // Toppageに渡す消費情報のリストを作成
@@ -69,7 +77,7 @@ public class ToppageService implements IToppageService {
         model.setConsumptionList(toppageConsumptionList);
 
         // 消費合計値取得
-        model.setTotalConsumption(consumptionRepository.getTotalConsumption(userId));
+        model.setTotalConsumption(consumptionRepository.getTotalConsumption(userId, startDate, endDate));
 
         // 投資情報取得
         List<Investment> investments = investmentRepository.getInvestment(userId);

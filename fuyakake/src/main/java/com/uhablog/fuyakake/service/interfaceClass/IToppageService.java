@@ -1,5 +1,6 @@
 package com.uhablog.fuyakake.service.interfaceClass;
 
+
 import com.uhablog.fuyakake.model.ToppageModel;
 
 public interface IToppageService {
