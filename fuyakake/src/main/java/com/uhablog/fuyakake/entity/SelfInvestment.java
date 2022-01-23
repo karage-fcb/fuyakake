@@ -44,7 +44,7 @@ public class SelfInvestment {
      */
     @ManyToOne
     @JoinColumn(name="category_id")
-    private MiddleCategory cateogry;
+    private MiddleCategory category;
 
     /**
      * メモ

@@ -1,7 +1,5 @@
 package com.uhablog.fuyakake.service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
@@ -54,7 +52,7 @@ public class ToppageService implements IToppageService {
         for (Incom incom : incomList) {
             ToppageIncom toppageIncom = new ToppageIncom();
             toppageIncom.setPrice(incom.getIncomMoney());
-            toppageIncom.setCategoryName(incom.getCateogry().getCategoryName());
+            toppageIncom.setCategoryName(incom.getCategory().getCategoryName());
             toppageIncomList.add(toppageIncom);
         }
         model.setIncomInfoList(toppageIncomList);
@@ -71,7 +69,7 @@ public class ToppageService implements IToppageService {
         for (Consumption consumption: consumptionList) {
             ToppageConsumption toppageConsumption = new ToppageConsumption();
             toppageConsumption.setPrice(consumption.getConsumptionMoney());
-            toppageConsumption.setCategoryName(consumption.getCateogry().getCategoryName());
+            toppageConsumption.setCategoryName(consumption.getCategory().getCategoryName());
             toppageConsumptionList.add(toppageConsumption);
         }
         model.setConsumptionList(toppageConsumptionList);
@@ -87,7 +85,7 @@ public class ToppageService implements IToppageService {
         for (Investment investment: investments) {
             ToppageInvestment toppageInvestment = new ToppageInvestment();
             toppageInvestment.setPrice(investment.getInvestmentMoney());
-            toppageInvestment.setCategoryName(investment.getCateogry().getCategoryName());
+            toppageInvestment.setCategoryName(investment.getCategory().getCategoryName());
             toppageInvestments.add(toppageInvestment);
         }
         model.setInvestmentList(toppageInvestments);

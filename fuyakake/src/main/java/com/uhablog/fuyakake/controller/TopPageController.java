@@ -1,11 +1,9 @@
 package com.uhablog.fuyakake.controller;
 
-import java.text.ParseException;
 
 import com.uhablog.fuyakake.model.ToppageModel;
 import com.uhablog.fuyakake.service.ToppageService;
 
-import org.apache.catalina.authenticator.SpnegoAuthenticator.AuthenticateAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
