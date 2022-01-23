@@ -38,6 +38,13 @@ public interface ConsumptionRepository extends JpaRepository<Consumption, Intege
         @Param("endDate")Date endDate
     );
 
+    /**
+     * 対象月の合計消費金額を取得する
+     * @param userId
+     * @param startDate
+     * @param endDate
+     * @return
+     */
     @Query(value = ""
         + " SELECT "
         + "  SUM(consumption_money) "
@@ -58,5 +65,16 @@ public interface ConsumptionRepository extends JpaRepository<Consumption, Intege
         @Param("userId")String userId,
         @Param("startDate")Date startDate,
         @Param("endDate")Date endDate
+    );
+
+
+    // TODO 次ここから
+    @Query(value = ""
+        + " INSERT INTO "
+        + "  consumption "
+        + "  ( "
+        , nativeQuery = true
+    )
+    public int insertConsumption(
     );
 }

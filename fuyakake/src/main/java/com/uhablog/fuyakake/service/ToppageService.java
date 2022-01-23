@@ -10,6 +10,7 @@ import com.uhablog.fuyakake.entity.Investment;
 import com.uhablog.fuyakake.entity.dto.ToppageConsumption;
 import com.uhablog.fuyakake.entity.dto.ToppageIncom;
 import com.uhablog.fuyakake.entity.dto.ToppageInvestment;
+import com.uhablog.fuyakake.entity.form.ConsumptionForm;
 import com.uhablog.fuyakake.model.ToppageModel;
 import com.uhablog.fuyakake.repository.ConsumptionRepository;
 import com.uhablog.fuyakake.repository.IncomRepository;
@@ -94,6 +95,14 @@ public class ToppageService implements IToppageService {
         model.setTotalInvestment(investmentRepository.getTotalInvestment(userId));
 
         return model;
+    }
+
+    /**
+     * 消費入力
+     */
+    // TODO 次ここから　
+    public int insertConsumption(ConsumptionForm consumptionForm) {
+        return 0;
     }
     
 }

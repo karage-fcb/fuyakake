@@ -23,14 +23,14 @@ $(function() {
         const memo = $('#memotextarea').val();
 
         const params = {
-            consumptionMoney: money,
+            money: money,
             accountId: accountId,
-            category: {
-                categoryId: middleCategoryId
-            },
+            categoryId: middleCategoryId,
             memo: memo,
             date: date
         }
+
+        console.log(params);
 
         $.post(
             '/toppage-api/insert-consumption',
