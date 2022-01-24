@@ -11,6 +11,7 @@ import com.uhablog.fuyakake.entity.dto.ToppageConsumption;
 import com.uhablog.fuyakake.entity.dto.ToppageIncom;
 import com.uhablog.fuyakake.entity.dto.ToppageInvestment;
 import com.uhablog.fuyakake.entity.form.ConsumptionForm;
+import com.uhablog.fuyakake.model.CommitModel;
 import com.uhablog.fuyakake.model.ToppageModel;
 import com.uhablog.fuyakake.repository.ConsumptionRepository;
 import com.uhablog.fuyakake.repository.IncomRepository;
@@ -100,9 +101,29 @@ public class ToppageService implements IToppageService {
     /**
      * 消費入力
      */
-    // TODO 次ここから　
-    public int insertConsumption(ConsumptionForm consumptionForm) {
-        return 0;
+    public CommitModel insertConsumption(String userId, ConsumptionForm consumptionForm) {
+
+        System.out.println("insertConsumptionメソッド呼び出されました");
+        // 消費情報登録
+        int ret = consumptionRepository.insertConsumption(
+            consumptionForm.getMoney(),
+            consumptionForm.getAccountId(),
+            userId,
+            consumptionForm.getCategoryId(),
+            consumptionForm.getMemo(),
+            consumptionForm.getDate()
+        );
+        CommitModel commitModel = new CommitModel();
+
+        // 登録に成功した時
+        if (ret == 1) {
+            commitModel.setError(false);
+            commitModel.setMessage("消費情報登録成功!");
+        } else {
+            commitModel.setError(true);
+            commitModel.setMessage("消費情報登録失敗!");
+        }
+        return commitModel;
     }
     
 }

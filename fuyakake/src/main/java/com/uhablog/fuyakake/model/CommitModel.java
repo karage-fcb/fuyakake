@@ -5,7 +5,13 @@ import lombok.Data;
 @Data
 public class CommitModel {
     
-    private int statusCode;
+    /**
+     * エラーかどうか
+     */
+    private boolean isError;
 
+    /**
+     * メッセージ
+     */
     private String message; 
 }

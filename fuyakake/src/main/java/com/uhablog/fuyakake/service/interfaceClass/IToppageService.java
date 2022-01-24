@@ -2,6 +2,7 @@ package com.uhablog.fuyakake.service.interfaceClass;
 
 
 import com.uhablog.fuyakake.entity.form.ConsumptionForm;
+import com.uhablog.fuyakake.model.CommitModel;
 import com.uhablog.fuyakake.model.ToppageModel;
 
 public interface IToppageService {
@@ -12,5 +13,5 @@ public interface IToppageService {
     /**
      * 消費入力
      */
-    public int insertConsumption(ConsumptionForm consumption); 
+    public CommitModel insertConsumption(String userId, ConsumptionForm consumption); 
 }
