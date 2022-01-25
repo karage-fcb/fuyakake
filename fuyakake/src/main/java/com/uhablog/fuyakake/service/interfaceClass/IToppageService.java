@@ -14,4 +14,12 @@ public interface IToppageService {
      * 消費入力
      */
     public CommitModel insertConsumption(String userId, ConsumptionForm consumption); 
+
+    /**
+     * 消費情報を取得する
+     * @param userId
+     * @param getMonth
+     * @return 消費情報
+     */
+    public ToppageModel getConsumption(String userId, String getMonth);
 }

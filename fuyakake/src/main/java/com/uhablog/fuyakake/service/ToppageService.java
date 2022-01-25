@@ -43,6 +43,7 @@ public class ToppageService implements IToppageService {
         ToppageModel model = new ToppageModel();
 
         // 表示する年月の最初と末日を取得する
+        // TODO 動的に取得したい
         Date startDate = Date.valueOf("2022-01-01");
         Date endDate = Date.valueOf("2022-01-31");
 
@@ -63,7 +64,6 @@ public class ToppageService implements IToppageService {
         model.setTotalIncom(incomRepository.getTotalIncom(userId, startDate, endDate));
 
         // 消費情報取得
-        // List<Consumption> consumptionList = consumptionRepository.getConsumption(userId);
         List<Consumption> consumptionList = consumptionRepository.getConsumption(userId, startDate, endDate);
         List<ToppageConsumption> toppageConsumptionList = new ArrayList<>();
 
@@ -124,6 +124,33 @@ public class ToppageService implements IToppageService {
             commitModel.setMessage("消費情報登録失敗!");
         }
         return commitModel;
+    }
+
+    public ToppageModel getConsumption(String userId, String getMonth) {
+
+        // 返却用モデル
+        ToppageModel model = new ToppageModel();
+
+        // 表示する年月の最初と末日を取得する
+        Date startDate = Date.valueOf("2022-01-01");
+        Date endDate = Date.valueOf("2022-01-31");
+
+        // 消費情報取得
+        List<Consumption> consumptionList = consumptionRepository.getConsumption(userId, startDate, endDate);
+        List<ToppageConsumption> toppageConsumptionList = new ArrayList<>();
+
+        // Toppageに渡す消費情報のリストを作成
+        for (Consumption consumption: consumptionList) {
+            ToppageConsumption toppageConsumption = new ToppageConsumption();
+            toppageConsumption.setPrice(consumption.getConsumptionMoney());
+            toppageConsumption.setCategoryName(consumption.getCategory().getCategoryName());
+            toppageConsumptionList.add(toppageConsumption);
+        }
+        model.setConsumptionList(toppageConsumptionList);
+        // 消費合計値取得
+        model.setTotalConsumption(consumptionRepository.getTotalConsumption(userId, startDate, endDate));
+        return model;
+
     }
     
 }

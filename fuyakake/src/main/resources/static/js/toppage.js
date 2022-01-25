@@ -10,7 +10,8 @@ $(function() {
 
     // 入力ボタン押下時処理
     $('#InputButton').on('click', function() {
-        alert('入力ボタン押下');
+        // 入力モーダル表示
+        $('#inputModal').modal('show');
     });
     
     // 保存ボタン押下時処理
@@ -37,10 +38,31 @@ $(function() {
             params
         ).done(function(data) {
             console.log(data);
+            getConsumption();
         }).fail(function() {
             console.log('Post失敗!!');
         }).always(function() {
             console.log('Post終了');
+            $('#inputModal').modal('hide');
         });
     });
 });
+
+function getConsumption() {
+    $.get(
+        '/toppage-api/get-consumption'
+    ).done(function(data) {
+        console.log('消費情報取得成功!');
+        console.log(data);
+        $('#ConsumptionTable').find('tbody tr').remove();
+        data.consumptionList.forEach(function(element) {
+            console.log(element);
+            html = '<tr><th scope="row"></th><td>' + element.categoryName + '</td><td>' + element.price + '</td></tr>'
+            $('#ConsumptionTable').append(html);
+        });
+    }).fail(function() {
+        console.log('消費情報取得失敗!');
+    }).always(function() {
+        console.log('消費情報取得処理終了');
+    })
+}
