@@ -1,5 +1,8 @@
 package com.uhablog.fuyakake.controller.rest;
 
+import java.util.List;
+
+import com.uhablog.fuyakake.entity.MiddleCategory;
 import com.uhablog.fuyakake.entity.form.ConsumptionForm;
 import com.uhablog.fuyakake.model.CommitModel;
 import com.uhablog.fuyakake.model.ToppageModel;
@@ -36,24 +39,37 @@ public class ToppageRestController {
         System.out.println(consumption);
         System.out.println(consumption.toString());
 
-        // ログインユーザーID取得
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String userId = auth.getName();
-
         // 消費情報登録
-        commitModel = service.insertConsumption(userId, consumption);
+        commitModel = service.insertConsumption(getLoginUserId(), consumption);
 
         return commitModel;
     }
 
+    /**
+     * 指定された年月の消費情報を取得する
+     * @param displayMonth
+     * @return
+     */
     @GetMapping("/get-consumption")
     public ToppageModel getConsumption(@RequestParam(name = "displayMonth", required = false)String displayMonth) {
 
-        // ログインユーザーID取得
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String userId = auth.getName();
-
         // 消費情報取得
-        return service.getConsumption(userId, displayMonth);
+        return service.getConsumption(getLoginUserId(), displayMonth);
+    }
+
+    @GetMapping("/get-category")
+    public List<MiddleCategory> getCategory() {
+        // カテゴリー情報を取得する
+        return service.getCategory(getLoginUserId());
+    }
+
+    /**
+     * ログイン中のユーザー情報を取得する
+     * @return ログイン中のユーザーID
+     */
+    private String getLoginUserId() {
+        // ログインユーザーIDを取得して返却する
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
     }
 }

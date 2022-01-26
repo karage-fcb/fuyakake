@@ -10,8 +10,16 @@ $(function() {
 
     // 入力ボタン押下時処理
     $('#InputButton').on('click', function() {
-        // 入力モーダル表示
-        $('#inputModal').modal('show');
+        $.get(
+            '/toppage-api/get-category'
+        ).done(function(data) {
+            console.log(data);
+
+            // 入力モーダル表示
+            $('#inputModal').modal('show');
+        }).fail(function() {
+            alert('カテゴリ情報取得失敗');
+        });
     });
     
     // 保存ボタン押下時処理
@@ -54,10 +62,15 @@ function getConsumption() {
     ).done(function(data) {
         console.log('消費情報取得成功!');
         console.log(data);
+
+        // 消費合計金額更新
+        $('#TotalConsumption').text(data.totalConsumption);
+
+        // トップページの消費情報書き換え
         $('#ConsumptionTable').find('tbody tr').remove();
         data.consumptionList.forEach(function(element) {
             console.log(element);
-            html = '<tr><th scope="row"></th><td>' + element.categoryName + '</td><td>' + element.price + '</td></tr>'
+            html = '<tr><th scope="row"></th><td>' + element.categoryName + '</td><td>' + element.price + '</td></tr>';
             $('#ConsumptionTable').append(html);
         });
     }).fail(function() {
@@ -66,3 +79,21 @@ function getConsumption() {
         console.log('消費情報取得処理終了');
     })
 }
+
+categories = {
+    bigcategoryName: '食費',
+    middleCategoryList: 
+    [{
+        categoryName: '朝ご飯',
+        id: 14
+    },
+    {
+        categoryName: '昼ごはん',
+        id:15
+    }]
+}
+
+$('#BigCategoryInput').change(function() {
+    console.log('big category を変更');
+});
+      

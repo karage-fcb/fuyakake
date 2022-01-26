@@ -3,8 +3,11 @@ package com.uhablog.fuyakake.entity;
 import java.sql.Timestamp;
 
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -24,7 +27,9 @@ public class MiddleCategory {
     /**
      * 大カテゴリID
      */
-    private Integer bigCategoryId;
+    @ManyToOne
+    @JoinColumn(name = "big_category_id", foreignKey = @ForeignKey(name="middle_category_master_big_category_id_fkey"))
+    private BigCagegory bigCagegory;
 
     /**
      * カテゴリ名

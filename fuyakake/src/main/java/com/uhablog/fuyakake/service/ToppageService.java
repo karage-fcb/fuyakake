@@ -7,6 +7,7 @@ import java.util.List;
 import com.uhablog.fuyakake.entity.Consumption;
 import com.uhablog.fuyakake.entity.Incom;
 import com.uhablog.fuyakake.entity.Investment;
+import com.uhablog.fuyakake.entity.MiddleCategory;
 import com.uhablog.fuyakake.entity.dto.ToppageConsumption;
 import com.uhablog.fuyakake.entity.dto.ToppageIncom;
 import com.uhablog.fuyakake.entity.dto.ToppageInvestment;
@@ -16,6 +17,7 @@ import com.uhablog.fuyakake.model.ToppageModel;
 import com.uhablog.fuyakake.repository.ConsumptionRepository;
 import com.uhablog.fuyakake.repository.IncomRepository;
 import com.uhablog.fuyakake.repository.InvestmentRepository;
+import com.uhablog.fuyakake.repository.MiddleCategoryRepository;
 import com.uhablog.fuyakake.service.interfaceClass.IToppageService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,9 @@ public class ToppageService implements IToppageService {
 
     @Autowired
     private InvestmentRepository investmentRepository;
+
+    @Autowired
+    private MiddleCategoryRepository middleCategoryRepository;
 
     /**
      * 初期表示時のToppageモデルを取得する
@@ -126,6 +131,12 @@ public class ToppageService implements IToppageService {
         return commitModel;
     }
 
+    /**
+     * 対象年月の消費情報を取得する
+     * @param userId
+     * @param getMonth
+     * @return 消費情報、合計消費額が入ったモデル
+     */
     public ToppageModel getConsumption(String userId, String getMonth) {
 
         // 返却用モデル
@@ -151,6 +162,14 @@ public class ToppageService implements IToppageService {
         model.setTotalConsumption(consumptionRepository.getTotalConsumption(userId, startDate, endDate));
         return model;
 
+    }
+
+    /**
+     * カテゴリ情報を取得する
+     */
+    @Override
+    public List<MiddleCategory> getCategory(String userId) {
+        return middleCategoryRepository.getCategory(userId);
     }
     
 }
