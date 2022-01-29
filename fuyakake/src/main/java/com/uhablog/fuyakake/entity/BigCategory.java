@@ -1,8 +1,11 @@
 package com.uhablog.fuyakake.entity;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -10,7 +13,7 @@ import lombok.Data;
 @Entity
 @Table(name="big_category_master")
 @Data
-public class BigCagegory {
+public class BigCategory {
     
     /**
      * カテゴリID
@@ -23,4 +26,10 @@ public class BigCagegory {
      * カテゴリ名
      */
     private String categoryName;
+
+    /**
+     * 中カテゴリのリスト
+     */
+    @OneToMany(mappedBy = "bigCategory")
+    private List<MiddleCategory> middleCategoryList;
 }

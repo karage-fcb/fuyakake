@@ -15,14 +15,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LoginService implements ILoginService {
+public class LoginService extends BaseService implements ILoginService {
     
-    /**
-     * レポジトリクラス
-     */
-    @Autowired
-    private LoginRepository repository;
-
     /**
      * ユーザー登録
      */
@@ -30,7 +24,7 @@ public class LoginService implements ILoginService {
     @Override
     public boolean signup(UserMaster user) throws DataAccessException {
         // 存在チェック
-        boolean exists = repository.existsById(user.getUserId());
+        boolean exists = getLoginRepository().existsById(user.getUserId());
 
         // ユーザーがすでに存在する場合
         if(exists) {
@@ -52,7 +46,7 @@ public class LoginService implements ILoginService {
         user.setDeleteFlag(false);;
 
         // DBにユーザーを追加する
-        repository.save(user);
+        getLoginRepository().save(user);
         return true;
     }
 
@@ -61,7 +55,7 @@ public class LoginService implements ILoginService {
      */
     @Override
     public UserMaster getLoginUser(String userId) {
-        Optional<UserMaster> option = repository.findById(userId);
+        Optional<UserMaster> option = getLoginRepository().findById(userId);
         UserMaster user = option.orElse(null);
         return user;
     }

@@ -195,46 +195,244 @@
               <h5 id="InputModalLabel" class="modal-title">家計簿入力</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-              <div class="form-floating mb-3">
-                <input id="DateInput" type="date" class="form-control">
-                <label for="DateInput">日付</label>
-              </div>
-              <div class="form-floating mb-3">
-                <input id="MoneyInput" type="number" class="form-control">
-                <label for="MoneyInput">金額</label>
-              </div>
-              <div class="form-floating mb-3">
-                <select id="AccountInput" class="form-select" aria-label="Default select example">
-                  <option value="1">財布</option>
-                  <option value="2">oo銀行</option>
-                  <option value="3">xx銀行</option>
-                </select>
-              </div>
-              <div class="row">
-                <div class="form-floating mb-3 col">
-                  <select id="BigCategoryInput" class="form-select" aria-label="Default select example">
-                    <option value="1">食費</option>
-                    <option value="2">日用品</option>
-                    <option value="3">趣味・娯楽</option>
-                  </select>
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  id="ConsumptionLink"
+                  class="nav-link active"
+                  data-bs-toggle="tab"
+                  data-bs-target="#ConsumptionModal"
+                  type="button"
+                  role="tab"
+                  aria-controls="consumption"
+                  aria-selected="true"
+                >
+                  消費
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  id="IncomLink"
+                  class="nav-link"
+                  data-bs-toggle="tab"
+                  data-bs-target="#IncomModal"
+                  type="button"
+                  role="tab"
+                  aria-controls="incom"
+                  aria-selected="true"
+                >
+                  収入
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  id="InvestmentLink"
+                  class="nav-link"
+                  data-bs-toggle="tab"
+                  data-bs-target="#InvestmentModal"
+                  type="button"
+                  role="tab"
+                  aria-controls="investment"
+                  aria-selected="true"
+                >
+                  投資
+                </button> 
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  id="SelfInvestmentLink"
+                  class="nav-link"
+                  data-bs-toggle="tab"
+                  data-bs-target="#SelfInvestmentModal"
+                  type="button"
+                  role="tab"
+                  aria-controls="selfInvestment"
+                  aria-selected="true"
+                >
+                  自己投資
+                </button>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <!-- 消費情報入力モーダル -->
+              <div id="ConsumptionModal" class="tab-pane fade show active">
+                <div class="modal-body">
+                  <div class="form-floating mb-3">
+                    <input id="ConsumptionDateInput" type="date" class="form-control">
+                    <label for="ConsumptionDateInput">日付</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <input id="ConsumptionMoneyInput" type="number" class="form-control">
+                    <label for="ConsumptionMoneyInput">金額</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <select id="ConsumptionAccountInput" class="form-select" aria-label="Default select example">
+                      <option value="1">財布</option>
+                      <option value="2">oo銀行</option>
+                      <option value="3">xx銀行</option>
+                    </select>
+                  </div>
+                  <div class="row">
+                    <div class="form-floating mb-3 col">
+                      <select id="ConsumptionBigCategoryInput" class="form-select" aria-label="Default select example">
+                        <option value="1">食費</option>
+                        <option value="2">日用品</option>
+                        <option value="3">趣味・娯楽</option>
+                      </select>
+                    </div>
+                    <div class="form-floating mb-3 col">
+                      <select id="ConsumptionMiddleCategoryInput" class="form-select" aria-label="Default select example">
+                        <option value="1">外食</option>
+                        <option value="2">朝ご飯</option>
+                        <option value="3">昼ごはん</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="ConsumptionMemoTextarea" class="form-label">メモ</label>
+                    <textarea id="ConsumptionMemoTextarea" class="form-control" rows="3"></textarea>
+                  </div>
                 </div>
-                <div class="form-floating mb-3 col">
-                  <select id="MiddleCategoryInput" class="form-select" aria-label="Default select example">
-                    <option value="1">外食</option>
-                    <option value="2">朝ご飯</option>
-                    <option value="3">昼ごはん</option>
-                  </select>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                  <button id="ConsumptionSaveButton" type="button" class="btn btn-primary">保存</button>
                 </div>
               </div>
-              <div class="mb-3">
-                <label for="memotextarea" class="form-label">メモ</label>
-                <textarea id="memotextarea" class="form-control" rows="3"></textarea>
+              <!-- 収入情報入力モーダル -->
+              <div id="IncomModal" class="tab-pane fade">
+                <h6>収入</h6>
+                <div class="modal-body">
+                  <div class="form-floating mb-3">
+                    <input id="IncomDateInput" type="date" class="form-control">
+                    <label for="IncomDateInput">日付</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <input id="IncomMoneyInput" type="number" class="form-control">
+                    <label for="IncomMoneyInput">金額</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <select id="IncomAccountInput" class="form-select" aria-label="Default select example">
+                      <option value="1">財布</option>
+                      <option value="2">oo銀行</option>
+                      <option value="3">xx銀行</option>
+                    </select>
+                  </div>
+                  <div class="row">
+                    <div class="form-floating mb-3 col">
+                      <select id="IncomBigCategoryInput" class="form-select" aria-label="Default select example">
+                        <option value="1">食費</option>
+                        <option value="2">日用品</option>
+                        <option value="3">趣味・娯楽</option>
+                      </select>
+                    </div>
+                    <div class="form-floating mb-3 col">
+                      <select id="IncomMiddleCategoryInput" class="form-select" aria-label="Default select example">
+                        <option value="1">外食</option>
+                        <option value="2">朝ご飯</option>
+                        <option value="3">昼ごはん</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="IncomMemotextarea" class="form-label">メモ</label>
+                    <textarea id="IncomMemotextarea" class="form-control" rows="3"></textarea>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                  <button id="IncomSaveButton" type="button" class="btn btn-primary">保存</button>
+                </div>
               </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-              <button id="SaveButton" type="button" class="btn btn-primary">保存</button>
+              <!-- 投資情報入力モーダル -->
+              <div id="InvestmentModal" class="tab-pane fade">
+                <h6>投資</h6>
+                <div class="modal-body">
+                  <div class="form-floating mb-3">
+                    <input id="InvestmentDateInput" type="date" class="form-control">
+                    <label for="InvestmentDateInput">日付</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <input id="InvestmentMoneyInput" type="number" class="form-control">
+                    <label for="InvestmentMoneyInput">金額</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <select id="InvestmentAccountInput" class="form-select" aria-label="Default select example">
+                      <option value="1">財布</option>
+                      <option value="2">oo銀行</option>
+                      <option value="3">xx銀行</option>
+                    </select>
+                  </div>
+                  <div class="row">
+                    <div class="form-floating mb-3 col">
+                      <select id="InvestmentBigCategoryInput" class="form-select" aria-label="Default select example">
+                        <option value="1">食費</option>
+                        <option value="2">日用品</option>
+                        <option value="3">趣味・娯楽</option>
+                      </select>
+                    </div>
+                    <div class="form-floating mb-3 col">
+                      <select id="InvestmentMiddleCategoryInput" class="form-select" aria-label="Default select example">
+                        <option value="1">外食</option>
+                        <option value="2">朝ご飯</option>
+                        <option value="3">昼ごはん</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="InvestmentMemotextarea" class="form-label">メモ</label>
+                    <textarea id="InvestmentMemotextarea" class="form-control" rows="3"></textarea>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                  <button id="InvestmentSaveButton" type="button" class="btn btn-primary">保存</button>
+                </div>
+              </div>
+              <!-- 自己投資情報入力モーダル -->
+              <div id="SelfInvestmentModal" class="tab-pane fade">
+                <h6>自己投資</h6>
+                <div class="modal-body">
+                  <div class="form-floating mb-3">
+                    <input id="SelfInvestmentDateInput" type="date" class="form-control">
+                    <label for="SelfInvestmentDateInput">日付</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <input id="SelfInvestmentMoneyInput" type="number" class="form-control">
+                    <label for="SelfInvestmentMoneyInput">金額</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <select id="SelfInvestmentAccountInput" class="form-select" aria-label="Default select example">
+                      <option value="1">財布</option>
+                      <option value="2">oo銀行</option>
+                      <option value="3">xx銀行</option>
+                    </select>
+                  </div>
+                  <div class="row">
+                    <div class="form-floating mb-3 col">
+                      <select id="SelfInvestmentBigCategoryInput" class="form-select" aria-label="Default select example">
+                        <option value="1">食費</option>
+                        <option value="2">日用品</option>
+                        <option value="3">趣味・娯楽</option>
+                      </select>
+                    </div>
+                    <div class="form-floating mb-3 col">
+                      <select id="SelfInvestmentMiddleCategoryInput" class="form-select" aria-label="Default select example">
+                        <option value="1">外食</option>
+                        <option value="2">朝ご飯</option>
+                        <option value="3">昼ごはん</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="SelfInvestmentMemotextarea" class="form-label">メモ</label>
+                    <textarea id="SelfInvestmentMemotextarea" class="form-control" rows="3"></textarea>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                  <button id="SelfInvestmentSaveButton" type="button" class="btn btn-primary">保存</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

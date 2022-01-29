@@ -5,6 +5,7 @@ import java.util.List;
 import com.uhablog.fuyakake.entity.dto.ToppageConsumption;
 import com.uhablog.fuyakake.entity.dto.ToppageIncom;
 import com.uhablog.fuyakake.entity.dto.ToppageInvestment;
+import com.uhablog.fuyakake.entity.dto.ToppageSelfInvestment;
 
 import lombok.Data;
 
@@ -40,4 +41,14 @@ public class ToppageModel {
      * 投資合計
      */
     private int totalInvestment;
+
+    /**
+     * 自己投資情報
+     */
+    private List<ToppageSelfInvestment> selfInvestmentList;
+
+    /**
+     * 自己投資合計
+     */
+    private int totalSelfInvestment;
 }

@@ -10,20 +10,23 @@ $(function () {
 
     // 入力ボタン押下時処理
     $('#InputButton').on('click', function () {
-        $.get(
-            '/toppage-api/get-category'
-        ).done(function (data) {
-            console.log(data);
+        $('#inputModal').modal('show');
+        // カテゴリ情報の取得がうまくいかないので、いったんコメントアウト
+        // $.get(
+        //     '/toppage-api/get-category'
+        // ).done(function (data) {
+        //     console.log(data);
 
-            // 入力モーダル表示
-            $('#inputModal').modal('show');
-        }).fail(function () {
-            alert('カテゴリ情報取得失敗');
-        });
+        //     // 入力モーダル表示
+        //     $('#inputModal').modal('show');
+        // }).fail(function () {
+        //     alert('カテゴリ情報取得失敗');
+        // });
     });
 
     // 保存ボタン押下時処理
     $('#SaveButton').on('click', function () {
+        // 入力値取得
         const date = $('#DateInput').val();
         const money = $('#MoneyInput').val();
         const accountId = $('#AccountInput').val();
@@ -31,6 +34,7 @@ $(function () {
         const middleCategoryId = $('#MiddleCategoryInput').val();
         const memo = $('#memotextarea').val();
 
+        // パラメータ構築
         const params = {
             money: money,
             accountId: accountId,
@@ -39,8 +43,7 @@ $(function () {
             date: date
         }
 
-        console.log(params);
-
+        // リクエスト送信
         $.post(
             '/toppage-api/insert-consumption',
             params
@@ -56,6 +59,7 @@ $(function () {
     });
 });
 
+// 消費情報取得
 function getConsumption() {
     $.get(
         '/toppage-api/get-consumption'

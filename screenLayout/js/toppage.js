@@ -3,7 +3,7 @@ $(function() {
 
     // 入力ボタン押下時処理
     $('#InputButton').on('click', function() {
-        alert('入力ボタン押下');
+        // alert('入力ボタン押下');
     });
     
     // 保存ボタン押下時処理

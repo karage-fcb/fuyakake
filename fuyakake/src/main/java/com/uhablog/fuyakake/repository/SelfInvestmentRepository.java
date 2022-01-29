@@ -3,7 +3,7 @@ package com.uhablog.fuyakake.repository;
 import java.sql.Date;
 import java.util.List;
 
-import com.uhablog.fuyakake.entity.Investment;
+import com.uhablog.fuyakake.entity.SelfInvestment;
 
 import org.springframework.aop.AopInvocationException;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,10 +12,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface InvestmentRepository extends JpaRepository<Investment, Integer> {
-    
+public interface SelfInvestmentRepository extends JpaRepository<SelfInvestment, Integer> {
+
     /**
-     * 指定された年月の投資情報を取得する
+     * 指定された年月の自己投資情報を取得する
      * @param userId
      * @param startDate
      * @param endDate
@@ -25,29 +25,29 @@ public interface InvestmentRepository extends JpaRepository<Investment, Integer>
         + " SELECT "
         + "  * "
         + " FROM "
-        + "  investment "
+        + "  self_investment "
         + " WHERE "
-        + "  investment.user_id = :userId "
+        + "  self_investment.user_id = :userId "
         + " AND "
-        + "  investment.delete_flag = false "
+        + "  self_investment.delete_flag = false"
         + " AND "
         + "  date BETWEEN "
         + "   :startDate "
         + "  AND "
         + "   :endDate "
-        + " ORDER BY investment.date desc "
+        + " ORDER BY self_investment.date desc "
         + " LIMIT "
-        + "  3 ",
-        nativeQuery = true
+        + "  3 "
+        ,nativeQuery = true
     )
-    public List<Investment> getInvestment(
+    public List<SelfInvestment> getSelfInvestment(
         @Param("userId")String userId,
         @Param("startDate")Date startDate,
         @Param("endDate")Date endDate
     );
-
+    
     /**
-     * 対象の合計投資金額を取得する
+     * 対象の合計自己投資金額を取得する
      * @param userId
      * @return
      */
@@ -55,11 +55,11 @@ public interface InvestmentRepository extends JpaRepository<Investment, Integer>
         + " SELECT "
         + "  SUM(investment_money) "
         + " FROM "
-        + "  investment "
+        + "  self_investment "
         + " WHERE "
-        + "  investment.user_id = :userId "
+        + "  self_investment.user_id = :userId "
         + " AND "
-        + "  investment.delete_flag = false "
+        + "  self_investment.delete_flag = false "
         + " AND "
         + "  date BETWEEN "
         + "   :startDate "
@@ -67,7 +67,7 @@ public interface InvestmentRepository extends JpaRepository<Investment, Integer>
         + "   :endDate ",
         nativeQuery = true
     )
-    public int getTotalInvestment(
+    public int getTotalSelfInvestment(
         @Param("userId")String userId,
         @Param("startDate")Date startDate,
         @Param("endDate")Date endDate

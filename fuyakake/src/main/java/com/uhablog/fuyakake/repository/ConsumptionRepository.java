@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.uhablog.fuyakake.entity.Consumption;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.aop.AopInvocationException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,7 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface ConsumptionRepository extends JpaRepository<Consumption, Integer> {
 
-    // Topページに表示するログインユーザーの収入情報を取得する
+    /**
+     * 指定された年月の消費情報を取得する
+     * @param userId
+     * @param startDate
+     * @param endDate
+     * @return
+     */
     @Query(value = ""
         + " SELECT "
         + "  * "
@@ -67,7 +74,7 @@ public interface ConsumptionRepository extends JpaRepository<Consumption, Intege
         @Param("userId")String userId,
         @Param("startDate")Date startDate,
         @Param("endDate")Date endDate
-    );
+    )throws AopInvocationException;
 
     /**
      * 消費情報登録

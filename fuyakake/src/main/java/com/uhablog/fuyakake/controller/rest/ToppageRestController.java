@@ -2,8 +2,9 @@ package com.uhablog.fuyakake.controller.rest;
 
 import java.util.List;
 
-import com.uhablog.fuyakake.entity.MiddleCategory;
+import com.uhablog.fuyakake.entity.BigCategory;
 import com.uhablog.fuyakake.entity.form.ConsumptionForm;
+import com.uhablog.fuyakake.entity.form.IncomForm;
 import com.uhablog.fuyakake.model.CommitModel;
 import com.uhablog.fuyakake.model.ToppageModel;
 import com.uhablog.fuyakake.service.ToppageService;
@@ -57,10 +58,30 @@ public class ToppageRestController {
         return service.getConsumption(getLoginUserId(), displayMonth);
     }
 
+    /**
+     * カテゴリ情報を取得する
+     * @return
+     */
     @GetMapping("/get-category")
-    public List<MiddleCategory> getCategory() {
+    public List<BigCategory> getCategory() {
         // カテゴリー情報を取得する
         return service.getCategory(getLoginUserId());
+    }
+
+    @PostMapping("/insert-incom")
+    public CommitModel insertIncom(IncomForm incom) {
+
+        CommitModel commitModel = new CommitModel();
+
+        // 収入情報登録
+        commitModel = service.insertIncom(getLoginUserId(), incom);
+        return commitModel;
+    }
+
+    @GetMapping("/get-incom")
+    public ToppageModel getIncom(@RequestParam(name = "displayMonth", required = false)String displayMonth) {
+        // 収入情報取得
+        return service.getIncom(getLoginUserId(), displayMonth);
     }
 
     /**
