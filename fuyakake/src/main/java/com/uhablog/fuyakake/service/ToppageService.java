@@ -199,6 +199,8 @@ public class ToppageService extends BaseService implements IToppageService {
      */
     @Override
     public CommitModel insertIncom(String userId, IncomForm incom) {
+
+        System.out.println("収入情報入力" + incom.toString());
         // 収入情報登録
         int ret = getIncomRepository().insertIncom(
             incom.getMoney(),
@@ -224,6 +226,9 @@ public class ToppageService extends BaseService implements IToppageService {
     @Override
     public ToppageModel getIncom(String userId, String getMonth) {
 
+        // 収入情報取得
+        System.out.println("収入情報取得");
+        
         // 返却用モデル
         ToppageModel model = new ToppageModel();
 

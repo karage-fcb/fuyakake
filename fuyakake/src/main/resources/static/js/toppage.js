@@ -24,15 +24,15 @@ $(function () {
         // });
     });
 
-    // 保存ボタン押下時処理
-    $('#SaveButton').on('click', function () {
+    // 消費情報保存ボタン押下時処理
+    $('#ConsumptionSaveButton').on('click', function () {
         // 入力値取得
-        const date = $('#DateInput').val();
-        const money = $('#MoneyInput').val();
-        const accountId = $('#AccountInput').val();
-        const bigCategoryId = $('#BigCategoryInput').val();
-        const middleCategoryId = $('#MiddleCategoryInput').val();
-        const memo = $('#memotextarea').val();
+        const date = $('#ConsumptionDateInput').val();
+        const money = $('#ConsumptionMoneyInput').val();
+        const accountId = $('#ConsumptionAccountInput').val();
+        const bigCategoryId = $('#ConsumptionBigCategoryInput').val();
+        const middleCategoryId = $('#ConsumptionMiddleCategoryInput').val();
+        const memo = $('#ConsumptionMemoTextarea').val();
 
         // パラメータ構築
         const params = {
@@ -54,6 +54,39 @@ $(function () {
             console.log('Post失敗!!');
         }).always(function () {
             console.log('Post終了');
+            $('#inputModal').modal('hide');
+        });
+    });
+
+    // 収入情報保存ボタン押下時処理
+    $('#IncomSaveButton').on('click', function() {
+
+        // 入力値取得
+        const date = $('#IncomDateInput').val();
+        const money = $('#IncomMoneyInput').val();
+        const accountId = $('#IncomAccountInput').val();
+        const middleCategoryId = $('#IncomMiddleCategoryInput').val();
+        const memo = $('#IncomMemotextarea').val();
+
+        // パラメータ構築
+        const params = {
+            money: money,
+            accountId: accountId,
+            categoryId: middleCategoryId,
+            memo: memo,
+            date: date
+        }
+
+        // リクエスト送信
+        $.post(
+            '/toppage-api/insert-incom',
+            params
+        ).done(function(data) {
+            getIncom();
+            alert('収入情報登録成功!');
+        }).fail(function() {
+            console.log('Post失敗');
+        }).always(function() {
             $('#inputModal').modal('hide');
         });
     });
@@ -82,7 +115,32 @@ function getConsumption() {
     }).always(function () {
         console.log('消費情報取得処理終了');
     })
-}
+};
+
+// 収入情報取得
+function getIncom() {
+    $.get(
+        '/toppage-api/get-insert'
+    ).done(function (data) {
+        console.log('収入情報取得成功!');
+        console.log(data);
+
+        // 収入合計金額更新
+        $('#TotalIncom').text(data.totalConsumption);
+
+        // トップページの消費情報書き換え
+        $('#IncomTable').find('tbody tr').remove();
+        data.consumptionList.forEach(function (element) {
+            console.log(element);
+            html = '<tr><th scope="row"></th><td>' + element.categoryName + '</td><td>' + element.price + '</td></tr>';
+            $('#IncomTable').append(html);
+        });
+    }).fail(function () {
+        console.log('収入情報取得失敗!');
+    }).always(function () {
+        console.log('収入情報取得処理終了');
+    })
+};
 
 
 // ==========================================================================

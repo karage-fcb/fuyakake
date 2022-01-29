@@ -100,7 +100,7 @@ public interface IncomRepository extends JpaRepository<Incom, Integer> {
         + "  current_timestamp, "
         + "  :userId, "
         + "  1, "
-        + "  'false', "
+        + "  'false') "
         , nativeQuery = true
     )
     public int insertIncom(
