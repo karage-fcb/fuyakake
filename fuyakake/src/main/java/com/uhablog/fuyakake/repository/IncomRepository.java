@@ -17,7 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface IncomRepository extends JpaRepository<Incom, Integer> {
     
-    // Topページに表示するログインユーザーの収入情報を取得する
+    /**
+     * 指定された年月の自己投資情報を取得する
+     * @param userId
+     * @param startDate
+     * @param endDate
+     * @return
+     */
     @Query(value = ""
         + " SELECT "
         + "  * "

@@ -82,8 +82,75 @@ $(function () {
             '/toppage-api/insert-incom',
             params
         ).done(function(data) {
+            console.log(data);
             getIncom();
-            alert('収入情報登録成功!');
+            alert(data.message);
+        }).fail(function() {
+            console.log('Post失敗');
+        }).always(function() {
+            $('#inputModal').modal('hide');
+        });
+    });
+
+    // 投資情報保存ボタン押下時処理
+    $('#InvestmentSaveButton').on('click', function() {
+
+        // 入力値取得
+        const date = $('#InvestmentDateInput').val();
+        const money = $('#InvestmentMoneyInput').val();
+        const accountId = $('#InvestmentAccountInput').val();
+        const middleCategoryId = $('#InvestmentMiddleCategoryInput').val();
+        const memo = $('#InvestmentMemotextarea').val();
+
+        // パラメータ構築
+        const params = {
+            money: money,
+            accountId: accountId,
+            categoryId: middleCategoryId,
+            memo: memo,
+            date: date
+        }
+
+        // リクエスト送信
+        $.post(
+            '/toppage-api/insert-investment',
+            params
+        ).done(function(data) {
+            getInvestment();
+            alert('投資情報登録成功!');
+        }).fail(function() {
+            console.log('Post失敗');
+        }).always(function() {
+            $('#inputModal').modal('hide');
+        });
+    });
+
+    // 自己投資情報保存ボタン押下時処理
+    $('#SelfInvestmentSaveButton').on('click', function() {
+
+        // 入力値取得
+        const date = $('#SelfInvestmentDateInput').val();
+        const money = $('#SelfInvestmentMoneyInput').val();
+        const accountId = $('#SelfInvestmentAccountInput').val();
+        const middleCategoryId = $('#SelfInvestmentMiddleCategoryInput').val();
+        const memo = $('#SelfInvestmentMemotextarea').val();
+
+        // パラメータ構築
+        const params = {
+            money: money,
+            accountId: accountId,
+            categoryId: middleCategoryId,
+            memo: memo,
+            date: date
+        }
+
+        // リクエスト送信
+        $.post(
+            '/toppage-api/insert-self-investment',
+            params
+        ).done(function(data) {
+            getSelfInvestment();
+            alert('投資情報登録成功!');
         }).fail(function() {
             console.log('Post失敗');
         }).always(function() {
@@ -120,17 +187,17 @@ function getConsumption() {
 // 収入情報取得
 function getIncom() {
     $.get(
-        '/toppage-api/get-insert'
+        '/toppage-api/get-incom'
     ).done(function (data) {
         console.log('収入情報取得成功!');
         console.log(data);
 
         // 収入合計金額更新
-        $('#TotalIncom').text(data.totalConsumption);
+        $('#TotalIncom').text(data.totalIncom);
 
         // トップページの消費情報書き換え
         $('#IncomTable').find('tbody tr').remove();
-        data.consumptionList.forEach(function (element) {
+        data.incomInfoList.forEach(function (element) {
             console.log(element);
             html = '<tr><th scope="row"></th><td>' + element.categoryName + '</td><td>' + element.price + '</td></tr>';
             $('#IncomTable').append(html);
@@ -139,9 +206,57 @@ function getIncom() {
         console.log('収入情報取得失敗!');
     }).always(function () {
         console.log('収入情報取得処理終了');
-    })
+    });
 };
 
+// 投資情報取得
+function getInvestment() {
+    $.get(
+        '/toppage-api/get-investment'
+    ).done(function(data) {
+        console.log('投資情報取得成功!');
+
+        // 合計投資金額更新
+        $('#TotalInvestment').text(data.totalInvestment);
+
+        // トップページの投資情報書き換え
+        $('#InvestmentTable').find('tbody tr').remove();
+        data.investmentList.forEach(function (element) {
+            console.log(element);
+            html = '<tr><th scope="row"></th><td>' + element.categoryName + '</td><td>' + element.price + '</td></tr>';
+            $('#InvestmentTable').append(html);
+        });
+    }).fail(function () {
+        console.log('投資情報取得失敗!');
+    }).always(function () {
+        console.log('投資情報取得処理終了');
+    });
+};
+
+// 自己投資情報取得
+function getSelfInvestment() {
+    $.get(
+        '/toppage-api/get-self-investment'
+    ).done(function(data) {
+        console.log('自己投資情報取得成功!');
+        console.log(data);
+
+        // 合計投資金額更新
+        $('#TotalSelfInvestment').text(data.totalSelfInvestment);
+
+        // トップページの投資情報書き換え
+        $('#SelfInvestmentTable').find('tbody tr').remove();
+        data.selfInvestmentList.forEach(function (element) {
+            console.log(element);
+            html = '<tr><th scope="row"></th><td>' + element.categoryName + '</td><td>' + element.price + '</td></tr>';
+            $('#SelfInvestmentTable').append(html);
+        });
+    }).fail(function () {
+        console.log('投資情報取得失敗!');
+    }).always(function () {
+        console.log('投資情報取得処理終了');
+    });
+};
 
 // ==========================================================================
 // カテゴリ選択用のメモ書き

@@ -22,12 +22,12 @@ public class SelfInvestment {
      */
     @Id
     @GeneratedValue
-    private Integer selfInvestmentId;
+    private Integer investmentId;
 
     /**
      * 自己投資金額
      */
-    private int selfInvestmentMoney;
+    private int investmentMoney;
 
     /**
      * 口座ID

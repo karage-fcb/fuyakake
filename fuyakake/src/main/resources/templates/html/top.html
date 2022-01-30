@@ -59,15 +59,15 @@
         <div class="col-6">
           利益
           <!-- 投資情報 -->
-          <table class="table">
+          <table id="InvestmentTable" class="table">
             <thead>
               <tr>
                 <th scope="col">投資</th>
-                <th scope="col" th:text="${model.totalInvestment}"></th>
+                <th id="TotalInvestment" scope="col" th:text="${model.totalInvestment}"></th>
                 <th scope="col"></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="InvestmentTBody">
               <tr th:each="element : ${model.investmentList}">
                 <th scope="row"></th>
                 <td>[[${element.categoryName}]]</td>
@@ -107,7 +107,7 @@
                 <th scope="col"></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="SelfInvestmentTBody">
               <tr th:each="element : ${model.selfInvestmentList}">
                 <th scope="row"></th>
                 <td>[[${element.categoryName}]]</td>
@@ -342,21 +342,11 @@
                       <option value="3">xx銀行</option>
                     </select>
                   </div>
-                  <div class="row">
-                    <div class="form-floating mb-3 col">
-                      <select id="InvestmentBigCategoryInput" class="form-select" aria-label="Default select example">
-                        <option value="1">食費</option>
-                        <option value="2">日用品</option>
-                        <option value="3">趣味・娯楽</option>
-                      </select>
-                    </div>
-                    <div class="form-floating mb-3 col">
-                      <select id="InvestmentMiddleCategoryInput" class="form-select" aria-label="Default select example">
-                        <option value="1">外食</option>
-                        <option value="2">朝ご飯</option>
-                        <option value="3">昼ごはん</option>
-                      </select>
-                    </div>
+                  <div class="form-floating mb-3 col">
+                    <select id="InvestmentMiddleCategoryInput" class="form-select" aria-label="Default select example">
+                      <option value="6">株式</option>
+                      <option value="7">投資信託</option>
+                    </select>
                   </div>
                   <div class="mb-3">
                     <label for="InvestmentMemotextarea" class="form-label">メモ</label>
@@ -387,21 +377,11 @@
                       <option value="3">xx銀行</option>
                     </select>
                   </div>
-                  <div class="row">
-                    <div class="form-floating mb-3 col">
-                      <select id="SelfInvestmentBigCategoryInput" class="form-select" aria-label="Default select example">
-                        <option value="1">食費</option>
-                        <option value="2">日用品</option>
-                        <option value="3">趣味・娯楽</option>
-                      </select>
-                    </div>
-                    <div class="form-floating mb-3 col">
-                      <select id="SelfInvestmentMiddleCategoryInput" class="form-select" aria-label="Default select example">
-                        <option value="1">外食</option>
-                        <option value="2">朝ご飯</option>
-                        <option value="3">昼ごはん</option>
-                      </select>
-                    </div>
+                  <div class="form-floating mb-3 col">
+                    <select id="SelfInvestmentMiddleCategoryInput" class="form-select" aria-label="Default select example">
+                      <option value="8">書籍</option>
+                      <option value="9">スクール代</option>
+                    </select>
                   </div>
                   <div class="mb-3">
                     <label for="SelfInvestmentMemotextarea" class="form-label">メモ</label>

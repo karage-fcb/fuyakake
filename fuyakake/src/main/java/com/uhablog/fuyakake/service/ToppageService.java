@@ -15,6 +15,8 @@ import com.uhablog.fuyakake.entity.dto.ToppageInvestment;
 import com.uhablog.fuyakake.entity.dto.ToppageSelfInvestment;
 import com.uhablog.fuyakake.entity.form.ConsumptionForm;
 import com.uhablog.fuyakake.entity.form.IncomForm;
+import com.uhablog.fuyakake.entity.form.InvestmentForm;
+import com.uhablog.fuyakake.entity.form.SelfInvestmentFrom;
 import com.uhablog.fuyakake.model.CommitModel;
 import com.uhablog.fuyakake.model.ToppageModel;
 import com.uhablog.fuyakake.service.interfaceClass.IToppageService;
@@ -39,86 +41,17 @@ public class ToppageService extends BaseService implements IToppageService {
         Date startDate = Date.valueOf("2022-01-01");
         Date endDate = Date.valueOf("2022-01-31");
 
-        // 収入情報取得
-        List<Incom> incomList = getIncomRepository().getIncom(userId, startDate, endDate);
-        List<ToppageIncom> toppageIncomList = new ArrayList<>();
+        // 収入情報取得メソッド呼び出し
+        model = getIncom(model, userId, startDate, endDate);
 
-        // Toppageに渡す収入情報のリストを作成
-        for (Incom incom : incomList) {
-            ToppageIncom toppageIncom = new ToppageIncom();
-            toppageIncom.setPrice(incom.getIncomMoney());
-            toppageIncom.setCategoryName(incom.getCategory().getCategoryName());
-            toppageIncomList.add(toppageIncom);
-        }
-        model.setIncomInfoList(toppageIncomList);
+        // 消費情報取得メソッド呼び出し
+        model = getConsumption(model, userId, startDate, endDate);
 
-        // 収入合計値取得
-        try {
-            model.setTotalIncom(getIncomRepository().getTotalIncom(userId, startDate, endDate));
-        } catch (Exception e) {
-            model.setTotalIncom(0);
-        }
+        // 投資情報取得メソッド呼び出し
+        model = getInvestment(model, userId, startDate, endDate);
 
-        // 消費情報取得
-        List<Consumption> consumptionList = getConsumptionRepository().getConsumption(userId, startDate, endDate);
-        List<ToppageConsumption> toppageConsumptionList = new ArrayList<>();
-
-        // Toppageに渡す消費情報のリストを作成
-        for (Consumption consumption: consumptionList) {
-            ToppageConsumption toppageConsumption = new ToppageConsumption();
-            toppageConsumption.setPrice(consumption.getConsumptionMoney());
-            toppageConsumption.setCategoryName(consumption.getCategory().getCategoryName());
-            toppageConsumptionList.add(toppageConsumption);
-        }
-        model.setConsumptionList(toppageConsumptionList);
-
-        // 消費合計値取得
-        try {
-            model.setTotalConsumption(getConsumptionRepository().getTotalConsumption(userId, startDate, endDate));
-        } catch (Exception e) {
-            model.setTotalConsumption(0);
-        }
-
-        // 投資情報取得
-        List<Investment> investments = getInvestmentRepository().getInvestment(userId, startDate, endDate);
-        List<ToppageInvestment> toppageInvestments = new ArrayList<>();
-
-        // Toppageに渡す投資情報のリストを作成
-        for (Investment investment: investments) {
-            ToppageInvestment toppageInvestment = new ToppageInvestment();
-            toppageInvestment.setPrice(investment.getInvestmentMoney());
-            toppageInvestment.setCategoryName(investment.getCategory().getCategoryName());
-            toppageInvestments.add(toppageInvestment);
-        }
-        model.setInvestmentList(toppageInvestments);
-
-        // 投資合計値取得
-        try {
-            model.setTotalInvestment(getInvestmentRepository().getTotalInvestment(userId, startDate, endDate));
-        } catch (Exception e) {
-            model.setTotalInvestment(0);
-        }
-
-        // 自己投資情報取得
-        List<SelfInvestment> selfInvestments = getSelfInvestmentRepository().getSelfInvestment(userId, startDate, endDate);
-        List<ToppageSelfInvestment> toppageSelfInvestments = new ArrayList<>();
-
-        // Toppageに渡す自己投資情報のリストを作成
-        for (SelfInvestment selfInvestment: selfInvestments) {
-            ToppageSelfInvestment toppageSelfInvestment = new ToppageSelfInvestment();
-            toppageSelfInvestment.setPrice(selfInvestment.getSelfInvestmentMoney());
-            toppageSelfInvestment.setCategoryName(selfInvestment.getCategory().getCategoryName());
-            toppageSelfInvestments.add(toppageSelfInvestment);
-        }
-        model.setSelfInvestmentList(toppageSelfInvestments);
-
-        // 自己投資合計値取得
-        try {
-            model.setTotalSelfInvestment(getSelfInvestmentRepository().getTotalSelfInvestment(userId, startDate, endDate));
-        } catch (AopInvocationException e) {
-            // 対象データが存在しない時は0を設定する
-            model.setTotalSelfInvestment(0);
-        }
+        // 自己投資情報取得メソッド呼び出し
+        model = getSelfInvestment(model, userId, startDate, endDate);
 
         return model;
     }
@@ -177,21 +110,8 @@ public class ToppageService extends BaseService implements IToppageService {
         Date endDate = Date.valueOf("2022-01-31");
 
         // 消費情報取得
-        List<Consumption> consumptionList = getConsumptionRepository().getConsumption(userId, startDate, endDate);
-        List<ToppageConsumption> toppageConsumptionList = new ArrayList<>();
-
-        // Toppageに渡す消費情報のリストを作成
-        for (Consumption consumption: consumptionList) {
-            ToppageConsumption toppageConsumption = new ToppageConsumption();
-            toppageConsumption.setPrice(consumption.getConsumptionMoney());
-            toppageConsumption.setCategoryName(consumption.getCategory().getCategoryName());
-            toppageConsumptionList.add(toppageConsumption);
-        }
-        model.setConsumptionList(toppageConsumptionList);
-        // 消費合計値取得
-        model.setTotalConsumption(getConsumptionRepository().getTotalConsumption(userId, startDate, endDate));
+        model = getConsumption(model, userId, startDate, endDate);
         return model;
-
     }
 
     /**
@@ -223,6 +143,9 @@ public class ToppageService extends BaseService implements IToppageService {
         return commitModel;
     }
 
+    /**
+     * 収入情報取得
+     */
     @Override
     public ToppageModel getIncom(String userId, String getMonth) {
 
@@ -233,9 +156,128 @@ public class ToppageService extends BaseService implements IToppageService {
         ToppageModel model = new ToppageModel();
 
         // 表示する年月の最初と末尾を取得する
+        // TODO 動的に年月を変更
         Date startDate = Date.valueOf("2022-01-01");
         Date endDate = Date.valueOf("2022-01-31");
 
+        // 収入情報取得メソッド呼び出し
+        model = getIncom(model, userId, startDate, endDate);
+
+        return model;
+    }
+
+    /**
+     * 投資情報登録
+     */
+	@Override
+	public CommitModel insertInvestment(String userId, InvestmentForm investment) {
+        System.out.println("投資情報入力" + investment.toString());
+
+        // 投資情報登録
+        int ret = getInvestmentRepository().insertSelfInvestment(
+            investment.getMoney(),
+            investment.getAccountId(),
+            userId,
+            investment.getCategoryId(),
+            investment.getMemo(),
+            investment.getDate()
+        );
+
+        CommitModel model = new CommitModel();
+
+        // 登録成功したかどうか判定する
+        if(ret == 1) {
+            model.setError(false);
+            model.setMessage("投資情報登録成功!");
+        } else {
+            model.setError(true);
+            model.setMessage("投資情報登録失敗!");
+        }
+		return model;
+	}
+
+    /**
+     * 投資情報取得
+     */
+	@Override
+	public ToppageModel getInvestment(String userId, String getMonth) {
+        // 投資情報取得
+        System.out.println("投資情報取得");
+
+        ToppageModel model = new ToppageModel();
+
+        // TODO 動的に年月を変更
+        Date startDate = Date.valueOf("2022-01-01");
+        Date endDate = Date.valueOf("2022-01-31");
+
+        model = getInvestment(model, userId, startDate, endDate);
+
+		return model;
+	}
+
+    /**
+     * 自己投資情報登録
+     */
+	@Override
+	public CommitModel insertSelfInvestment(String userId, SelfInvestmentFrom selfInvestment) {
+        System.out.println("自己投資情報入力" + selfInvestment.toString());
+
+        // 自己投資情報登録
+        int ret = getSelfInvestmentRepository().insertSelfInvestment(
+            selfInvestment.getMoney(),
+            selfInvestment.getAccountId(),
+            userId,
+            selfInvestment.getCategoryId(),
+            selfInvestment.getMemo(),
+            selfInvestment.getDate()
+        );
+
+        CommitModel commitModel = new CommitModel();
+
+        // 登録に成功したかどうか判定
+        if(ret == 1) {
+            commitModel.setError(false);
+            commitModel.setMessage("自己投資情報登録成功");
+        } else {
+            commitModel.setError(true);
+            commitModel.setMessage("自己投資情報登録失敗");
+        }
+
+		return commitModel;
+	}
+
+    /**
+     * 自己投資情報取得
+     */
+	@Override
+	public ToppageModel getSelfInvestment(String userId, String getMonth) {
+
+        // 自己投資情報取得
+        System.out.println("自己投資情報取得");
+
+        // 返却用モデル
+        ToppageModel model = new ToppageModel();
+
+        // 表示する年月の最初と末尾を取得する
+        // TODO 年月の取得を動的に変換
+        Date startDate = Date.valueOf("2022-01-01");
+        Date endDate = Date.valueOf("2022-01-31");
+
+        // 自己投資情報取得メソッド呼び出し
+        model = getSelfInvestment(model, userId, startDate, endDate);
+
+		return model;
+	}
+
+    /**
+     * 収入情報取得
+     * @param model
+     * @param userId
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    private ToppageModel getIncom(ToppageModel model, String userId, Date startDate, Date endDate) {
         // 収入情報取得
         List<Incom> incomList = getIncomRepository().getIncom(userId, startDate, endDate);
         List<ToppageIncom> toppageIncomList = new ArrayList<>();
@@ -256,9 +298,111 @@ public class ToppageService extends BaseService implements IToppageService {
             model.setTotalIncom(0);
         } 
 
+        System.out.println("収入情報取得" + model.toString());
         return model;
     }
 
-    
-    
+    /**
+     * 消費情報取得
+     * @param model
+     * @param userId
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    private ToppageModel getConsumption(ToppageModel model, String userId, Date startDate, Date endDate){
+
+        // 消費情報取得
+        List<Consumption> consumptionList = getConsumptionRepository().getConsumption(userId, startDate, endDate);
+        List<ToppageConsumption> toppageConsumptionList = new ArrayList<>();
+
+        // Toppageに渡す消費情報のリストを作成
+        for (Consumption consumption: consumptionList) {
+            ToppageConsumption toppageConsumption = new ToppageConsumption();
+            toppageConsumption.setPrice(consumption.getConsumptionMoney());
+            toppageConsumption.setCategoryName(consumption.getCategory().getCategoryName());
+            toppageConsumptionList.add(toppageConsumption);
+        }
+        model.setConsumptionList(toppageConsumptionList);
+
+        // 消費合計値取得
+        try {
+            model.setTotalConsumption(getConsumptionRepository().getTotalConsumption(userId, startDate, endDate));
+        } catch (Exception e) {
+            model.setTotalConsumption(0);
+        }
+
+        return model;
+
+    }
+
+    /**
+     * 投資情報取得
+     * @param model
+     * @param userId
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    private ToppageModel getInvestment(ToppageModel model, String userId, Date startDate, Date endDate) {
+
+        // 投資情報取得
+        List<Investment> investments = getInvestmentRepository().getInvestment(userId, startDate, endDate);
+        List<ToppageInvestment> toppageInvestments = new ArrayList<>();
+
+        // Toppageに渡す投資情報のリストを作成
+        for (Investment investment: investments) {
+            ToppageInvestment toppageInvestment = new ToppageInvestment();
+            toppageInvestment.setPrice(investment.getInvestmentMoney());
+            toppageInvestment.setCategoryName(investment.getCategory().getCategoryName());
+            toppageInvestments.add(toppageInvestment);
+        }
+        model.setInvestmentList(toppageInvestments);
+
+        // 投資合計値取得
+        try {
+            model.setTotalInvestment(getInvestmentRepository().getTotalInvestment(userId, startDate, endDate));
+        } catch (Exception e) {
+            model.setTotalInvestment(0);
+        }
+
+        return model;
+    }
+
+    /**
+     * 自己投資情報取得
+     * @param model
+     * @param userId
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    private ToppageModel getSelfInvestment(ToppageModel model, String userId, Date startDate, Date endDate){
+        System.out.println("Service getSelfInvestment()");
+
+        // 自己投資情報取得
+        List<SelfInvestment> selfInvestments = getSelfInvestmentRepository().getSelfInvestment(userId, startDate, endDate);
+        List<ToppageSelfInvestment> toppageSelfInvestments = new ArrayList<>();
+
+        // Toppageに渡す自己投資情報のリストを作成
+        for (SelfInvestment selfInvestment: selfInvestments) {
+            ToppageSelfInvestment toppageSelfInvestment = new ToppageSelfInvestment();
+            toppageSelfInvestment.setPrice(selfInvestment.getInvestmentMoney());
+            toppageSelfInvestment.setCategoryName(selfInvestment.getCategory().getCategoryName());
+            toppageSelfInvestments.add(toppageSelfInvestment);
+        }
+        model.setSelfInvestmentList(toppageSelfInvestments);
+
+        // 自己投資合計値取得
+        try {
+            model.setTotalSelfInvestment(getSelfInvestmentRepository().getTotalSelfInvestment(userId, startDate, endDate));
+        } catch (AopInvocationException e) {
+            // 対象データが存在しない時は0を設定する
+            model.setTotalSelfInvestment(0);
+        }
+
+        System.out.println(model.toString());
+        return model;
+        
+    }
 }
