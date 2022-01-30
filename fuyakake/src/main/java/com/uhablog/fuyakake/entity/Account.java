@@ -1,6 +1,7 @@
 package com.uhablog.fuyakake.entity;
 
 import java.security.Timestamp;
+import java.sql.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,7 +30,7 @@ public class Account {
     /**
      * 資産額
      */
-    private int assetAmount;
+    private int assetAmmount;
 
     /**
      * 分類タイプ
@@ -45,7 +46,7 @@ public class Account {
     /**
      * 登録日
      */
-    private Timestamp createDate;
+    private Date createDate;
 
     /**
      * 登録者
@@ -55,7 +56,7 @@ public class Account {
     /**
      * 更新日
      */
-    private Timestamp updateDate;
+    private Date updateDate;
 
     /**
      * 更新者

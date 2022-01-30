@@ -53,6 +53,19 @@ public class ToppageService extends BaseService implements IToppageService {
         // 自己投資情報取得メソッド呼び出し
         model = getSelfInvestment(model, userId, startDate, endDate);
 
+        // 利益 = 収入 - 消費
+        model.setRevenue(model.getTotalIncom() - model.getTotalConsumption());
+
+        // 貯金 = 利益 - 投資
+        // TODO マイナスはあり得ない
+        model.setDeposit(model.getRevenue() - model.getTotalInvestment() - model.getTotalSelfInvestment());
+
+        // 口座情報取得
+        model.setAccountList(getAccountsRepository().getAccounts(userId));
+
+        // 合計資産額取得
+        model.setTotalAsset(getAccountsRepository().getTotalAsset(userId));
+
         return model;
     }
 

@@ -124,7 +124,7 @@
             <thead>
               <tr>
                 <th scope="col">利益</th>
-                <th scope="col">53,000</th>
+                <th scope="col" th:text="${model.revenue}"></th>
                 <th scope="col"></th>
               </tr>
             </thead>
@@ -132,40 +132,30 @@
               <tr>
                 <th scope="row"></th>
                 <td>投資</td>
-                <td>33,000</td>
+                <td th:text="${model.totalInvestment}"></td>
               </tr>
               <tr>
                 <th scope="row"></th>
                 <td>貯金</td>
-                <td>20,000</td>
+                <td th:text="${model.deposit}"></td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="col-6">
-          <table class="table">
+          <table id="AssetTable" class="table">
             <thead>
               <tr>
                 <th scope="col">保有資産</th>
-                <th scope="col">1,000,000円</th>
+                <th id="TotalAsset" scope="col" th:text="${model.totalAsset}"></th>
                 <th scope="col"><a href="#">保有資産閲覧</a></th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <th scope="row">現金</th>
-                <td>800,000</td>
-                <td>80%</td>
-              </tr>
-              <tr>
-                <th scope="row">投資信託</th>
-                <td>200,000円</td>
-                <td>20%</td>
-              </tr>
-              <tr>
-                <th scope="row">債権</th>
-                <td>100円</td>
-                <td>20%</td>
+            <tbody id="AssetTBody">
+              <tr th:each="element : ${model.accountList}">
+                <th scope="row">[[${element.accountName}]]</th>
+                <td>[[${element.assetAmmount}]]</td>
+                <td th:text="${element.assetAmmount} / ${model.totalAsset} * 100"></td>
               </tr>
             </tbody>
           </table>

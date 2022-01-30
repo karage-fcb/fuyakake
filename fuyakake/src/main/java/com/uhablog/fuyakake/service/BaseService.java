@@ -1,5 +1,6 @@
 package com.uhablog.fuyakake.service;
 
+import com.uhablog.fuyakake.repository.AccountsRepository;
 import com.uhablog.fuyakake.repository.BigCategoryRepository;
 import com.uhablog.fuyakake.repository.ConsumptionRepository;
 import com.uhablog.fuyakake.repository.IncomRepository;
@@ -49,4 +50,10 @@ public class BaseService{
      */
     @Autowired
     private BigCategoryRepository bigCategoryRepository;
+
+    /**
+     * 口座リポジトリ
+     */
+    @Autowired
+    private AccountsRepository accountsRepository;
 }

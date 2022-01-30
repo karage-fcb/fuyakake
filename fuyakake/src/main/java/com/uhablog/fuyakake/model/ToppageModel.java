@@ -2,6 +2,7 @@ package com.uhablog.fuyakake.model;
 
 import java.util.List;
 
+import com.uhablog.fuyakake.entity.Account;
 import com.uhablog.fuyakake.entity.dto.ToppageConsumption;
 import com.uhablog.fuyakake.entity.dto.ToppageIncom;
 import com.uhablog.fuyakake.entity.dto.ToppageInvestment;
@@ -51,4 +52,25 @@ public class ToppageModel {
      * 自己投資合計
      */
     private int totalSelfInvestment;
+
+    /**
+     * 利益
+     */
+    private int revenue;
+
+    /**
+     * 貯金
+     */
+    private int deposit;
+
+    /**
+     * 口座リスト
+     */
+    private List<Account> accountList;
+
+    /**
+     * 合計資産額
+     */
+    private int totalAsset;
+
 }
