@@ -54,4 +54,21 @@ public interface AccountsRepository extends JpaRepository<Account, Integer>{
         @Param("userId")String userId
     )throws AopInvocationException;
     
+    /**
+     * 全ての口座を取得する
+     * @param userId
+     * @return
+     */
+    @Query(value = ""
+        + " SELECT "
+        + "  * "
+        + " FROM "
+        + "  accounts "
+        + " WHERE "
+        + "  accounts.user_id = :userId "
+        + " AND "
+        + "  accounts.delete_flag = false "
+        , nativeQuery = true
+    )
+    public List<Account> getAllAccount(@Param("userId")String userId);
 }

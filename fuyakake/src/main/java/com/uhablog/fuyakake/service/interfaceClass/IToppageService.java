@@ -1,14 +1,12 @@
 package com.uhablog.fuyakake.service.interfaceClass;
 
 
-import java.util.List;
-
-import com.uhablog.fuyakake.entity.BigCategory;
 import com.uhablog.fuyakake.entity.form.ConsumptionForm;
 import com.uhablog.fuyakake.entity.form.IncomForm;
 import com.uhablog.fuyakake.entity.form.InvestmentForm;
 import com.uhablog.fuyakake.entity.form.SelfInvestmentFrom;
 import com.uhablog.fuyakake.model.CommitModel;
+import com.uhablog.fuyakake.model.ModalModel;
 import com.uhablog.fuyakake.model.ToppageModel;
 
 public interface IToppageService {
@@ -26,7 +24,26 @@ public interface IToppageService {
      * @param userId
      * @return
      */
-    public List<BigCategory> getCategory(String userId);
+    public ModalModel getConsumptionModal(String userId);
+
+    /**
+     * 収入情報入力時の口座・カテゴリ情報を取得する
+     * @param userId
+     * @return
+     */
+    public ModalModel getIncomModalModel(String userId);
+
+    /**
+     * 投資情報入力時の口座情報・カテゴリ情報を取得する
+     * @param userId
+     * @return
+     */
+    public ModalModel getInvestmentModelModal(String userId);
+
+    /**
+     * 自己投資入力時の口座・カテゴリ情報を取得する
+     */
+    public ModalModel getSelfInvestmentModalModel(String userId);
 
     /**
      * 消費情報を登録する

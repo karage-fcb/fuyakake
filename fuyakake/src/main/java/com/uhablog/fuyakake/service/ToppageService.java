@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
 
-import com.uhablog.fuyakake.entity.BigCategory;
 import com.uhablog.fuyakake.entity.Consumption;
 import com.uhablog.fuyakake.entity.Incom;
 import com.uhablog.fuyakake.entity.Investment;
@@ -18,6 +17,7 @@ import com.uhablog.fuyakake.entity.form.IncomForm;
 import com.uhablog.fuyakake.entity.form.InvestmentForm;
 import com.uhablog.fuyakake.entity.form.SelfInvestmentFrom;
 import com.uhablog.fuyakake.model.CommitModel;
+import com.uhablog.fuyakake.model.ModalModel;
 import com.uhablog.fuyakake.model.ToppageModel;
 import com.uhablog.fuyakake.service.interfaceClass.IToppageService;
 
@@ -73,8 +73,59 @@ public class ToppageService extends BaseService implements IToppageService {
      * カテゴリ情報を取得する
      */
     @Override
-    public List<BigCategory> getCategory(String userId) {
-        return getBigCategoryRepository().findAll();
+    public ModalModel getConsumptionModal(String userId) {
+
+        // モデル
+        ModalModel model = new ModalModel();
+
+        // カテゴリ情報取得
+        model.setCategoryList(getBigCategoryRepository().findAll());
+
+        // 口座情報取得
+        model.setAccountList(getAccountsRepository().getAllAccount(userId));
+
+        return model;
+    }
+
+    /**
+     * 収入情報入力時の口座・カテゴリ情報の取得
+     */
+    @Override
+    public ModalModel getIncomModalModel(String userId) {
+
+        // モデル
+        ModalModel model = new ModalModel();
+
+        // 口座情報取得
+        model.setAccountList(getAccountsRepository().getAllAccount(userId));
+        return model;
+    }
+
+    /**
+     * 投資情報入力時の口座情報・カテゴリ情報を取得する
+     */
+    @Override
+    public ModalModel getInvestmentModelModal(String userId) {
+        // モデル
+        ModalModel model = new ModalModel();
+
+        // 口座情報取得
+        model.setAccountList(getAccountsRepository().getAllAccount(userId));
+
+        return model;
+    }
+
+    /**
+     * 自己投資入力時の口座・カテゴリ情報を取得する
+     */
+    public ModalModel getSelfInvestmentModalModel(String userId) {
+        // モデル
+        ModalModel model = new ModalModel();
+
+        // 口座情報取得
+        model.setAccountList(getAccountsRepository().getAllAccount(userId));
+
+        return model;
     }
 
     /**

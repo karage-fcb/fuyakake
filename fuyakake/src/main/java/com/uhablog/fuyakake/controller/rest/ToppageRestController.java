@@ -1,13 +1,11 @@
 package com.uhablog.fuyakake.controller.rest;
 
-import java.util.List;
-
-import com.uhablog.fuyakake.entity.BigCategory;
 import com.uhablog.fuyakake.entity.form.ConsumptionForm;
 import com.uhablog.fuyakake.entity.form.IncomForm;
 import com.uhablog.fuyakake.entity.form.InvestmentForm;
 import com.uhablog.fuyakake.entity.form.SelfInvestmentFrom;
 import com.uhablog.fuyakake.model.CommitModel;
+import com.uhablog.fuyakake.model.ModalModel;
 import com.uhablog.fuyakake.model.ToppageModel;
 import com.uhablog.fuyakake.service.ToppageService;
 
@@ -64,10 +62,20 @@ public class ToppageRestController {
      * カテゴリ情報を取得する
      * @return
      */
-    @GetMapping("/get-category")
-    public List<BigCategory> getCategory() {
-        // カテゴリー情報を取得する
-        return service.getCategory(getLoginUserId());
+    @GetMapping("/show-consumption-modal")
+    public ModalModel getConsumptionCategory() {
+        // TODO カテゴリ情報と口座情報の返却
+
+        return service.getConsumptionModal(getLoginUserId());
+    }
+
+    /**
+     * 収入入力時のカテゴリ情報を取得する
+     */
+    @GetMapping("/show-incom-modal")
+    public ModalModel getIncomCategory() {
+
+        return service.getIncomModalModel(getLoginUserId());
     }
 
     /**

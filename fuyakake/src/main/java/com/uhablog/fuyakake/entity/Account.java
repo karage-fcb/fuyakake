@@ -1,6 +1,5 @@
 package com.uhablog.fuyakake.entity;
 
-import java.security.Timestamp;
 import java.sql.Date;
 
 import javax.persistence.Entity;

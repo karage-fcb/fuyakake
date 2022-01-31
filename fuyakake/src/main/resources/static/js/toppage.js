@@ -24,6 +24,21 @@ $(function () {
         // });
     });
 
+    // モーダルの収入タグ押下時処理
+    $('#IncomLink').on('click', function() {
+
+        $.get(
+            '/toppage-api/show-incom-modal'
+        ).done(function(data) {
+            // セレクトボックスの中身を全件削除
+            $('#IncomAccountInput > option').remove();
+            // categoriesの中の大項目をセレクトボックスに追加する
+            data.accountList.forEach((elm) => {
+                $('#IncomAccountInput').append($('<option>').html(elm.accountName).val(elm.accountId));
+            });
+        })
+    });
+
     // 消費情報保存ボタン押下時処理
     $('#ConsumptionSaveButton').on('click', function () {
         // 入力値取得
