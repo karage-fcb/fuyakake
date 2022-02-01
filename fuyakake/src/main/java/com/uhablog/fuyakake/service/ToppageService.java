@@ -118,6 +118,7 @@ public class ToppageService extends BaseService implements IToppageService {
     /**
      * 自己投資入力時の口座・カテゴリ情報を取得する
      */
+    @Override
     public ModalModel getSelfInvestmentModalModel(String userId) {
         // モデル
         ModalModel model = new ModalModel();

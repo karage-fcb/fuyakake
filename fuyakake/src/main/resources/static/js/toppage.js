@@ -10,18 +10,38 @@ $(function () {
 
     // 入力ボタン押下時処理
     $('#InputButton').on('click', function () {
-        $('#inputModal').modal('show');
-        // カテゴリ情報の取得がうまくいかないので、いったんコメントアウト
-        // $.get(
-        //     '/toppage-api/get-category'
-        // ).done(function (data) {
-        //     console.log(data);
 
-        //     // 入力モーダル表示
-        //     $('#inputModal').modal('show');
-        // }).fail(function () {
-        //     alert('カテゴリ情報取得失敗');
-        // });
+        // 口座・カテゴリ情報の取得
+        $.get(
+            '/toppage-api/show-consumption-modal'
+        ).done(function(data) {
+            // セレクトボックスの中身を全件削除
+            $('#ConsumptionAccountInput > option').remove();
+            // 口座情報をセレクトボックスに追加する
+            data.accountList.forEach((elm) => {
+                $('#ConsumptionAccountInput').append($('<option>').html(elm.accountName).val(elm.accountId));
+            });
+        });
+
+        // モーダル表示
+        $('#inputModal').modal('show');
+
+    });
+
+    // モーダルの消費タグ押下時処理
+    $('#ConsumptionLink').on('click', function() {
+
+        // 口座・カテゴリ情報の取得
+        $.get(
+            '/toppage-api/show-consumption-modal'
+        ).done(function(data) {
+            // セレクトボックスの中身を全件削除
+            $('#ConsumptionAccountInput > option').remove();
+            // 口座情報をセレクトボックスに追加する
+            data.accountList.forEach((elm) => {
+                $('#ConsumptionAccountInput').append($('<option>').html(elm.accountName).val(elm.accountId));
+            });
+        });
     });
 
     // モーダルの収入タグ押下時処理
@@ -32,11 +52,45 @@ $(function () {
         ).done(function(data) {
             // セレクトボックスの中身を全件削除
             $('#IncomAccountInput > option').remove();
-            // categoriesの中の大項目をセレクトボックスに追加する
+            // 口座情報をセレクトボックスに追加する
             data.accountList.forEach((elm) => {
                 $('#IncomAccountInput').append($('<option>').html(elm.accountName).val(elm.accountId));
             });
-        })
+        });
+    });
+
+    // モーダルの投資タグ押下時処理
+    $('#InvestmentLink').on('click', function() {
+
+        // 口座・カテゴリ情報の取得
+        $.get(
+            '/toppage-api/show-investment-modal'
+        ).done(function(data) {
+            // セレクトボックスの中身を全件削除
+            $('#InvestmentAccountInput > option').remove();
+
+            // 口座情報をセレクトボックスに追加する
+            data.accountList.forEach((elm) => {
+                $('#InvestmentAccountInput').append($('<option>').html(elm.accountName).val(elm.accountId));
+            });
+        });
+    });
+
+    // モーダルの自己投資タグ押下時処理
+    $('#SelfInvestmentLink').on('click', function() {
+
+        // 口座・カテゴリ情報の取得
+        $.get(
+            '/toppage-api/show-self-investment-modal'
+        ).done(function(data) {
+            // セレクトボックスの中身を全件削除
+            $('#SelfInvestmentAccountInput > option').remove();
+
+            // 口座情報をセレクトボックスに追加する
+            data.accountList.forEach((elm) => {
+                $('#SelfInvestmentAccountInput').append($('<option>').html(elm.accountName).val(elm.accountId));
+            });
+        });
     });
 
     // 消費情報保存ボタン押下時処理
@@ -90,7 +144,7 @@ $(function () {
             categoryId: middleCategoryId,
             memo: memo,
             date: date
-        }
+        };
 
         // リクエスト送信
         $.post(
@@ -124,7 +178,7 @@ $(function () {
             categoryId: middleCategoryId,
             memo: memo,
             date: date
-        }
+        };
 
         // リクエスト送信
         $.post(
@@ -157,7 +211,7 @@ $(function () {
             categoryId: middleCategoryId,
             memo: memo,
             date: date
-        }
+        };
 
         // リクエスト送信
         $.post(
@@ -196,7 +250,7 @@ function getConsumption() {
         console.log('消費情報取得失敗!');
     }).always(function () {
         console.log('消費情報取得処理終了');
-    })
+    });
 };
 
 // 収入情報取得

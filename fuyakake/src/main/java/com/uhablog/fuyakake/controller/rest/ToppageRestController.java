@@ -63,7 +63,7 @@ public class ToppageRestController {
      * @return
      */
     @GetMapping("/show-consumption-modal")
-    public ModalModel getConsumptionCategory() {
+    public ModalModel getConsumptionModal() {
         // TODO カテゴリ情報と口座情報の返却
 
         return service.getConsumptionModal(getLoginUserId());
@@ -73,9 +73,27 @@ public class ToppageRestController {
      * 収入入力時のカテゴリ情報を取得する
      */
     @GetMapping("/show-incom-modal")
-    public ModalModel getIncomCategory() {
+    public ModalModel getIncomModal() {
 
         return service.getIncomModalModel(getLoginUserId());
+    }
+
+    /**
+     * 投資情報入力時の口座・カテゴリを取得する
+     * @return
+     */
+    @GetMapping("/show-investment-modal")
+    public ModalModel getInvestmentModal() {
+        return service.getInvestmentModelModal(getLoginUserId());
+    }
+
+    /**
+     * 自己投資情報入力時の口座・カテゴリを取得する
+     * @return
+     */
+    @GetMapping("/show-self-investment-modal")
+    public ModalModel getSelfInvestmentModal() {
+        return service.getSelfInvestmentModalModel(getLoginUserId());
     }
 
     /**
