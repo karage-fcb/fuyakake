@@ -29,14 +29,15 @@ public class MiddleCategory {
     /**
      * 大カテゴリID
      */
-    private Integer bigCategoryId;
+    // private Integer bigCategoryId;
 
     /**
      * 大カテゴリID
      */
-    // @ManyToOne
-    // // @JoinColumn(name = "big_category_id", foreignKey = @ForeignKey(name="middle_category_master_big_category_id_fkey"))
-    // private BigCategory bigCategory;
+    @ManyToOne
+    // @JoinColumn(name = "big_category_id", foreignKey = @ForeignKey(name="middle_category_master_big_category_id_fkey"))
+    @JoinColumn(name = "big_category_id")
+    private BigCategory bigCategory;
 
     /**
      * カテゴリ名

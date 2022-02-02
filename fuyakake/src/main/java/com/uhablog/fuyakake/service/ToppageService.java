@@ -78,8 +78,11 @@ public class ToppageService extends BaseService implements IToppageService {
         // モデル
         ModalModel model = new ModalModel();
 
+        System.out.println("ToppageService getConsumptionModal カテゴリ情報取得");
         // カテゴリ情報取得
         model.setCategoryList(getBigCategoryRepository().findAll());
+        System.out.println("ToppageService getConsumptionModal カテゴリ情報取得終了");
+        // System.out.println(model.getCategoryList().toString());
 
         // 口座情報取得
         model.setAccountList(getAccountsRepository().getAllAccount(userId));

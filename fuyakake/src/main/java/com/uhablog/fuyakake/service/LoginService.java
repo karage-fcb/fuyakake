@@ -11,7 +11,6 @@ import com.uhablog.fuyakake.service.interfaceClass.ILoginService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-// import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service

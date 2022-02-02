@@ -38,7 +38,8 @@ public interface BigCategoryRepository extends JpaRepository<BigCategory, Intege
         + " AND "
         + "  bcm.category_id != 2 "
         + " AND "
-        + "  bcm.category_id != 3 "
+        + "  bcm.category_id != 3 ",
+        nativeQuery = true
     )
     public List<BigCategory> getBigCategory(@Param("userId")String userId);
 }
