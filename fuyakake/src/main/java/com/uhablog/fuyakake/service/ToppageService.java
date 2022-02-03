@@ -80,7 +80,7 @@ public class ToppageService extends BaseService implements IToppageService {
 
         System.out.println("ToppageService getConsumptionModal カテゴリ情報取得");
         // カテゴリ情報取得
-        model.setCategoryList(getBigCategoryRepository().findAll());
+        // model.setCategoryList(getBigCategoryRepository().findAll());
         System.out.println("ToppageService getConsumptionModal カテゴリ情報取得終了");
         // System.out.println(model.getCategoryList().toString());
 
@@ -188,7 +188,6 @@ public class ToppageService extends BaseService implements IToppageService {
     @Override
     public CommitModel insertIncom(String userId, IncomForm incom) {
 
-        System.out.println("収入情報入力" + incom.toString());
         // 収入情報登録
         int ret = getIncomRepository().insertIncom(
             incom.getMoney(),
@@ -199,11 +198,15 @@ public class ToppageService extends BaseService implements IToppageService {
             incom.getDate()
         );
         CommitModel commitModel = new CommitModel();
+        // TODO 動的日付
+        ToppageModel toppageModel = getIncom(new ToppageModel(), userId, Date.valueOf("2022-01-01"), Date.valueOf("2022-01-31"));
 
         // 登録に成功したかどうか判定する
         if(ret == 1) {
             commitModel.setError(false);
             commitModel.setMessage("収入情報登録成功!");
+            // commitModel.setBalanceList(toppageModel.getIncomInfoList());
+            commitModel.setAccounts(getAccountsRepository().getAccounts(userId));
         } else {
             commitModel.setError(true);
             commitModel.setMessage("収入情報登録失敗!");
