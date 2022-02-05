@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
 
+import com.uhablog.fuyakake.entity.Account;
 import com.uhablog.fuyakake.entity.Consumption;
 import com.uhablog.fuyakake.entity.Incom;
 import com.uhablog.fuyakake.entity.Investment;
@@ -23,6 +24,7 @@ import com.uhablog.fuyakake.service.interfaceClass.IToppageService;
 
 import org.springframework.aop.AopInvocationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ToppageService extends BaseService implements IToppageService {
@@ -136,9 +138,16 @@ public class ToppageService extends BaseService implements IToppageService {
      * 消費入力
      */
     @Override
+    @Transactional
     public CommitModel insertConsumption(String userId, ConsumptionForm consumptionForm) {
 
-        System.out.println("insertConsumptionメソッド呼び出されました");
+        // 返却用モデル
+        CommitModel commitModel = new CommitModel();
+        commitModel.setError(false);
+
+        // トップページモデル
+        ToppageModel toppageModel = new ToppageModel();
+
         // 消費情報登録
         int ret = getConsumptionRepository().insertConsumption(
             consumptionForm.getMoney(),
@@ -148,16 +157,42 @@ public class ToppageService extends BaseService implements IToppageService {
             consumptionForm.getMemo(),
             consumptionForm.getDate()
         );
-        CommitModel commitModel = new CommitModel();
 
         // 登録に成功した時
         if (ret == 1) {
-            commitModel.setError(false);
-            commitModel.setMessage("消費情報登録成功!");
+            // TODO 動的日付
+            // 消費情報
+            toppageModel = getConsumption(toppageModel, userId, Date.valueOf("2022-01-01"), Date.valueOf("2022-01-31"));
         } else {
             commitModel.setError(true);
             commitModel.setMessage("消費情報登録失敗!");
+            return commitModel;
         }
+
+        // 口座がマイナスにならないための処理
+        // Account account = getAccountsRepository().getById(consumptionForm.getAccountId());
+
+        // if (account.getAssetAmount() < consumptionForm.getMoney()) {
+        //     commitModel.setError(true);
+        //     commitModel.setMessage("消費金額が多すぎて口座がマイナスになってしまいます。消費情報を登録できません。");
+        //     return commitModel;
+        // }
+
+        // 消費情報を口座に反映
+        ret = getAccountsRepository().updateConsumptionAmount(consumptionForm.getAccountId(), consumptionForm.getMoney());
+
+        // 消費情報の反映に成功
+        if(ret == 1) {
+            toppageModel.setAccountList(getAccountsRepository().getAccounts(userId));
+            toppageModel.setTotalAsset(getAccountsRepository().getTotalAsset(userId));
+        } else {
+            commitModel.setError(true);
+            commitModel.setMessage("口座情報に反映失敗");
+            return commitModel;
+        }
+
+        commitModel.setMessage("消費情報登録成功!");
+        commitModel.setToppageModel(toppageModel);
         return commitModel;
     }
 
@@ -186,7 +221,15 @@ public class ToppageService extends BaseService implements IToppageService {
      * 収入情報入力
      */
     @Override
+    @Transactional
     public CommitModel insertIncom(String userId, IncomForm incom) {
+
+        // 返却用モデル
+        CommitModel commitModel = new CommitModel();
+        commitModel.setError(false);
+
+        // トップページモデル
+        ToppageModel toppageModel = new ToppageModel();
 
         // 収入情報登録
         int ret = getIncomRepository().insertIncom(
@@ -197,20 +240,33 @@ public class ToppageService extends BaseService implements IToppageService {
             incom.getMemo(),
             incom.getDate()
         );
-        CommitModel commitModel = new CommitModel();
-        // TODO 動的日付
-        ToppageModel toppageModel = getIncom(new ToppageModel(), userId, Date.valueOf("2022-01-01"), Date.valueOf("2022-01-31"));
 
         // 登録に成功したかどうか判定する
         if(ret == 1) {
-            commitModel.setError(false);
-            commitModel.setMessage("収入情報登録成功!");
-            // commitModel.setBalanceList(toppageModel.getIncomInfoList());
-            commitModel.setAccounts(getAccountsRepository().getAccounts(userId));
+            // TODO 動的日付
+            // 収入情報取得
+            toppageModel = getIncom(toppageModel, userId, Date.valueOf("2022-01-01"), Date.valueOf("2022-01-31"));
         } else {
             commitModel.setError(true);
             commitModel.setMessage("収入情報登録失敗!");
+            return commitModel;
         }
+
+        // 収入情報を口座に反映
+        ret = getAccountsRepository().updateIncomAmount(incom.getAccountId(), incom.getMoney());
+
+        // 口座情報の反映に成功
+        if(ret == 1) {
+            toppageModel.setAccountList(getAccountsRepository().getAccounts(userId));
+            toppageModel.setTotalAsset(getAccountsRepository().getTotalAsset(userId));
+        } else {
+            commitModel.setError(true);
+            commitModel.setMessage("口座情報に反映失敗!");
+            return commitModel;
+        }
+
+        commitModel.setMessage("収入情報登録成功!");
+        commitModel.setToppageModel(toppageModel);
         return commitModel;
     }
 

@@ -13,6 +13,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Repository
 public interface ConsumptionRepository extends JpaRepository<Consumption, Integer> {
 
@@ -87,7 +88,6 @@ public interface ConsumptionRepository extends JpaRepository<Consumption, Intege
      * @param date
      * @return
      */
-    @Transactional
     @Modifying(clearAutomatically = true)
     @Query(value = ""
         + " INSERT INTO consumption("

@@ -154,8 +154,8 @@
             <tbody id="AssetTBody">
               <tr th:each="element : ${model.accountList}">
                 <th scope="row">[[${element.accountName}]]</th>
-                <td>[[${element.assetAmmount}]]</td>
-                <td th:text="${element.assetAmmount} / ${model.totalAsset} * 100"></td>
+                <td>[[${element.assetAmount}]]</td>
+                <td th:text="${element.assetAmount} / ${model.totalAsset} * 100"></td>
               </tr>
             </tbody>
           </table>

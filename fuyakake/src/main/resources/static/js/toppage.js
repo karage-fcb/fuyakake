@@ -152,7 +152,30 @@ $(function () {
             params
         ).done(function(data) {
             console.log(data);
-            getIncom();
+            if (data.isError){
+                alert("収入情報登録失敗")
+            } else if (!data.isError) {
+                // 収入合計金額更新
+                $('#TotalIncom').text(data.toppageModel.totalIncom);
+
+                // トップページの収入情報書き換え
+                $('#IncomTable').find('tbody tr').remove();
+                data.toppageModel.incomInfoList.forEach(function (element) {
+                    console.log(element);
+                    html = '<tr><th scope="row"></th><td>' + element.categoryName + '</td><td>' + element.price + '</td></tr>';
+                    $('#IncomTable').append(html);
+                });
+
+                // 資産合計金額更新
+                $('#TotalAsset').text(data.toppageModel.totalAsset);
+
+                // 口座情報書き換え
+                $('#AssetTable').find('tbody tr').remove();
+                data.toppageModel.accountList.forEach(function (element) {
+                    html = '<tr><th scope="row">' + element.accountName + '</th><td>' + element.assetAmount + '</td><td>' + element.assetAmount / data.toppageModel.totalAsset * 100 + '%</td></tr>';
+                    $('#AssetTable').append(html);
+                });
+            }
             alert(data.message);
         }).fail(function() {
             console.log('Post失敗');
