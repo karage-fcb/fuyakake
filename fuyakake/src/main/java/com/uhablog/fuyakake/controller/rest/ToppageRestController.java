@@ -1,5 +1,6 @@
 package com.uhablog.fuyakake.controller.rest;
 
+import com.uhablog.fuyakake.common.FuyakakeException;
 import com.uhablog.fuyakake.entity.form.ConsumptionForm;
 import com.uhablog.fuyakake.entity.form.IncomForm;
 import com.uhablog.fuyakake.entity.form.InvestmentForm;
@@ -41,7 +42,12 @@ public class ToppageRestController {
         System.out.println(consumption.toString());
 
         // 消費情報登録
-        commitModel = service.insertConsumption(getLoginUserId(), consumption);
+        try {
+            commitModel = service.insertConsumption(getLoginUserId(), consumption);
+        } catch (FuyakakeException e) {
+            commitModel.setError(true);
+            commitModel.setMessage(e.getMessage());
+        }
 
         return commitModel;
     }
@@ -185,4 +191,8 @@ public class ToppageRestController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getName();
     }
+
+    /**
+     * 例外発生時の処理
+     */
 }

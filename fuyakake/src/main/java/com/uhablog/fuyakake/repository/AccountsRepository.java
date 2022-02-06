@@ -84,8 +84,8 @@ public interface AccountsRepository extends JpaRepository<Account, Integer>{
         + "  accounts.account_id = :accountId "
         ,nativeQuery = true
     )
-    public int getAssetAmount(
-        @Param("accountId")String accountId
+    public Account getOneAccount(
+        @Param("accountId")int accountId
     );
 
     /**

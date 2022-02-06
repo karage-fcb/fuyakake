@@ -118,7 +118,25 @@ $(function () {
             params
         ).done(function (data) {
             console.log(data);
-            getConsumption();
+            // getConsumption();
+            console.log(data.error);
+
+            if (data.error) {
+                alert(data.message);
+            } else if(!data.error) {
+                // 消費合計金額更新
+                $('#TotalConsumption').text(data.toppageModel.totalConsumption);
+
+                // トップページの消費情報書き換え
+                $('#ConsumptionTable').find('tbody tr').remove();
+                data.toppageModel.consumptionList.forEach(function (element) {
+                    console.log(element);
+                    html = '<tr><th scope="row"></th><td>' + element.categoryName + '</td><td>' + element.price + '</td></tr>';
+                    $('#ConsumptionTable').append(html);
+                });
+
+                accountInfoRewriting(data.toppageModel.totalAsset, data.toppageModel.accountList);
+            }
         }).fail(function () {
             console.log('Post失敗!!');
         }).always(function () {
@@ -152,9 +170,9 @@ $(function () {
             params
         ).done(function(data) {
             console.log(data);
-            if (data.isError){
-                alert("収入情報登録失敗")
-            } else if (!data.isError) {
+            if (data.error){
+                alert(data.message);
+            } else if (!data.error) {
                 // 収入合計金額更新
                 $('#TotalIncom').text(data.toppageModel.totalIncom);
 
@@ -166,15 +184,7 @@ $(function () {
                     $('#IncomTable').append(html);
                 });
 
-                // 資産合計金額更新
-                $('#TotalAsset').text(data.toppageModel.totalAsset);
-
-                // 口座情報書き換え
-                $('#AssetTable').find('tbody tr').remove();
-                data.toppageModel.accountList.forEach(function (element) {
-                    html = '<tr><th scope="row">' + element.accountName + '</th><td>' + element.assetAmount + '</td><td>' + element.assetAmount / data.toppageModel.totalAsset * 100 + '%</td></tr>';
-                    $('#AssetTable').append(html);
-                });
+                accountInfoRewriting(data.toppageModel.totalAsset, data.toppageModel.accountList);
             }
             alert(data.message);
         }).fail(function() {
@@ -250,6 +260,22 @@ $(function () {
         });
     });
 });
+
+// 口座情報の書き換え
+function accountInfoRewriting(totalAsset, accountList) {
+    // 資産合計金額更新
+    $('#TotalAsset').text(totalAsset);
+
+    console.log(accountList);
+    console.log(totalAsset);
+
+    // 口座情報書き換え
+    $('#AssetTable').find('tbody tr').remove();
+    accountList.forEach(function (element) {
+        html = '<tr><th scope="row">' + element.accountName + '</th><td>' + element.assetAmount + '</td><td>' + element.assetAmount / totalAsset * 100 + '%</td></tr>';
+        $('#AssetTable').append(html);
+    });
+};
 
 // 消費情報取得
 function getConsumption() {

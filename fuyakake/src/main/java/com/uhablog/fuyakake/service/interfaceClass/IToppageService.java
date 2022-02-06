@@ -1,6 +1,7 @@
 package com.uhablog.fuyakake.service.interfaceClass;
 
 
+import com.uhablog.fuyakake.common.FuyakakeException;
 import com.uhablog.fuyakake.entity.form.ConsumptionForm;
 import com.uhablog.fuyakake.entity.form.IncomForm;
 import com.uhablog.fuyakake.entity.form.InvestmentForm;
@@ -51,7 +52,7 @@ public interface IToppageService {
      * @param consumption
      * @return
      */
-    public CommitModel insertConsumption(String userId, ConsumptionForm consumption); 
+    public CommitModel insertConsumption(String userId, ConsumptionForm consumption) throws FuyakakeException; 
 
     /**
      * 消費情報を取得する

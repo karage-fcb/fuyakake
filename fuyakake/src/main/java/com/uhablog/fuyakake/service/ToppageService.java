@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
 
+import com.uhablog.fuyakake.common.FuyakakeException;
 import com.uhablog.fuyakake.entity.Account;
 import com.uhablog.fuyakake.entity.Consumption;
 import com.uhablog.fuyakake.entity.Incom;
@@ -138,8 +139,9 @@ public class ToppageService extends BaseService implements IToppageService {
      * 消費入力
      */
     @Override
-    @Transactional
-    public CommitModel insertConsumption(String userId, ConsumptionForm consumptionForm) {
+    @Transactional(rollbackFor = Exception.class)
+    public CommitModel insertConsumption(String userId, ConsumptionForm consumptionForm) 
+        throws FuyakakeException{
 
         // 返却用モデル
         CommitModel commitModel = new CommitModel();
@@ -170,13 +172,11 @@ public class ToppageService extends BaseService implements IToppageService {
         }
 
         // 口座がマイナスにならないための処理
-        // Account account = getAccountsRepository().getById(consumptionForm.getAccountId());
+        Account account = getAccountsRepository().getOneAccount(consumptionForm.getAccountId());
 
-        // if (account.getAssetAmount() < consumptionForm.getMoney()) {
-        //     commitModel.setError(true);
-        //     commitModel.setMessage("消費金額が多すぎて口座がマイナスになってしまいます。消費情報を登録できません。");
-        //     return commitModel;
-        // }
+        if (account.getAssetAmount() < consumptionForm.getMoney()) {
+            throw new FuyakakeException("消費金額が多すぎて口座がマイナスになってしまいます。消費情報を登録できません。");
+        }
 
         // 消費情報を口座に反映
         ret = getAccountsRepository().updateConsumptionAmount(consumptionForm.getAccountId(), consumptionForm.getMoney());
@@ -221,7 +221,7 @@ public class ToppageService extends BaseService implements IToppageService {
      * 収入情報入力
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public CommitModel insertIncom(String userId, IncomForm incom) {
 
         // 返却用モデル
