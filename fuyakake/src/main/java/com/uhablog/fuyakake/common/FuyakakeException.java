@@ -1,7 +1,5 @@
 package com.uhablog.fuyakake.common;
 
-import lombok.Data;
-
 /**
  * 自作例外クラス
  */

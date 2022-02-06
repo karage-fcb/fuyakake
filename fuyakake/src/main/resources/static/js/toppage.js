@@ -1,3 +1,13 @@
+const constant = {
+    Consumption: 'Consumption',
+    Incom: 'Incom',
+    Investment: 'Investment',
+    SelfInvestment: 'SelfInvestment',
+    url: {
+        api: '/toppage-api'
+    }
+}
+
 $(function () {
     console.log('jQuery 読み込み完了');
 
@@ -13,14 +23,9 @@ $(function () {
 
         // 口座・カテゴリ情報の取得
         $.get(
-            '/toppage-api/show-consumption-modal'
+            constant.url.api + '/show-consumption-modal'
         ).done(function(data) {
-            // セレクトボックスの中身を全件削除
-            $('#ConsumptionAccountInput > option').remove();
-            // 口座情報をセレクトボックスに追加する
-            data.accountList.forEach((elm) => {
-                $('#ConsumptionAccountInput').append($('<option>').html(elm.accountName).val(elm.accountId));
-            });
+            rewriteAccountSelectBox(constant.Consumption, data.accountList);
         });
 
         // モーダル表示
@@ -29,18 +34,13 @@ $(function () {
     });
 
     // モーダルの消費タグ押下時処理
-    $('#ConsumptionLink').on('click', function() {
+    $('#' + constant.Consumption + 'Link').on('click', function() {
 
         // 口座・カテゴリ情報の取得
         $.get(
-            '/toppage-api/show-consumption-modal'
+            constant.url.api + '/show-consumption-modal'
         ).done(function(data) {
-            // セレクトボックスの中身を全件削除
-            $('#ConsumptionAccountInput > option').remove();
-            // 口座情報をセレクトボックスに追加する
-            data.accountList.forEach((elm) => {
-                $('#ConsumptionAccountInput').append($('<option>').html(elm.accountName).val(elm.accountId));
-            });
+            rewriteAccountSelectBox(constant.Consumption, data.accountList);
         });
     });
 
@@ -48,14 +48,10 @@ $(function () {
     $('#IncomLink').on('click', function() {
 
         $.get(
-            '/toppage-api/show-incom-modal'
+            constant.url.api + '/show-incom-modal'
         ).done(function(data) {
-            // セレクトボックスの中身を全件削除
-            $('#IncomAccountInput > option').remove();
-            // 口座情報をセレクトボックスに追加する
-            data.accountList.forEach((elm) => {
-                $('#IncomAccountInput').append($('<option>').html(elm.accountName).val(elm.accountId));
-            });
+            // 口座のセレクトボックス書き換え
+            rewriteAccountSelectBox(constant.Incom, data.accountList);
         });
     });
 
@@ -64,15 +60,10 @@ $(function () {
 
         // 口座・カテゴリ情報の取得
         $.get(
-            '/toppage-api/show-investment-modal'
+            constant.url.api + '/show-investment-modal'
         ).done(function(data) {
-            // セレクトボックスの中身を全件削除
-            $('#InvestmentAccountInput > option').remove();
-
-            // 口座情報をセレクトボックスに追加する
-            data.accountList.forEach((elm) => {
-                $('#InvestmentAccountInput').append($('<option>').html(elm.accountName).val(elm.accountId));
-            });
+            // 口座のセレクトボックス書き換え
+            rewriteAccountSelectBox(constant.Investment, data.accountList);
         });
     });
 
@@ -81,27 +72,22 @@ $(function () {
 
         // 口座・カテゴリ情報の取得
         $.get(
-            '/toppage-api/show-self-investment-modal'
+            constant.url.api + '/show-self-investment-modal'
         ).done(function(data) {
-            // セレクトボックスの中身を全件削除
-            $('#SelfInvestmentAccountInput > option').remove();
-
-            // 口座情報をセレクトボックスに追加する
-            data.accountList.forEach((elm) => {
-                $('#SelfInvestmentAccountInput').append($('<option>').html(elm.accountName).val(elm.accountId));
-            });
+            // 口座のセレクトボックス書き換え
+            rewriteAccountSelectBox(constant.SelfInvestment, data.accountList);
         });
     });
 
     // 消費情報保存ボタン押下時処理
-    $('#ConsumptionSaveButton').on('click', function () {
+    $('#' + constant.Consumption + 'SaveButton').on('click', function () {
         // 入力値取得
-        const date = $('#ConsumptionDateInput').val();
-        const money = $('#ConsumptionMoneyInput').val();
-        const accountId = $('#ConsumptionAccountInput').val();
-        const bigCategoryId = $('#ConsumptionBigCategoryInput').val();
-        const middleCategoryId = $('#ConsumptionMiddleCategoryInput').val();
-        const memo = $('#ConsumptionMemoTextarea').val();
+        const date = $('#' + constant.Consumption + 'DateInput').val();
+        const money = $('#' + constant.Consumption + 'MoneyInput').val();
+        const accountId = $('#' + constant.Consumption + 'AccountInput').val();
+        const bigCategoryId = $('#' + constant.Consumption + 'BigCategoryInput').val();
+        const middleCategoryId = $('#' + constant.Consumption + 'MiddleCategoryInput').val();
+        const memo = $('#' + constant.Consumption + 'MemoTextarea').val();
 
         // パラメータ構築
         const params = {
@@ -114,7 +100,7 @@ $(function () {
 
         // リクエスト送信
         $.post(
-            '/toppage-api/insert-consumption',
+            constant.url.api + '/insert-consumption',
             params
         ).done(function (data) {
             console.log(data);
@@ -124,17 +110,10 @@ $(function () {
             if (data.error) {
                 alert(data.message);
             } else if(!data.error) {
-                // 消費合計金額更新
-                $('#TotalConsumption').text(data.toppageModel.totalConsumption);
+                // 消費情報書き換え
+                rewriteBalanceInfo(constant.Consumption, data.toppageModel.totalConsumption, data.toppageModel.consumptionList);
 
-                // トップページの消費情報書き換え
-                $('#ConsumptionTable').find('tbody tr').remove();
-                data.toppageModel.consumptionList.forEach(function (element) {
-                    console.log(element);
-                    html = '<tr><th scope="row"></th><td>' + element.categoryName + '</td><td>' + element.price + '</td></tr>';
-                    $('#ConsumptionTable').append(html);
-                });
-
+                // 口座情報書き換え
                 accountInfoRewriting(data.toppageModel.totalAsset, data.toppageModel.accountList);
             }
         }).fail(function () {
@@ -166,24 +145,17 @@ $(function () {
 
         // リクエスト送信
         $.post(
-            '/toppage-api/insert-incom',
+            constant.url.api + '/insert-incom',
             params
         ).done(function(data) {
             console.log(data);
             if (data.error){
                 alert(data.message);
             } else if (!data.error) {
-                // 収入合計金額更新
-                $('#TotalIncom').text(data.toppageModel.totalIncom);
+                // 収入情報書き換え
+                rewriteBalanceInfo(constant.Incom, data.toppageModel.totalIncom, data.toppageModel.incomInfoList);
 
-                // トップページの収入情報書き換え
-                $('#IncomTable').find('tbody tr').remove();
-                data.toppageModel.incomInfoList.forEach(function (element) {
-                    console.log(element);
-                    html = '<tr><th scope="row"></th><td>' + element.categoryName + '</td><td>' + element.price + '</td></tr>';
-                    $('#IncomTable').append(html);
-                });
-
+                // 口座情報書き換え
                 accountInfoRewriting(data.toppageModel.totalAsset, data.toppageModel.accountList);
             }
             alert(data.message);
@@ -215,7 +187,7 @@ $(function () {
 
         // リクエスト送信
         $.post(
-            '/toppage-api/insert-investment',
+            constant.url.api + '/insert-investment',
             params
         ).done(function(data) {
             getInvestment();
@@ -248,7 +220,7 @@ $(function () {
 
         // リクエスト送信
         $.post(
-            '/toppage-api/insert-self-investment',
+            constant.url.api + '/insert-self-investment',
             params
         ).done(function(data) {
             getSelfInvestment();
@@ -261,7 +233,26 @@ $(function () {
     });
 });
 
-// 口座情報の書き換え
+function rewriteBalanceInfo(balance, totalMoney, balanceList) {
+
+    // 合計金額更新
+    $('#Total' + balance).text(totalMoney);
+
+    // トップページの情報書き換え
+    $('#' + balance + 'Table').find('tbody tr').remove();
+    balanceList.forEach(function (element) {
+        console.log(element);
+        html = '<tr><th scope="row"></th><td>' + element.categoryName + '</td><td>' + element.price + '</td></tr>';
+        $('#' + balance + 'Table').append(html);
+    });
+}
+
+/**
+ * トップページ口座情報の書き換え
+ * 
+ * @param {*} totalAsset  合計資産
+ * @param {*} accountList 口座リスト
+ */
 function accountInfoRewriting(totalAsset, accountList) {
     // 資産合計金額更新
     $('#TotalAsset').text(totalAsset);
@@ -277,10 +268,25 @@ function accountInfoRewriting(totalAsset, accountList) {
     });
 };
 
+/**
+ * モーダルの口座のセレクトボックスを書き換え
+ * @param {*} balance     収支種類
+ * @param {*} accountList 口座リスト
+ */
+function rewriteAccountSelectBox(balance, accountList) {
+
+    // セレクトボックスの中身を全件削除
+    $('#' + balance + 'AccountInput > option').remove();
+    // 口座情報をセレクトボックスに追加する
+    accountList.forEach((elm) => {
+        $('#' + balance + 'AccountInput').append($('<option>').html(elm.accountName).val(elm.accountId));
+    });
+};
+
 // 消費情報取得
 function getConsumption() {
     $.get(
-        '/toppage-api/get-consumption'
+        constant.url.api + '/get-consumption'
     ).done(function (data) {
         console.log('消費情報取得成功!');
         console.log(data);
@@ -289,11 +295,11 @@ function getConsumption() {
         $('#TotalConsumption').text(data.totalConsumption);
 
         // トップページの消費情報書き換え
-        $('#ConsumptionTable').find('tbody tr').remove();
+        $('#' + constant.Consumption + 'Table').find('tbody tr').remove();
         data.consumptionList.forEach(function (element) {
             console.log(element);
             html = '<tr><th scope="row"></th><td>' + element.categoryName + '</td><td>' + element.price + '</td></tr>';
-            $('#ConsumptionTable').append(html);
+            $('#' + constant.Consumption + 'Table').append(html);
         });
     }).fail(function () {
         console.log('消費情報取得失敗!');
@@ -305,7 +311,7 @@ function getConsumption() {
 // 収入情報取得
 function getIncom() {
     $.get(
-        '/toppage-api/get-incom'
+        constant.url.api + '/get-incom'
     ).done(function (data) {
         console.log('収入情報取得成功!');
         console.log(data);
@@ -330,7 +336,7 @@ function getIncom() {
 // 投資情報取得
 function getInvestment() {
     $.get(
-        '/toppage-api/get-investment'
+        constant.url.api + '/get-investment'
     ).done(function(data) {
         console.log('投資情報取得成功!');
 
@@ -354,7 +360,7 @@ function getInvestment() {
 // 自己投資情報取得
 function getSelfInvestment() {
     $.get(
-        '/toppage-api/get-self-investment'
+        constant.url.api + '/get-self-investment'
     ).done(function(data) {
         console.log('自己投資情報取得成功!');
         console.log(data);
