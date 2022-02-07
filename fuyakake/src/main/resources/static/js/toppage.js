@@ -89,6 +89,15 @@ $(function () {
         const middleCategoryId = $('#' + constant.Consumption + 'MiddleCategoryInput').val();
         const memo = $('#' + constant.Consumption + 'MemoTextarea').val();
 
+        // 入力値チェック
+        const msg = checkInput(constant.Consumption);
+
+        // 入力値でアウトだったら
+        if (msg != '') {
+            alert(msg);
+            return;
+        }
+
         // パラメータ構築
         const params = {
             money: money,
@@ -282,6 +291,32 @@ function rewriteAccountSelectBox(balance, accountList) {
         $('#' + balance + 'AccountInput').append($('<option>').html(elm.accountName).val(elm.accountId));
     });
 };
+
+/**
+ * 日付と金額の入力値チェック
+ * @param {} balance 
+ * @returns 
+ */
+function checkInput(balance) {
+
+    let msg = '';
+
+    // 日付の入力値チェック
+    const date = $('#' + balance + 'DateInput').val();
+    if (date == '') {
+        msg = '日付が未入力です';
+        return msg;
+    }
+
+    // 金額の入力値チェック
+    const money = $('#' + balance + 'MoneyInput').val();
+    if(money == '') {
+        msg = '金額が未入力です';
+        return msg;
+    }
+
+    return msg;
+}
 
 // 消費情報取得
 function getConsumption() {
