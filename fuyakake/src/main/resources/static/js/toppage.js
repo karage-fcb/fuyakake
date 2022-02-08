@@ -81,13 +81,6 @@ $(function () {
 
     // 消費情報保存ボタン押下時処理
     $('#' + constant.Consumption + 'SaveButton').on('click', function () {
-        // 入力値取得
-        const date = $('#' + constant.Consumption + 'DateInput').val();
-        const money = $('#' + constant.Consumption + 'MoneyInput').val();
-        const accountId = $('#' + constant.Consumption + 'AccountInput').val();
-        const bigCategoryId = $('#' + constant.Consumption + 'BigCategoryInput').val();
-        const middleCategoryId = $('#' + constant.Consumption + 'MiddleCategoryInput').val();
-        const memo = $('#' + constant.Consumption + 'MemoTextarea').val();
 
         // 入力値チェック
         const msg = checkInput(constant.Consumption);
@@ -97,6 +90,14 @@ $(function () {
             alert(msg);
             return;
         }
+
+        // 入力値取得
+        const date = $('#' + constant.Consumption + 'DateInput').val();
+        const money = $('#' + constant.Consumption + 'MoneyInput').val();
+        const accountId = $('#' + constant.Consumption + 'AccountInput').val();
+        const bigCategoryId = $('#' + constant.Consumption + 'BigCategoryInput').val();
+        const middleCategoryId = $('#' + constant.Consumption + 'MiddleCategoryInput').val();
+        const memo = $('#' + constant.Consumption + 'MemoTextarea').val();
 
         // パラメータ構築
         const params = {
@@ -112,10 +113,8 @@ $(function () {
             constant.url.api + '/insert-consumption',
             params
         ).done(function (data) {
-            console.log(data);
-            // getConsumption();
-            console.log(data.error);
 
+            // 結果がエラーの時
             if (data.error) {
                 alert(data.message);
             } else if(!data.error) {
@@ -134,14 +133,23 @@ $(function () {
     });
 
     // 収入情報保存ボタン押下時処理
-    $('#IncomSaveButton').on('click', function() {
+    $('#' + constant.Incom + 'SaveButton').on('click', function() {
+
+        // 入力値チェック
+        const msg = checkInput(constant.Incom);
+
+        // 入力値チェックでアウトだったらエラーメッセージ出して終了
+        if (msg != '') {
+            alert(msg);
+            return;
+        }
 
         // 入力値取得
-        const date = $('#IncomDateInput').val();
-        const money = $('#IncomMoneyInput').val();
-        const accountId = $('#IncomAccountInput').val();
-        const middleCategoryId = $('#IncomMiddleCategoryInput').val();
-        const memo = $('#IncomMemotextarea').val();
+        const date = $('#' + constant.Incom + 'DateInput').val();
+        const money = $('#' + constant.Incom + 'MoneyInput').val();
+        const accountId = $('#' + constant.Incom + 'AccountInput').val();
+        const middleCategoryId = $('#' + constant.Incom + 'MiddleCategoryInput').val();
+        const memo = $('#' + constant.Incom + 'Memotextarea').val();
 
         // パラメータ構築
         const params = {
@@ -176,14 +184,23 @@ $(function () {
     });
 
     // 投資情報保存ボタン押下時処理
-    $('#InvestmentSaveButton').on('click', function() {
+    $('#' + constant.Investment + 'SaveButton').on('click', function() {
+
+        // 入力値チェック
+        const msg = checkInput(constant.Investment);
+
+        // 入力値でアウトだったら
+        if (msg != '') {
+            alert(msg);
+            return;
+        }
 
         // 入力値取得
-        const date = $('#InvestmentDateInput').val();
-        const money = $('#InvestmentMoneyInput').val();
-        const accountId = $('#InvestmentAccountInput').val();
-        const middleCategoryId = $('#InvestmentMiddleCategoryInput').val();
-        const memo = $('#InvestmentMemotextarea').val();
+        const date = $('#' + constant.Investment + 'DateInput').val();
+        const money = $('#' + constant.Investment + 'MoneyInput').val();
+        const accountId = $('#' + constant.Investment + 'AccountInput').val();
+        const middleCategoryId = $('#' + constant.Investment + 'MiddleCategoryInput').val();
+        const memo = $('#' + constant.Investment + 'Memotextarea').val();
 
         // パラメータ構築
         const params = {
@@ -209,14 +226,23 @@ $(function () {
     });
 
     // 自己投資情報保存ボタン押下時処理
-    $('#SelfInvestmentSaveButton').on('click', function() {
+    $('#' + constant.SelfInvestment + 'SaveButton').on('click', function() {
+
+        // 入力値チェック
+        const msg = checkInput(constant.SelfInvestment);
+
+        // 入力値でアウトだったら
+        if (msg != '') {
+            alert(msg);
+            return;
+        }
 
         // 入力値取得
-        const date = $('#SelfInvestmentDateInput').val();
-        const money = $('#SelfInvestmentMoneyInput').val();
-        const accountId = $('#SelfInvestmentAccountInput').val();
-        const middleCategoryId = $('#SelfInvestmentMiddleCategoryInput').val();
-        const memo = $('#SelfInvestmentMemotextarea').val();
+        const date = $('#' + constant.SelfInvestment + 'DateInput').val();
+        const money = $('#' + constant.SelfInvestment + 'MoneyInput').val();
+        const accountId = $('#' + constant.SelfInvestment + 'AccountInput').val();
+        const middleCategoryId = $('#' + constant.SelfInvestment + 'MiddleCategoryInput').val();
+        const memo = $('#' + constant.SelfInvestment + 'Memotextarea').val();
 
         // パラメータ構築
         const params = {
@@ -242,6 +268,12 @@ $(function () {
     });
 });
 
+/**
+ * 収支情報の書き換え
+ * @param {*} balance 
+ * @param {*} totalMoney 
+ * @param {*} balanceList 
+ */
 function rewriteBalanceInfo(balance, totalMoney, balanceList) {
 
     // 合計金額更新
@@ -317,105 +349,6 @@ function checkInput(balance) {
 
     return msg;
 }
-
-// 消費情報取得
-function getConsumption() {
-    $.get(
-        constant.url.api + '/get-consumption'
-    ).done(function (data) {
-        console.log('消費情報取得成功!');
-        console.log(data);
-
-        // 消費合計金額更新
-        $('#TotalConsumption').text(data.totalConsumption);
-
-        // トップページの消費情報書き換え
-        $('#' + constant.Consumption + 'Table').find('tbody tr').remove();
-        data.consumptionList.forEach(function (element) {
-            console.log(element);
-            html = '<tr><th scope="row"></th><td>' + element.categoryName + '</td><td>' + element.price + '</td></tr>';
-            $('#' + constant.Consumption + 'Table').append(html);
-        });
-    }).fail(function () {
-        console.log('消費情報取得失敗!');
-    }).always(function () {
-        console.log('消費情報取得処理終了');
-    });
-};
-
-// 収入情報取得
-function getIncom() {
-    $.get(
-        constant.url.api + '/get-incom'
-    ).done(function (data) {
-        console.log('収入情報取得成功!');
-        console.log(data);
-
-        // 収入合計金額更新
-        $('#TotalIncom').text(data.totalIncom);
-
-        // トップページの消費情報書き換え
-        $('#IncomTable').find('tbody tr').remove();
-        data.incomInfoList.forEach(function (element) {
-            console.log(element);
-            html = '<tr><th scope="row"></th><td>' + element.categoryName + '</td><td>' + element.price + '</td></tr>';
-            $('#IncomTable').append(html);
-        });
-    }).fail(function () {
-        console.log('収入情報取得失敗!');
-    }).always(function () {
-        console.log('収入情報取得処理終了');
-    });
-};
-
-// 投資情報取得
-function getInvestment() {
-    $.get(
-        constant.url.api + '/get-investment'
-    ).done(function(data) {
-        console.log('投資情報取得成功!');
-
-        // 合計投資金額更新
-        $('#TotalInvestment').text(data.totalInvestment);
-
-        // トップページの投資情報書き換え
-        $('#InvestmentTable').find('tbody tr').remove();
-        data.investmentList.forEach(function (element) {
-            console.log(element);
-            html = '<tr><th scope="row"></th><td>' + element.categoryName + '</td><td>' + element.price + '</td></tr>';
-            $('#InvestmentTable').append(html);
-        });
-    }).fail(function () {
-        console.log('投資情報取得失敗!');
-    }).always(function () {
-        console.log('投資情報取得処理終了');
-    });
-};
-
-// 自己投資情報取得
-function getSelfInvestment() {
-    $.get(
-        constant.url.api + '/get-self-investment'
-    ).done(function(data) {
-        console.log('自己投資情報取得成功!');
-        console.log(data);
-
-        // 合計投資金額更新
-        $('#TotalSelfInvestment').text(data.totalSelfInvestment);
-
-        // トップページの投資情報書き換え
-        $('#SelfInvestmentTable').find('tbody tr').remove();
-        data.selfInvestmentList.forEach(function (element) {
-            console.log(element);
-            html = '<tr><th scope="row"></th><td>' + element.categoryName + '</td><td>' + element.price + '</td></tr>';
-            $('#SelfInvestmentTable').append(html);
-        });
-    }).fail(function () {
-        console.log('投資情報取得失敗!');
-    }).always(function () {
-        console.log('投資情報取得処理終了');
-    });
-};
 
 // ==========================================================================
 // カテゴリ選択用のメモ書き

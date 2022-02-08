@@ -37,10 +37,6 @@ public class ToppageRestController {
         // 返却用モデル
         CommitModel commitModel = new CommitModel();
 
-        // 受け取った消費情報の出力
-        System.out.println(consumption);
-        System.out.println(consumption.toString());
-
         // 消費情報登録
         try {
             commitModel = service.insertConsumption(getLoginUserId(), consumption);
@@ -49,19 +45,10 @@ public class ToppageRestController {
             commitModel.setMessage(e.getMessage());
         }
 
-        return commitModel;
-    }
-
-    /**
-     * 指定された年月の消費情報を取得する
-     * @param displayMonth
-     * @return
-     */
-    @GetMapping("/get-consumption")
-    public ToppageModel getConsumption(@RequestParam(name = "displayMonth", required = false)String displayMonth) {
-
         // 消費情報取得
-        return service.getConsumption(getLoginUserId(), displayMonth);
+        commitModel.setToppageModel(service.getConsumption(getLoginUserId(), "2022-01-01"));
+
+        return commitModel;
     }
 
     /**
@@ -118,17 +105,6 @@ public class ToppageRestController {
     }
 
     /**
-     * 収入情報を取得する
-     * @param displayMonth
-     * @return
-     */
-    @GetMapping("/get-incom")
-    public ToppageModel getIncom(@RequestParam(name = "displayMonth", required = false)String displayMonth) {
-        // 収入情報取得
-        return service.getIncom(getLoginUserId(), displayMonth);
-    }
-
-    /**
      * 投資情報登録
      * @param investment
      * @return
@@ -146,16 +122,6 @@ public class ToppageRestController {
     }
 
     /**
-     * 投資情報取得
-     * @param displayMonth
-     * @return
-     */
-    @GetMapping("/get-investment")
-    public ToppageModel getInvestment(@RequestParam(name = "displayMonth", required = false)String displayMonth) {
-        return service.getInvestment(getLoginUserId(), displayMonth);
-    }
-
-    /**
      * 自己投資情報登録
      * @param selfInvestment
      * @return
@@ -169,17 +135,6 @@ public class ToppageRestController {
         model = service.insertSelfInvestment(getLoginUserId(), selfInvestment);
 
         return model;
-    }
-
-    /**
-     * 自己投資情報取得
-     * @param displayMonth
-     * @return
-     */
-    @GetMapping("/get-self-investment")
-    public ToppageModel getSeflInvestment(@RequestParam(name = "displayMonth", required = false)String displayMonth) {
-        System.out.println("Controller getSelfInvestment()");
-        return service.getSelfInvestment(getLoginUserId(), displayMonth);
     }
 
     /**

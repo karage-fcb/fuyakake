@@ -147,9 +147,6 @@ public class ToppageService extends BaseService implements IToppageService {
         CommitModel commitModel = new CommitModel();
         commitModel.setError(false);
 
-        // トップページモデル
-        ToppageModel toppageModel = new ToppageModel();
-
         // 消費情報登録
         int ret = getConsumptionRepository().insertConsumption(
             consumptionForm.getMoney(),
@@ -160,16 +157,10 @@ public class ToppageService extends BaseService implements IToppageService {
             consumptionForm.getDate()
         );
 
-        // 登録に成功した時
-        if (ret == 1) {
-            // TODO 動的日付
-            // 消費情報
-            toppageModel = getConsumption(toppageModel, userId, Date.valueOf("2022-01-01"), Date.valueOf("2022-01-31"));
-        } else {
-            commitModel.setError(true);
-            commitModel.setMessage("消費情報登録失敗!");
-            return commitModel;
-        }
+        // 登録に失敗した時
+        if (ret != 1) {
+            throw new FuyakakeException("消費情報登録失敗!");
+        } 
 
         // 口座がマイナスにならないための処理
         Account account = getAccountsRepository().getOneAccount(consumptionForm.getAccountId());
@@ -181,18 +172,12 @@ public class ToppageService extends BaseService implements IToppageService {
         // 消費情報を口座に反映
         ret = getAccountsRepository().updateConsumptionAmount(consumptionForm.getAccountId(), consumptionForm.getMoney());
 
-        // 消費情報の反映に成功
-        if(ret == 1) {
-            toppageModel.setAccountList(getAccountsRepository().getAccounts(userId));
-            toppageModel.setTotalAsset(getAccountsRepository().getTotalAsset(userId));
-        } else {
-            commitModel.setError(true);
-            commitModel.setMessage("口座情報に反映失敗");
-            return commitModel;
+        // 消費情報の反映に失敗
+        if(ret != 1) {
+            throw new FuyakakeException("口座情報に反映失敗");
         }
 
         commitModel.setMessage("消費情報登録成功!");
-        commitModel.setToppageModel(toppageModel);
         return commitModel;
     }
 
@@ -200,7 +185,7 @@ public class ToppageService extends BaseService implements IToppageService {
      * 対象年月の消費情報を取得する
      * @param userId
      * @param getMonth
-     * @return 消費情報、合計消費額が入ったモデル
+     * @return 消費情報、合計消費額, 口座情報, トータル資産が入ったモデル
      */
     @Override
     public ToppageModel getConsumption(String userId, String getMonth) {
@@ -209,11 +194,18 @@ public class ToppageService extends BaseService implements IToppageService {
         ToppageModel model = new ToppageModel();
 
         // 表示する年月の最初と末日を取得する
+        // TODO 動的日付
         Date startDate = Date.valueOf("2022-01-01");
         Date endDate = Date.valueOf("2022-01-31");
 
         // 消費情報取得
         model = getConsumption(model, userId, startDate, endDate);
+
+        // 口座情報取得
+        model.setAccountList(getAccountsRepository().getAccounts(userId));
+
+        // 合計資産取得
+        model.setTotalAsset(getAccountsRepository().getTotalAsset(userId));
         return model;
     }
 
