@@ -34,6 +34,11 @@ public class Investment {
     private int accountId;
 
     /**
+     * 投資先口座
+     */
+    private int toAccountId;
+
+    /**
      * ユーザーID
      */
     private String userId;

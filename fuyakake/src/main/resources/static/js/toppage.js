@@ -64,6 +64,9 @@ $(function () {
         ).done(function(data) {
             // 口座のセレクトボックス書き換え
             rewriteAccountSelectBox(constant.Investment, data.accountList);
+
+            // 投資先のセレクトボックス書き換え
+            rewriteAccountSelectBox(constant.Investment + 'To', data.accountList);
         });
     });
 
@@ -199,6 +202,7 @@ $(function () {
         const date = $('#' + constant.Investment + 'DateInput').val();
         const money = $('#' + constant.Investment + 'MoneyInput').val();
         const accountId = $('#' + constant.Investment + 'AccountInput').val();
+        const toAccountId = $('#' + constant.Investment + 'ToAccountInput').val();
         const middleCategoryId = $('#' + constant.Investment + 'MiddleCategoryInput').val();
         const memo = $('#' + constant.Investment + 'Memotextarea').val();
 
@@ -206,6 +210,7 @@ $(function () {
         const params = {
             money: money,
             accountId: accountId,
+            toAccountId: toAccountId,
             categoryId: middleCategoryId,
             memo: memo,
             date: date
@@ -216,7 +221,7 @@ $(function () {
             constant.url.api + '/insert-investment',
             params
         ).done(function(data) {
-            getInvestment();
+            // getInvestment();
             alert('投資情報登録成功!');
         }).fail(function() {
             console.log('Post失敗');
@@ -258,8 +263,20 @@ $(function () {
             constant.url.api + '/insert-self-investment',
             params
         ).done(function(data) {
-            getSelfInvestment();
-            alert('投資情報登録成功!');
+            console.log('投資情報登録成功!');
+            
+            // 登録に失敗した時
+            if (data.error) {
+                alert(data.message);
+            } else if (!data.error) {
+                // 自己投資情報書き換え
+                rewriteBalanceInfo(constant.SelfInvestment, data.toppageModel.totalSelfInvestment, data.toppageModel.selfInvestmentList);
+
+                // 口座情報書き換え
+                accountInfoRewriting(data.toppageModel.totalAsset, data.toppageModel.accountList);
+
+                alert(data.message);
+            }
         }).fail(function() {
             console.log('Post失敗');
         }).always(function() {

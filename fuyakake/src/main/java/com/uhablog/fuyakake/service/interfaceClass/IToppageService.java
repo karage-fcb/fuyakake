@@ -55,6 +55,30 @@ public interface IToppageService {
     public CommitModel insertConsumption(String userId, ConsumptionForm consumption) throws FuyakakeException; 
 
     /**
+     * 収入情報を登録する
+     * @param userId
+     * @param incom
+     * @return
+     */
+    public CommitModel insertIncom(String userId, IncomForm incom) throws FuyakakeException;
+
+    /**
+     * 投資情報を登録する
+     * @param userId
+     * @param getMonth
+     * @return
+     */
+    public CommitModel insertInvestment(String userId, InvestmentForm investment) throws FuyakakeException;
+
+    /**
+     * 自己投資情報を登録する
+     * @param userId
+     * @param getMonth
+     * @return
+     */
+    public CommitModel insertSelfInvestment(String userId, SelfInvestmentFrom selfInvestment) throws FuyakakeException;
+
+    /**
      * 消費情報を取得する
      * @param userId
      * @param getMonth
@@ -62,14 +86,6 @@ public interface IToppageService {
      */
     public ToppageModel getConsumption(String userId, String getMonth);
     
-    /**
-     * 収入情報を登録する
-     * @param userId
-     * @param incom
-     * @return
-     */
-    public CommitModel insertIncom(String userId, IncomForm incom);
-
     /**
      * 収入情報を取得する
      * @param userId
@@ -79,28 +95,12 @@ public interface IToppageService {
     public ToppageModel getIncom(String userId, String getMonth);
 
     /**
-     * 投資情報を登録する
-     * @param userId
-     * @param getMonth
-     * @return
-     */
-    public CommitModel insertInvestment(String userId, InvestmentForm investment);
-
-    /**
      * 投資情報を取得する
      * @param userId
      * @param getMonth
      * @return
      */
     public ToppageModel getInvestment(String userId, String getMonth);
-
-    /**
-     * 自己投資情報を登録する
-     * @param userId
-     * @param getMonth
-     * @return
-     */
-    public CommitModel insertSelfInvestment(String userId, SelfInvestmentFrom selfInvestment);
 
     /**
      * 自己投資情報を取得する

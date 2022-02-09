@@ -1,6 +1,6 @@
 INSERT INTO accounts(
     account_name,
-    asset_ammount,
+    asset_amount,
     category_type,
     user_id,
     create_date,
@@ -24,7 +24,7 @@ INSERT INTO accounts(
 
 INSERT INTO accounts(
     account_name,
-    asset_ammount,
+    asset_amount,
     category_type,
     user_id,
     create_date,
@@ -48,7 +48,7 @@ INSERT INTO accounts(
 
 INSERT INTO accounts(
     account_name,
-    asset_ammount,
+    asset_amount,
     category_type,
     user_id,
     create_date,
@@ -72,7 +72,7 @@ INSERT INTO accounts(
 
 INSERT INTO accounts(
     account_name,
-    asset_ammount,
+    asset_amount,
     category_type,
     user_id,
     create_date,
@@ -85,6 +85,30 @@ INSERT INTO accounts(
     'uhablog第二の財布',
     10000,
     '1',
+    'uhablog',
+    current_timestamp,
+    'uhablog',
+    current_timestamp,
+    'uhablog',
+    1,
+    'false'
+);
+
+INSERT INTO accounts(
+    account_name,
+    asset_amount,
+    category_type,
+    user_id,
+    create_date,
+    create_user,
+    update_date,
+    update_user,
+    version,
+    delete_flag
+)VALUES(
+    '楽天証券',
+    10000,
+    '2',
     'uhablog',
     current_timestamp,
     'uhablog',

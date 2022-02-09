@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS middle_category_master(
 CREATE TABLE IF NOT EXISTS accounts(
     account_id SERIAL PRIMARY KEY,
     account_name VARCHAR(255) NOT NULL DEFAULT ' ',
-    asset_ammount INTEGER NOT NULL DEFAULT 0,
+    asset_amount INTEGER NOT NULL DEFAULT 0,
     category_type VARCHAR(1) NOT NULL DEFAULT ' ',
     user_id VARCHAR(255) DEFAULT ' ' NOT NULL REFERENCES user_master(user_id),
     create_date TIMESTAMP DEFAULT '1998-07-05 00:00:00' NOT NULL,
@@ -88,6 +88,7 @@ CREATE TABLE IF NOT EXISTS investment (
     investment_id SERIAL PRIMARY KEY,
     investment_money INTEGER NOT NULL DEFAULT 0,
     account_id INTEGER NOT NULL REFERENCES accounts(account_id),
+    to_account_id INTEGER NOT NULL REFERENCES accounts(account_id),
     user_id VARCHAR(255) NOT NULL DEFAULT ' ' REFERENCES user_master(user_id),
     category_id INTEGER NOT NULL REFERENCES middle_category_master(category_id),
     memo VARCHAR(1024) NOT NULL DEFAULT ' ',

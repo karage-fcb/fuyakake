@@ -46,9 +46,86 @@ public class ToppageRestController {
         }
 
         // 消費情報取得
-        commitModel.setToppageModel(service.getConsumption(getLoginUserId(), "2022-01-01"));
+        // TODO 動的日付
+        commitModel.setToppageModel(service.getConsumption(getLoginUserId(), "2022-01"));
 
         return commitModel;
+    }
+
+    /**
+     * 収入情報を登録する
+     * @param incom
+     * @return
+     */
+    @PostMapping("/insert-incom")
+    public CommitModel insertIncom(IncomForm incom) {
+
+        CommitModel commitModel = new CommitModel();
+
+        // 収入情報登録
+        try {
+            commitModel = service.insertIncom(getLoginUserId(), incom);
+        } catch (FuyakakeException e) {
+            commitModel.setError(true);
+            commitModel.setMessage(e.getMessage());
+        }
+
+        // 収入情報取得
+        // TODO 動的日付
+        commitModel.setToppageModel(service.getIncom(getLoginUserId(), "2022-01"));
+
+        return commitModel;
+    }
+
+    /**
+     * 投資情報登録
+     * @param investment
+     * @return
+     */
+    @PostMapping("/insert-investment")
+    public CommitModel insertInvestment(InvestmentForm investment) {
+        
+        // 返却用モデル
+        CommitModel model = new CommitModel();
+
+        // 投資情報登録
+        try{
+            model = service.insertInvestment(getLoginUserId(), investment);
+        } catch (FuyakakeException e) {
+            model.setError(true);
+            model.setMessage(e.getMessage());
+        }
+
+        // 投資情報取得
+        // TODO 動的日付
+        model.setToppageModel(service.getInvestment(getLoginUserId(), "2022-01"));
+
+        return model;
+    }
+
+    /**
+     * 自己投資情報登録
+     * @param selfInvestment
+     * @return
+     */
+    @PostMapping("/insert-self-investment")
+    public CommitModel insertSelfInvestment(SelfInvestmentFrom selfInvestment) {
+        // 返却用モデル
+        CommitModel model = new CommitModel();
+
+        // 投資情報登録
+        try {
+            model = service.insertSelfInvestment(getLoginUserId(), selfInvestment);
+        } catch (FuyakakeException e) {
+            model.setError(true);
+            model.setMessage(e.getMessage());
+        }
+
+        // 自己投資情報取得
+        // TODO 動的日付
+        model.setToppageModel(service.getSelfInvestment(getLoginUserId(), "2022-01"));
+
+        return model;
     }
 
     /**
@@ -90,54 +167,6 @@ public class ToppageRestController {
     }
 
     /**
-     * 収入情報を登録する
-     * @param incom
-     * @return
-     */
-    @PostMapping("/insert-incom")
-    public CommitModel insertIncom(IncomForm incom) {
-
-        CommitModel commitModel = new CommitModel();
-
-        // 収入情報登録
-        commitModel = service.insertIncom(getLoginUserId(), incom);
-        return commitModel;
-    }
-
-    /**
-     * 投資情報登録
-     * @param investment
-     * @return
-     */
-    @PostMapping("/insert-investment")
-    public CommitModel insertInvestment(InvestmentForm investment) {
-        
-        // 返却用モデル
-        CommitModel model = new CommitModel();
-
-        // 投資情報登録
-        model = service.insertInvestment(getLoginUserId(), investment);
-
-        return model;
-    }
-
-    /**
-     * 自己投資情報登録
-     * @param selfInvestment
-     * @return
-     */
-    @PostMapping("/insert-self-investment")
-    public CommitModel insertSelfInvestment(SelfInvestmentFrom selfInvestment) {
-        // 返却用モデル
-        CommitModel model = new CommitModel();
-
-        // 投資情報登録
-        model = service.insertSelfInvestment(getLoginUserId(), selfInvestment);
-
-        return model;
-    }
-
-    /**
      * ログイン中のユーザー情報を取得する
      * @return ログイン中のユーザーID
      */
@@ -146,8 +175,4 @@ public class ToppageRestController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getName();
     }
-
-    /**
-     * 例外発生時の処理
-     */
 }

@@ -18,6 +18,11 @@ public class InvestmentForm {
     private int accountId;
 
     /**
+     * 投資先口座
+     */
+    private int toAccountId;
+
+    /**
      * カテゴリID
      */
     private int categoryId;

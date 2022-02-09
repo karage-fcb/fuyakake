@@ -143,10 +143,6 @@ public class ToppageService extends BaseService implements IToppageService {
     public CommitModel insertConsumption(String userId, ConsumptionForm consumptionForm) 
         throws FuyakakeException{
 
-        // 返却用モデル
-        CommitModel commitModel = new CommitModel();
-        commitModel.setError(false);
-
         // 消費情報登録
         int ret = getConsumptionRepository().insertConsumption(
             consumptionForm.getMoney(),
@@ -177,9 +173,118 @@ public class ToppageService extends BaseService implements IToppageService {
             throw new FuyakakeException("口座情報に反映失敗");
         }
 
+        // 返却用モデル
+        CommitModel commitModel = new CommitModel();
+        commitModel.setError(false);
         commitModel.setMessage("消費情報登録成功!");
         return commitModel;
     }
+
+    /**
+     * 収入情報入力
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public CommitModel insertIncom(String userId, IncomForm incom) 
+        throws FuyakakeException{
+
+        // 収入情報登録
+        int ret = getIncomRepository().insertIncom(
+            incom.getMoney(),
+            incom.getAccountId(),
+            userId,
+            incom.getCategoryId(),
+            incom.getMemo(),
+            incom.getDate()
+        );
+
+        // 登録に成功したかどうか判定する
+        if(ret != 1) {
+            throw new FuyakakeException("収入情報登録失敗");
+        } 
+
+        // 収入情報を口座に反映
+        ret = getAccountsRepository().updateIncomAmount(incom.getAccountId(), incom.getMoney());
+
+        // 口座情報の反映に成功
+        if(ret != 1) {
+            throw new FuyakakeException("口座情報に反映失敗");
+        }
+
+        // 返却用モデル
+        CommitModel commitModel = new CommitModel();
+        commitModel.setMessage("収入情報登録成功!");
+        commitModel.setError(false);
+        return commitModel;
+    }
+
+    /**
+     * 投資情報登録
+     */
+	@Override
+	public CommitModel insertInvestment(String userId, InvestmentForm investment)
+        throws FuyakakeException {
+        System.out.println("投資情報入力" + investment.toString());
+
+        // 投資情報登録
+        int ret = getInvestmentRepository().insertSelfInvestment(
+            investment.getMoney(),
+            investment.getAccountId(),
+            investment.getToAccountId(),
+            userId,
+            investment.getCategoryId(),
+            investment.getMemo(),
+            investment.getDate()
+        );
+
+        // 登録成功したかどうか判定する
+        if(ret != 1) {
+            throw new FuyakakeException("投資情報登録失敗");
+        }
+
+        // 口座情報に投資情報を反映
+        // TODO 途中
+        ret = getAccountsRepository().updateIncomAmount(investment.getAccountId(), investment.getMoney());
+
+        CommitModel model = new CommitModel();
+    	return model;
+	}
+
+    /**
+     * 自己投資情報登録
+     */
+	@Override
+	public CommitModel insertSelfInvestment(String userId, SelfInvestmentFrom selfInvestment)
+        throws FuyakakeException {
+        System.out.println("自己投資情報入力" + selfInvestment.toString());
+
+        // 自己投資情報登録
+        int ret = getSelfInvestmentRepository().insertSelfInvestment(
+            selfInvestment.getMoney(),
+            selfInvestment.getAccountId(),
+            userId,
+            selfInvestment.getCategoryId(),
+            selfInvestment.getMemo(),
+            selfInvestment.getDate()
+        );
+
+        // 登録に成功したかどうか判定
+        if(ret != 1) {
+            throw new FuyakakeException("自己投資情報登録失敗");
+        }
+
+        // 自己投資情報を口座に反映
+        ret = getAccountsRepository().updateConsumptionAmount(selfInvestment.getAccountId(), selfInvestment.getMoney());
+
+        if(ret != 1) {
+            throw new FuyakakeException("自己投資情報の口座への反映失敗");
+        }
+
+        CommitModel commitModel = new CommitModel();
+        commitModel.setMessage("自己投資情報登録成功");
+        commitModel.setError(false);
+		return commitModel;
+	}
 
     /**
      * 対象年月の消費情報を取得する
@@ -210,59 +315,6 @@ public class ToppageService extends BaseService implements IToppageService {
     }
 
     /**
-     * 収入情報入力
-     */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public CommitModel insertIncom(String userId, IncomForm incom) {
-
-        // 返却用モデル
-        CommitModel commitModel = new CommitModel();
-        commitModel.setError(false);
-
-        // トップページモデル
-        ToppageModel toppageModel = new ToppageModel();
-
-        // 収入情報登録
-        int ret = getIncomRepository().insertIncom(
-            incom.getMoney(),
-            incom.getAccountId(),
-            userId,
-            incom.getCategoryId(),
-            incom.getMemo(),
-            incom.getDate()
-        );
-
-        // 登録に成功したかどうか判定する
-        if(ret == 1) {
-            // TODO 動的日付
-            // 収入情報取得
-            toppageModel = getIncom(toppageModel, userId, Date.valueOf("2022-01-01"), Date.valueOf("2022-01-31"));
-        } else {
-            commitModel.setError(true);
-            commitModel.setMessage("収入情報登録失敗!");
-            return commitModel;
-        }
-
-        // 収入情報を口座に反映
-        ret = getAccountsRepository().updateIncomAmount(incom.getAccountId(), incom.getMoney());
-
-        // 口座情報の反映に成功
-        if(ret == 1) {
-            toppageModel.setAccountList(getAccountsRepository().getAccounts(userId));
-            toppageModel.setTotalAsset(getAccountsRepository().getTotalAsset(userId));
-        } else {
-            commitModel.setError(true);
-            commitModel.setMessage("口座情報に反映失敗!");
-            return commitModel;
-        }
-
-        commitModel.setMessage("収入情報登録成功!");
-        commitModel.setToppageModel(toppageModel);
-        return commitModel;
-    }
-
-    /**
      * 収入情報取得
      */
     @Override
@@ -282,38 +334,13 @@ public class ToppageService extends BaseService implements IToppageService {
         // 収入情報取得メソッド呼び出し
         model = getIncom(model, userId, startDate, endDate);
 
+        // 口座情報取得
+        model.setAccountList(getAccountsRepository().getAccounts(userId));
+
+        // 合計資産取得
+        model.setTotalAsset(getAccountsRepository().getTotalAsset(userId));
         return model;
     }
-
-    /**
-     * 投資情報登録
-     */
-	@Override
-	public CommitModel insertInvestment(String userId, InvestmentForm investment) {
-        System.out.println("投資情報入力" + investment.toString());
-
-        // 投資情報登録
-        int ret = getInvestmentRepository().insertSelfInvestment(
-            investment.getMoney(),
-            investment.getAccountId(),
-            userId,
-            investment.getCategoryId(),
-            investment.getMemo(),
-            investment.getDate()
-        );
-
-        CommitModel model = new CommitModel();
-
-        // 登録成功したかどうか判定する
-        if(ret == 1) {
-            model.setError(false);
-            model.setMessage("投資情報登録成功!");
-        } else {
-            model.setError(true);
-            model.setMessage("投資情報登録失敗!");
-        }
-		return model;
-	}
 
     /**
      * 投資情報取得
@@ -329,40 +356,16 @@ public class ToppageService extends BaseService implements IToppageService {
         Date startDate = Date.valueOf("2022-01-01");
         Date endDate = Date.valueOf("2022-01-31");
 
+        // 投資情報取得メソッド呼び出し
         model = getInvestment(model, userId, startDate, endDate);
 
+        // 口座情報取得
+        model.setAccountList(getAccountsRepository().getAccounts(userId));
+
+        // 合計資産取得
+        model.setTotalAsset(getAccountsRepository().getTotalAsset(userId));
+
 		return model;
-	}
-
-    /**
-     * 自己投資情報登録
-     */
-	@Override
-	public CommitModel insertSelfInvestment(String userId, SelfInvestmentFrom selfInvestment) {
-        System.out.println("自己投資情報入力" + selfInvestment.toString());
-
-        // 自己投資情報登録
-        int ret = getSelfInvestmentRepository().insertSelfInvestment(
-            selfInvestment.getMoney(),
-            selfInvestment.getAccountId(),
-            userId,
-            selfInvestment.getCategoryId(),
-            selfInvestment.getMemo(),
-            selfInvestment.getDate()
-        );
-
-        CommitModel commitModel = new CommitModel();
-
-        // 登録に成功したかどうか判定
-        if(ret == 1) {
-            commitModel.setError(false);
-            commitModel.setMessage("自己投資情報登録成功");
-        } else {
-            commitModel.setError(true);
-            commitModel.setMessage("自己投資情報登録失敗");
-        }
-
-		return commitModel;
 	}
 
     /**
@@ -384,6 +387,12 @@ public class ToppageService extends BaseService implements IToppageService {
 
         // 自己投資情報取得メソッド呼び出し
         model = getSelfInvestment(model, userId, startDate, endDate);
+
+        // 口座情報取得
+        model.setAccountList(getAccountsRepository().getAccounts(userId));
+
+        // 合計資産取得
+        model.setTotalAsset(getAccountsRepository().getTotalAsset(userId));
 
 		return model;
 	}

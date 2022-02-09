@@ -98,6 +98,7 @@ public interface InvestmentRepository extends JpaRepository<Investment, Integer>
         + " INSERT INTO investment( "
         + "  investment_money, "
         + "  account_id, "
+        + "  to_account_id, "
         + "  user_id, "
         + "  category_id, "
         + "  memo, "
@@ -111,6 +112,7 @@ public interface InvestmentRepository extends JpaRepository<Investment, Integer>
         + " )VALUES( "
         + "  :investmentMoney, "
         + "  :accountId, "
+        + "  :toAccountId, "
         + "  :userId, "
         + "  :categoryId, "
         + "  :memo, "
@@ -126,6 +128,7 @@ public interface InvestmentRepository extends JpaRepository<Investment, Integer>
     public int insertSelfInvestment(
         @Param("investmentMoney")int investmentMoney,
         @Param("accountId")int accountId,
+        @Param("toAccountId")int toAccountId,
         @Param("userId")String userId,
         @Param("categoryId")int categoryId,
         @Param("memo")String memo,
