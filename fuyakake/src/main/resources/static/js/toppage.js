@@ -22,11 +22,7 @@ $(function () {
     $('#InputButton').on('click', function () {
 
         // 口座・カテゴリ情報の取得
-        $.get(
-            constant.url.api + '/show-consumption-modal'
-        ).done(function(data) {
-            rewriteAccountSelectBox(constant.Consumption, data.accounts);
-        });
+        getConsumptionModalInfo();
 
         // モーダル表示
         $('#inputModal').modal('show');
@@ -37,11 +33,7 @@ $(function () {
     $('#' + constant.Consumption + 'Link').on('click', function() {
 
         // 口座・カテゴリ情報の取得
-        $.get(
-            constant.url.api + '/show-consumption-modal'
-        ).done(function(data) {
-            rewriteAccountSelectBox(constant.Consumption, data.accounts);
-        });
+        getConsumptionModalInfo();
     });
 
     // モーダルの収入タグ押下時処理
@@ -313,7 +305,7 @@ function rewriteBalanceInfo(balance, totalMoney, balanceList) {
         html = '<tr><th scope="row"></th><td>' + element.categoryName + '</td><td>' + element.price + '</td></tr>';
         $('#' + balance + 'Table').append(html);
     });
-}
+};
 
 /**
  * トップページ口座情報の書き換え
@@ -391,6 +383,17 @@ function checkInput(balance) {
     }
 
     return msg;
+};
+
+function getConsumptionModalInfo() {
+    
+    // 口座・カテゴリ情報の取得
+    $.get(
+        constant.url.api + '/show-consumption-modal'
+    ).done(function(data) {
+        console.log(data);
+        rewriteAccountSelectBox(constant.Consumption, data.accounts);
+    });
 }
 
 // ==========================================================================

@@ -85,7 +85,7 @@ public class ToppageService extends BaseService implements IToppageService {
 
         System.out.println("ToppageService getConsumptionModal line 86");
         // カテゴリ情報取得
-        // model.setCategoryList(getBigCategoryRepository().findAll());
+        model.setCategories(getBigCategoryRepository().getBigCategory(userId));
         System.out.println("ToppageService getConsumptionModal line 89");
 
         // 口座情報取得
@@ -168,12 +168,8 @@ public class ToppageService extends BaseService implements IToppageService {
             throw new FuyakakeException("消費情報登録失敗!");
         } 
 
-        // 口座がマイナスにならないための処理
-        Account account = getAccountsRepository().getOneAccount(consumptionForm.getAccountId());
-
-        if (account.getAssetAmount() < consumptionForm.getMoney()) {
-            throw new FuyakakeException("消費金額が多すぎて口座がマイナスになってしまいます。消費情報を登録できません。");
-        }
+        // 口座がマイナスにならないか確認
+        balanceConfirmation(consumptionForm.getAccountId(), consumptionForm.getMoney());
 
         // 消費情報を口座に反映
         ret = getAccountsRepository().updateConsumptionAmount(consumptionForm.getAccountId(), consumptionForm.getMoney());
@@ -252,11 +248,26 @@ public class ToppageService extends BaseService implements IToppageService {
             throw new FuyakakeException("投資情報登録失敗");
         }
 
+        // 口座がマイナスにならないか確認
+        balanceConfirmation(investment.getAccountId(), investment.getMoney());
+
+        // 金額を投資元から差し引く
+        ret = getAccountsRepository().updateConsumptionAmount(investment.getAccountId(), investment.getMoney());
+
+        if (ret != 1) {
+            throw new FuyakakeException("口座情報に反映失敗(投資元)");
+        }
+
         // 口座情報に投資情報を反映
-        // TODO 途中
-        ret = getAccountsRepository().updateIncomAmount(investment.getAccountId(), investment.getMoney());
+        ret = getAccountsRepository().updateIncomAmount(investment.getToAccountId(), investment.getMoney());
+
+        if (ret != 1) {
+            throw new FuyakakeException("口座情報に反映失敗(投資先)");
+        }
 
         CommitModel model = new CommitModel();
+        model.setError(false);
+        model.setMessage("投資情報反映成功");
     	return model;
 	}
 
@@ -541,6 +552,22 @@ public class ToppageService extends BaseService implements IToppageService {
 
         System.out.println(model.toString());
         return model;
-        
+
+    }
+
+    /**
+     * 指定されたIDの口座を指定された金額が超えないかどうか。
+     * 超える場合はFuyakakeException発生
+     * @param accountId
+     * @param money
+     * @throws FuyakakeException
+     */
+    private void balanceConfirmation(int accountId, int money) throws FuyakakeException{
+
+        Account account = getAccountsRepository().getOneAccount(accountId);
+
+        if (account.getAssetAmount() < money) {
+            throw new FuyakakeException("口座の残高を支出額が超えています");
+        }
     }
 }
