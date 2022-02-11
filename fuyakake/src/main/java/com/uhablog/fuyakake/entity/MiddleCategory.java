@@ -3,16 +3,11 @@ package com.uhablog.fuyakake.entity;
 import java.sql.Timestamp;
 
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.Data;
 import lombok.ToString;
@@ -33,16 +28,8 @@ public class MiddleCategory {
     /**
      * 大カテゴリID
      */
-    // private Integer bigCategoryId;
-
-    /**
-     * 大カテゴリID
-     */
     @ManyToOne
-    // @JoinColumn(name = "big_category_id", foreignKey = @ForeignKey(name="middle_category_master_big_category_id_fkey"))
     @JoinColumn(name = "big_category_id")
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "category_id")
-    @JsonIdentityReference(alwaysAsId = true)
     private BigCategory bigCategory;
 
     /**

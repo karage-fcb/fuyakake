@@ -152,7 +152,7 @@
               </tr>
             </thead>
             <tbody id="AssetTBody">
-              <tr th:each="element : ${model.accountList}">
+              <tr th:each="element : ${model.accounts}">
                 <th scope="row">[[${element.accountName}]]</th>
                 <td>[[${element.assetAmount}]]</td>
                 <td th:text="${element.assetAmount} / ${model.totalAsset} * 100"></td>
@@ -292,11 +292,11 @@
                   </div>
                   <div class="form-floating mb-3">
                     <select id="IncomMiddleCategoryInput" class="form-select" aria-label="Default select example">
-                      <option value="1">給与</option>
+                      <!-- <option value="1">給与</option>
                       <option value="2">副業収入</option>
                       <option value="3">家賃収入</option>
                       <option value="4">配当</option>
-                      <option value="5">その他収入</option>
+                      <option value="5">その他収入</option> -->
                     </select>
                   </div>
                   <div class="mb-3">

@@ -66,7 +66,7 @@ public class ToppageModel {
     /**
      * 口座リスト
      */
-    private List<Account> accountList;
+    private List<Account> accounts;
 
     /**
      * 合計資産額

@@ -8,12 +8,12 @@ import com.uhablog.fuyakake.entity.BigCategory;
 import lombok.Data;
 
 @Data
-public class ModalModel {
-
+public class ConsumptionModalModel {
+    
     /**
      * カテゴリ情報
      */
-    private BigCategory categories;
+    private List<BigCategory> categories;
 
     /**
      * 口座情報

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
 
+import com.uhablog.fuyakake.common.Constant;
 import com.uhablog.fuyakake.common.FuyakakeException;
 import com.uhablog.fuyakake.entity.Account;
 import com.uhablog.fuyakake.entity.Consumption;
@@ -19,6 +20,7 @@ import com.uhablog.fuyakake.entity.form.IncomForm;
 import com.uhablog.fuyakake.entity.form.InvestmentForm;
 import com.uhablog.fuyakake.entity.form.SelfInvestmentFrom;
 import com.uhablog.fuyakake.model.CommitModel;
+import com.uhablog.fuyakake.model.ConsumptionModalModel;
 import com.uhablog.fuyakake.model.ModalModel;
 import com.uhablog.fuyakake.model.ToppageModel;
 import com.uhablog.fuyakake.service.interfaceClass.IToppageService;
@@ -64,7 +66,7 @@ public class ToppageService extends BaseService implements IToppageService {
         model.setDeposit(model.getRevenue() - model.getTotalInvestment() - model.getTotalSelfInvestment());
 
         // 口座情報取得
-        model.setAccountList(getAccountsRepository().getAccounts(userId));
+        model.setAccounts(getAccountsRepository().getAccounts(userId));
 
         // 合計資産額取得
         model.setTotalAsset(getAccountsRepository().getTotalAsset(userId));
@@ -76,19 +78,18 @@ public class ToppageService extends BaseService implements IToppageService {
      * カテゴリ情報を取得する
      */
     @Override
-    public ModalModel getConsumptionModal(String userId) {
+    public ConsumptionModalModel getConsumptionModal(String userId) {
 
         // モデル
-        ModalModel model = new ModalModel();
+        ConsumptionModalModel model = new ConsumptionModalModel();
 
-        System.out.println("ToppageService getConsumptionModal カテゴリ情報取得");
+        System.out.println("ToppageService getConsumptionModal line 86");
         // カテゴリ情報取得
         // model.setCategoryList(getBigCategoryRepository().findAll());
-        System.out.println("ToppageService getConsumptionModal カテゴリ情報取得終了");
-        // System.out.println(model.getCategoryList().toString());
+        System.out.println("ToppageService getConsumptionModal line 89");
 
         // 口座情報取得
-        model.setAccountList(getAccountsRepository().getAllAccount(userId));
+        model.setAccounts(getAccountsRepository().getAllAccount(userId));
 
         return model;
     }
@@ -103,7 +104,10 @@ public class ToppageService extends BaseService implements IToppageService {
         ModalModel model = new ModalModel();
 
         // 口座情報取得
-        model.setAccountList(getAccountsRepository().getAllAccount(userId));
+        model.setAccounts(getAccountsRepository().getAllAccount(userId));
+
+        // カテゴリ情報取得
+        model.setCategories(getBigCategoryRepository().getOneCategory(userId, Constant.INCOM_BIG_CATEGORY_ID));
         return model;
     }
 
@@ -116,7 +120,10 @@ public class ToppageService extends BaseService implements IToppageService {
         ModalModel model = new ModalModel();
 
         // 口座情報取得
-        model.setAccountList(getAccountsRepository().getAllAccount(userId));
+        model.setAccounts(getAccountsRepository().getAllAccount(userId));
+
+        // カテゴリ情報取得
+        model.setCategories(getBigCategoryRepository().getOneCategory(userId, Constant.INVESTMENT_BIG_CATEGORY_ID));
 
         return model;
     }
@@ -130,7 +137,10 @@ public class ToppageService extends BaseService implements IToppageService {
         ModalModel model = new ModalModel();
 
         // 口座情報取得
-        model.setAccountList(getAccountsRepository().getAllAccount(userId));
+        model.setAccounts(getAccountsRepository().getAllAccount(userId));
+
+        // カテゴリ情報取得
+        model.setCategories(getBigCategoryRepository().getOneCategory(userId, Constant.SELF_INVESTMENT_BIG_CATEGORY_ID));
 
         return model;
     }
@@ -307,7 +317,7 @@ public class ToppageService extends BaseService implements IToppageService {
         model = getConsumption(model, userId, startDate, endDate);
 
         // 口座情報取得
-        model.setAccountList(getAccountsRepository().getAccounts(userId));
+        model.setAccounts(getAccountsRepository().getAccounts(userId));
 
         // 合計資産取得
         model.setTotalAsset(getAccountsRepository().getTotalAsset(userId));
@@ -335,7 +345,7 @@ public class ToppageService extends BaseService implements IToppageService {
         model = getIncom(model, userId, startDate, endDate);
 
         // 口座情報取得
-        model.setAccountList(getAccountsRepository().getAccounts(userId));
+        model.setAccounts(getAccountsRepository().getAccounts(userId));
 
         // 合計資産取得
         model.setTotalAsset(getAccountsRepository().getTotalAsset(userId));
@@ -360,7 +370,7 @@ public class ToppageService extends BaseService implements IToppageService {
         model = getInvestment(model, userId, startDate, endDate);
 
         // 口座情報取得
-        model.setAccountList(getAccountsRepository().getAccounts(userId));
+        model.setAccounts(getAccountsRepository().getAccounts(userId));
 
         // 合計資産取得
         model.setTotalAsset(getAccountsRepository().getTotalAsset(userId));
@@ -389,7 +399,7 @@ public class ToppageService extends BaseService implements IToppageService {
         model = getSelfInvestment(model, userId, startDate, endDate);
 
         // 口座情報取得
-        model.setAccountList(getAccountsRepository().getAccounts(userId));
+        model.setAccounts(getAccountsRepository().getAccounts(userId));
 
         // 合計資産取得
         model.setTotalAsset(getAccountsRepository().getTotalAsset(userId));

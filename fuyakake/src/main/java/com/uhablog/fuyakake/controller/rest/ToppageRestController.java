@@ -6,8 +6,8 @@ import com.uhablog.fuyakake.entity.form.IncomForm;
 import com.uhablog.fuyakake.entity.form.InvestmentForm;
 import com.uhablog.fuyakake.entity.form.SelfInvestmentFrom;
 import com.uhablog.fuyakake.model.CommitModel;
+import com.uhablog.fuyakake.model.ConsumptionModalModel;
 import com.uhablog.fuyakake.model.ModalModel;
-import com.uhablog.fuyakake.model.ToppageModel;
 import com.uhablog.fuyakake.service.ToppageService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -133,7 +132,7 @@ public class ToppageRestController {
      * @return
      */
     @GetMapping("/show-consumption-modal")
-    public ModalModel getConsumptionModal() {
+    public ConsumptionModalModel getConsumptionModal() {
         // TODO カテゴリ情報と口座情報の返却
 
         return service.getConsumptionModal(getLoginUserId());
@@ -145,7 +144,9 @@ public class ToppageRestController {
     @GetMapping("/show-incom-modal")
     public ModalModel getIncomModal() {
 
-        return service.getIncomModalModel(getLoginUserId());
+        // 収入情報のモデルを取得する
+        ModalModel model = service.getIncomModalModel(getLoginUserId());
+        return model;
     }
 
     /**

@@ -7,6 +7,7 @@ import com.uhablog.fuyakake.entity.form.IncomForm;
 import com.uhablog.fuyakake.entity.form.InvestmentForm;
 import com.uhablog.fuyakake.entity.form.SelfInvestmentFrom;
 import com.uhablog.fuyakake.model.CommitModel;
+import com.uhablog.fuyakake.model.ConsumptionModalModel;
 import com.uhablog.fuyakake.model.ModalModel;
 import com.uhablog.fuyakake.model.ToppageModel;
 
@@ -25,7 +26,7 @@ public interface IToppageService {
      * @param userId
      * @return
      */
-    public ModalModel getConsumptionModal(String userId);
+    public ConsumptionModalModel getConsumptionModal(String userId);
 
     /**
      * 収入情報入力時の口座・カテゴリ情報を取得する

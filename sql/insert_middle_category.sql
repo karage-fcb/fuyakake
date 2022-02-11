@@ -2351,3 +2351,25 @@ INSERT INTO middle_category_master(
     false
 );
 
+-- ユーザー固有のデータ
+INSERT INTO middle_category_master(
+    big_category_id,
+    category_name,
+    user_id,
+    create_date,
+    create_user,
+    update_date,
+    update_user,
+    version,
+    delete_flag
+)VALUES(
+    1,
+    '雑費',
+    'uhablog',
+    current_timestamp,
+    'uhablog',
+    current_timestamp,
+    'uhablog',
+    1,
+    false
+);

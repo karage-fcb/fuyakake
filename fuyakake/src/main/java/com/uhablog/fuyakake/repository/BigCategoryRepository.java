@@ -2,6 +2,7 @@ package com.uhablog.fuyakake.repository;
 
 import java.util.List;
 
+import com.uhablog.fuyakake.common.Constant;
 import com.uhablog.fuyakake.entity.BigCategory;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,16 +31,43 @@ public interface BigCategoryRepository extends JpaRepository<BigCategory, Intege
         + " ON "
         + "  mcm.big_category_id = bcm.category_id "
         + " WHERE "
-        + "  (mcm.user_id = 'guest' "
+        + "  (mcm.user_id = 'guests' "
         + " OR "
         + "  mcm.user_id = :userId) "
         + " AND "
-        + "  bcm.category_id != 1 "
+        + "  bcm.category_id != " + Constant.INCOM_BIG_CATEGORY_ID
         + " AND "
-        + "  bcm.category_id != 2 "
+        + "  bcm.category_id != " + Constant.INVESTMENT_BIG_CATEGORY_ID
         + " AND "
-        + "  bcm.category_id != 3 ",
-        nativeQuery = true
+        + "  bcm.category_id != " + Constant.SELF_INVESTMENT_BIG_CATEGORY_ID
+        ,nativeQuery = true
     )
     public List<BigCategory> getBigCategory(@Param("userId")String userId);
+
+    /**
+     * 指定されたIDのカテゴリを取得する
+     * @param userId
+     * @return
+     */
+    @Query(value = ""
+        + " SELECT "
+        + "  * "
+        + " FROM "
+        + "  big_category_master bcm "
+        + " INNER JOIN "
+        + "  middle_category_master mcm "
+        + " ON "
+        + "  mcm.big_category_id = bcm.category_id "
+        + " WHERE "
+        + "  (mcm.user_id = 'guests' "
+        + " OR "
+        + "  mcm.user_id = :userId) "
+        + " AND "
+        + "  bcm.category_id = :categoryId "
+        , nativeQuery = true
+    )
+    public BigCategory getOneCategory(
+        @Param("userId")String userId,
+        @Param("categoryId")int categoryId
+    );
 }

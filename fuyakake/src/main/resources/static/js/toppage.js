@@ -25,7 +25,7 @@ $(function () {
         $.get(
             constant.url.api + '/show-consumption-modal'
         ).done(function(data) {
-            rewriteAccountSelectBox(constant.Consumption, data.accountList);
+            rewriteAccountSelectBox(constant.Consumption, data.accounts);
         });
 
         // モーダル表示
@@ -40,7 +40,7 @@ $(function () {
         $.get(
             constant.url.api + '/show-consumption-modal'
         ).done(function(data) {
-            rewriteAccountSelectBox(constant.Consumption, data.accountList);
+            rewriteAccountSelectBox(constant.Consumption, data.accounts);
         });
     });
 
@@ -50,8 +50,12 @@ $(function () {
         $.get(
             constant.url.api + '/show-incom-modal'
         ).done(function(data) {
+            console.log(data);
             // 口座のセレクトボックス書き換え
-            rewriteAccountSelectBox(constant.Incom, data.accountList);
+            rewriteAccountSelectBox(constant.Incom, data.accounts);
+
+            // カテゴリ情報書き換え
+            rewriteMiddleCategory(constant.Incom, data.categories.middleCategories);
         });
     });
 
@@ -63,10 +67,13 @@ $(function () {
             constant.url.api + '/show-investment-modal'
         ).done(function(data) {
             // 口座のセレクトボックス書き換え
-            rewriteAccountSelectBox(constant.Investment, data.accountList);
+            rewriteAccountSelectBox(constant.Investment, data.accounts);
 
             // 投資先のセレクトボックス書き換え
-            rewriteAccountSelectBox(constant.Investment + 'To', data.accountList);
+            rewriteAccountSelectBox(constant.Investment + 'To', data.accounts);
+
+            // カテゴリ情報書き換え
+            rewriteMiddleCategory(constant.Investment, data.categories.middleCategories)
         });
     });
 
@@ -78,7 +85,10 @@ $(function () {
             constant.url.api + '/show-self-investment-modal'
         ).done(function(data) {
             // 口座のセレクトボックス書き換え
-            rewriteAccountSelectBox(constant.SelfInvestment, data.accountList);
+            rewriteAccountSelectBox(constant.SelfInvestment, data.accounts);
+
+            // カテゴリ情報書き換え
+            rewriteMiddleCategory(constant.SelfInvestment, data.categories.middleCategories);
         });
     });
 
@@ -125,7 +135,7 @@ $(function () {
                 rewriteBalanceInfo(constant.Consumption, data.toppageModel.totalConsumption, data.toppageModel.consumptionList);
 
                 // 口座情報書き換え
-                accountInfoRewriting(data.toppageModel.totalAsset, data.toppageModel.accountList);
+                accountInfoRewriting(data.toppageModel.totalAsset, data.toppageModel.accounts);
             }
         }).fail(function () {
             console.log('Post失敗!!');
@@ -176,7 +186,7 @@ $(function () {
                 rewriteBalanceInfo(constant.Incom, data.toppageModel.totalIncom, data.toppageModel.incomInfoList);
 
                 // 口座情報書き換え
-                accountInfoRewriting(data.toppageModel.totalAsset, data.toppageModel.accountList);
+                accountInfoRewriting(data.toppageModel.totalAsset, data.toppageModel.accounts);
             }
             alert(data.message);
         }).fail(function() {
@@ -273,7 +283,7 @@ $(function () {
                 rewriteBalanceInfo(constant.SelfInvestment, data.toppageModel.totalSelfInvestment, data.toppageModel.selfInvestmentList);
 
                 // 口座情報書き換え
-                accountInfoRewriting(data.toppageModel.totalAsset, data.toppageModel.accountList);
+                accountInfoRewriting(data.toppageModel.totalAsset, data.toppageModel.accounts);
 
                 alert(data.message);
             }
@@ -309,18 +319,18 @@ function rewriteBalanceInfo(balance, totalMoney, balanceList) {
  * トップページ口座情報の書き換え
  * 
  * @param {*} totalAsset  合計資産
- * @param {*} accountList 口座リスト
+ * @param {*} accounts 口座リスト
  */
-function accountInfoRewriting(totalAsset, accountList) {
+function accountInfoRewriting(totalAsset, accounts) {
     // 資産合計金額更新
     $('#TotalAsset').text(totalAsset);
 
-    console.log(accountList);
+    console.log(accounts);
     console.log(totalAsset);
 
     // 口座情報書き換え
     $('#AssetTable').find('tbody tr').remove();
-    accountList.forEach(function (element) {
+    accounts.forEach(function (element) {
         html = '<tr><th scope="row">' + element.accountName + '</th><td>' + element.assetAmount + '</td><td>' + element.assetAmount / totalAsset * 100 + '%</td></tr>';
         $('#AssetTable').append(html);
     });
@@ -329,15 +339,31 @@ function accountInfoRewriting(totalAsset, accountList) {
 /**
  * モーダルの口座のセレクトボックスを書き換え
  * @param {*} balance     収支種類
- * @param {*} accountList 口座リスト
+ * @param {*} accounts 口座リスト
  */
-function rewriteAccountSelectBox(balance, accountList) {
+function rewriteAccountSelectBox(balance, accounts) {
 
     // セレクトボックスの中身を全件削除
     $('#' + balance + 'AccountInput > option').remove();
     // 口座情報をセレクトボックスに追加する
-    accountList.forEach((elm) => {
+    accounts.forEach((elm) => {
         $('#' + balance + 'AccountInput').append($('<option>').html(elm.accountName).val(elm.accountId));
+    });
+};
+
+/**
+ * モーダルのカテゴリ情報を書き換える
+ * @param {*} balance 
+ * @param {*} categories 
+ */
+function rewriteMiddleCategory(balance, categories) {
+
+    // セレクトボックスの中身を全削除
+    $('#' + balance + 'MiddleCategoryInput > option').remove();
+    // カテゴリ情報をセレクトボックスに追加する
+    categories.forEach((elm) => {
+        $('#' + balance + 'MiddleCategoryInput').append($('<option>').html(elm.categoryName).val(elm.categoryId));
+
     });
 };
 
