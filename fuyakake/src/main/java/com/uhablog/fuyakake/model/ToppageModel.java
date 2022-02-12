@@ -1,5 +1,6 @@
 package com.uhablog.fuyakake.model;
 
+import java.sql.Date;
 import java.util.List;
 
 import com.uhablog.fuyakake.entity.Account;
@@ -72,5 +73,20 @@ public class ToppageModel {
      * 合計資産額
      */
     private int totalAsset;
+
+    /**
+     * 表示年月
+     */
+    private Date displayMonth;
+
+    /**
+     * 次月
+     */
+    private Date nextMonth;
+
+    /**
+     * 前月
+     */
+    private Date prevMonth;
 
 }

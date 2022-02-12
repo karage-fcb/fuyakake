@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.util.List;
 
 import com.uhablog.fuyakake.common.Constant;
+import com.uhablog.fuyakake.common.DateUtil;
 import com.uhablog.fuyakake.common.FuyakakeException;
 import com.uhablog.fuyakake.entity.Account;
 import com.uhablog.fuyakake.entity.Consumption;
@@ -36,27 +37,25 @@ public class ToppageService extends BaseService implements IToppageService {
      * 初期表示時のToppageモデルを取得する
      */
     @Override
-    public ToppageModel getToppageModel(String userId, String getMonth){
+    public ToppageModel getToppageModel(String userId, String displayMonth){
 
         // 返却用モデル
         ToppageModel model = new ToppageModel();
 
         // 表示する年月の最初と末日を取得する
-        // TODO 動的に取得したい
-        Date startDate = Date.valueOf("2022-01-01");
-        Date endDate = Date.valueOf("2022-01-31");
+        Date[] days = DateUtil.getFirstDayAndLastDay(displayMonth);
 
         // 収入情報取得メソッド呼び出し
-        model = getIncom(model, userId, startDate, endDate);
+        model = getIncom(model, userId, days[0], days[1]);
 
         // 消費情報取得メソッド呼び出し
-        model = getConsumption(model, userId, startDate, endDate);
+        model = getConsumption(model, userId, days[0], days[1]);
 
         // 投資情報取得メソッド呼び出し
-        model = getInvestment(model, userId, startDate, endDate);
+        model = getInvestment(model, userId, days[0], days[1]);
 
         // 自己投資情報取得メソッド呼び出し
-        model = getSelfInvestment(model, userId, startDate, endDate);
+        model = getSelfInvestment(model, userId, days[0], days[1]);
 
         // 利益 = 収入 - 消費
         model.setRevenue(model.getTotalIncom() - model.getTotalConsumption());
@@ -314,18 +313,16 @@ public class ToppageService extends BaseService implements IToppageService {
      * @return 消費情報、合計消費額, 口座情報, トータル資産が入ったモデル
      */
     @Override
-    public ToppageModel getConsumption(String userId, String getMonth) {
+    public ToppageModel getConsumption(String userId, String displayMonth) {
 
         // 返却用モデル
         ToppageModel model = new ToppageModel();
 
         // 表示する年月の最初と末日を取得する
-        // TODO 動的日付
-        Date startDate = Date.valueOf("2022-01-01");
-        Date endDate = Date.valueOf("2022-01-31");
+        Date[] days = DateUtil.getFirstDayAndLastDay(displayMonth);
 
         // 消費情報取得
-        model = getConsumption(model, userId, startDate, endDate);
+        model = getConsumption(model, userId, days[0], days[1]);
 
         // 口座情報取得
         model.setAccounts(getAccountsRepository().getAccounts(userId));
@@ -339,7 +336,7 @@ public class ToppageService extends BaseService implements IToppageService {
      * 収入情報取得
      */
     @Override
-    public ToppageModel getIncom(String userId, String getMonth) {
+    public ToppageModel getIncom(String userId, String displayMonth) {
 
         // 収入情報取得
         System.out.println("収入情報取得");
@@ -348,12 +345,10 @@ public class ToppageService extends BaseService implements IToppageService {
         ToppageModel model = new ToppageModel();
 
         // 表示する年月の最初と末尾を取得する
-        // TODO 動的に年月を変更
-        Date startDate = Date.valueOf("2022-01-01");
-        Date endDate = Date.valueOf("2022-01-31");
+        Date[] days = DateUtil.getFirstDayAndLastDay(displayMonth);
 
         // 収入情報取得メソッド呼び出し
-        model = getIncom(model, userId, startDate, endDate);
+        model = getIncom(model, userId, days[0], days[1]);
 
         // 口座情報取得
         model.setAccounts(getAccountsRepository().getAccounts(userId));
@@ -367,18 +362,17 @@ public class ToppageService extends BaseService implements IToppageService {
      * 投資情報取得
      */
 	@Override
-	public ToppageModel getInvestment(String userId, String getMonth) {
+	public ToppageModel getInvestment(String userId, String displayMonth) {
         // 投資情報取得
         System.out.println("投資情報取得");
 
         ToppageModel model = new ToppageModel();
 
-        // TODO 動的に年月を変更
-        Date startDate = Date.valueOf("2022-01-01");
-        Date endDate = Date.valueOf("2022-01-31");
+        // 表示する年月の最初と末尾を取得する
+        Date[] days = DateUtil.getFirstDayAndLastDay(displayMonth);
 
         // 投資情報取得メソッド呼び出し
-        model = getInvestment(model, userId, startDate, endDate);
+        model = getInvestment(model, userId, days[0], days[1]);
 
         // 口座情報取得
         model.setAccounts(getAccountsRepository().getAccounts(userId));
@@ -393,7 +387,7 @@ public class ToppageService extends BaseService implements IToppageService {
      * 自己投資情報取得
      */
 	@Override
-	public ToppageModel getSelfInvestment(String userId, String getMonth) {
+	public ToppageModel getSelfInvestment(String userId, String displayMonth) {
 
         // 自己投資情報取得
         System.out.println("自己投資情報取得");
@@ -402,12 +396,10 @@ public class ToppageService extends BaseService implements IToppageService {
         ToppageModel model = new ToppageModel();
 
         // 表示する年月の最初と末尾を取得する
-        // TODO 年月の取得を動的に変換
-        Date startDate = Date.valueOf("2022-01-01");
-        Date endDate = Date.valueOf("2022-01-31");
+        Date[] days = DateUtil.getFirstDayAndLastDay(displayMonth);
 
         // 自己投資情報取得メソッド呼び出し
-        model = getSelfInvestment(model, userId, startDate, endDate);
+        model = getSelfInvestment(model, userId, days[0], days[1]);
 
         // 口座情報取得
         model.setAccounts(getAccountsRepository().getAccounts(userId));
