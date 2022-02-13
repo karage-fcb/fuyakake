@@ -77,16 +77,16 @@ public class ToppageModel {
     /**
      * 表示年月
      */
-    private Date displayMonth;
+    private String displayMonth;
 
     /**
      * 次月
      */
-    private Date nextMonth;
+    private String nextMonth;
 
     /**
      * 前月
      */
-    private Date prevMonth;
+    private String prevMonth;
 
 }

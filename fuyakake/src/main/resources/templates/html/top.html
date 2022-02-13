@@ -35,9 +35,9 @@
     <div class="container">
       <div class="row">
         <div class="col-6">
-          <a>&lt;</a>
-          2022/01
-          <a>&gt;</a>
+          <a th:href="@{${model.prevMonth}}">&lt;</a>
+          [[${model.displayMonth}]]
+          <a th:href="@{${model.nextMonth}}">&gt;</a>
           <!-- 収入情報 -->
           <table id="IncomTable" class="table">
             <thead>

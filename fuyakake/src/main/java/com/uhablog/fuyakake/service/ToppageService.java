@@ -70,6 +70,13 @@ public class ToppageService extends BaseService implements IToppageService {
         // 合計資産額取得
         model.setTotalAsset(getAccountsRepository().getTotalAsset(userId));
 
+        // 表示年月の設定
+        String[] displayMonthStrings = new String[3];
+        displayMonthStrings = DateUtil.getStringDisplayMonth(displayMonth);
+        model.setPrevMonth("http://127.0.0.1:8080/?displayMonth=" + displayMonthStrings[0]);
+        model.setDisplayMonth(displayMonthStrings[1]);
+        model.setNextMonth("http://127.0.0.1:8080/?displayMonth=" + displayMonthStrings[2]);
+
         return model;
     }
 
@@ -82,10 +89,8 @@ public class ToppageService extends BaseService implements IToppageService {
         // モデル
         ConsumptionModalModel model = new ConsumptionModalModel();
 
-        System.out.println("ToppageService getConsumptionModal line 86");
         // カテゴリ情報取得
         model.setCategories(getBigCategoryRepository().getBigCategory(userId));
-        System.out.println("ToppageService getConsumptionModal line 89");
 
         // 口座情報取得
         model.setAccounts(getAccountsRepository().getAllAccount(userId));
@@ -229,7 +234,7 @@ public class ToppageService extends BaseService implements IToppageService {
 	@Override
 	public CommitModel insertInvestment(String userId, InvestmentForm investment)
         throws FuyakakeException {
-        System.out.println("投資情報入力" + investment.toString());
+        System.out.println(" ToppageService line 239 投資情報入力" + investment.toString());
 
         // 投資情報登録
         int ret = getInvestmentRepository().insertSelfInvestment(
@@ -276,7 +281,7 @@ public class ToppageService extends BaseService implements IToppageService {
 	@Override
 	public CommitModel insertSelfInvestment(String userId, SelfInvestmentFrom selfInvestment)
         throws FuyakakeException {
-        System.out.println("自己投資情報入力" + selfInvestment.toString());
+        System.out.println("ToppageService line 286 自己投資情報入力" + selfInvestment.toString());
 
         // 自己投資情報登録
         int ret = getSelfInvestmentRepository().insertSelfInvestment(
@@ -339,7 +344,7 @@ public class ToppageService extends BaseService implements IToppageService {
     public ToppageModel getIncom(String userId, String displayMonth) {
 
         // 収入情報取得
-        System.out.println("収入情報取得");
+        System.out.println("ToppageService line 349 収入情報取得");
         
         // 返却用モデル
         ToppageModel model = new ToppageModel();
@@ -364,7 +369,7 @@ public class ToppageService extends BaseService implements IToppageService {
 	@Override
 	public ToppageModel getInvestment(String userId, String displayMonth) {
         // 投資情報取得
-        System.out.println("投資情報取得");
+        System.out.println("ToppageService line 374 投資情報取得");
 
         ToppageModel model = new ToppageModel();
 
@@ -390,7 +395,7 @@ public class ToppageService extends BaseService implements IToppageService {
 	public ToppageModel getSelfInvestment(String userId, String displayMonth) {
 
         // 自己投資情報取得
-        System.out.println("自己投資情報取得");
+        System.out.println("ToppageService line 400 自己投資情報取得");
 
         // 返却用モデル
         ToppageModel model = new ToppageModel();
@@ -439,7 +444,6 @@ public class ToppageService extends BaseService implements IToppageService {
             model.setTotalIncom(0);
         } 
 
-        System.out.println("収入情報取得" + model.toString());
         return model;
     }
 
@@ -519,7 +523,6 @@ public class ToppageService extends BaseService implements IToppageService {
      * @return
      */
     private ToppageModel getSelfInvestment(ToppageModel model, String userId, Date startDate, Date endDate){
-        System.out.println("Service getSelfInvestment()");
 
         // 自己投資情報取得
         List<SelfInvestment> selfInvestments = getSelfInvestmentRepository().getSelfInvestment(userId, startDate, endDate);
@@ -542,7 +545,6 @@ public class ToppageService extends BaseService implements IToppageService {
             model.setTotalSelfInvestment(0);
         }
 
-        System.out.println(model.toString());
         return model;
 
     }
