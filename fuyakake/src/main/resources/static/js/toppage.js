@@ -8,6 +8,8 @@ const constant = {
     }
 }
 
+let consumptionInfo;
+
 $(function () {
     console.log('jQuery 読み込み完了');
 
@@ -392,6 +394,9 @@ function getConsumptionModalInfo() {
         constant.url.api + '/show-consumption-modal'
     ).done(function(data) {
         console.log(data);
+        consumptionInfo = data;
+        
+        // 消費入力モーダルの口座情報書き換え
         rewriteAccountSelectBox(constant.Consumption, data.accounts);
     });
 }
@@ -400,71 +405,36 @@ function getConsumptionModalInfo() {
 // カテゴリ選択用のメモ書き
 // ==========================================================================
 
-// テスト用に変数の宣言
-categories = [
-    {
-    bigcategoryName: '食費',
-    middleCategoryList: [
-            {
-            categoryName: '朝ご飯',
-            id: 14
-            },
-            {
-            categoryName: '昼ごはん',
-            id: 15
-            }
-        ]
-    },
-    {
-    bigcategoryName: '日用品',
-    middleCategoryList: [
-            {
-            categoryName: '子育て用品',
-            id: 19
-            },
-            {
-            categoryName: 'ドラッグストア',
-            id: 20
-            },
-            {
-            categoryName: 'お小遣い',
-            id: 21
-            }
-        ]
-    },
-    {
-    bigcategoryName: '趣味・娯楽',
-    middleCategoryList: [
-            {
-            categoryName: 'アウトドア',
-            id: 25
-            },
-            {
-            categoryName: 'ゴルフ',
-            id: 26
-            },
-            {
-            categoryName: 'スポーツ',
-            id: 27
-            },
-            {
-            categoryName: '映画・音楽',
-            id: 28
-            }
-        ]
+// 連想配列から検索して特定のオブジェクトを取得する
+// https://www.buildinsider.net/web/jqueryref/013
+// https://javascript.programmer-reference.com/jquery-grep/
+$.grep(consumptionInfo.categories,
+    function(elm, index) {
+        return (elm.categoryId == 14);
     }
-]
+);
 
-// 大項目が変更された時のアクション
-// ここで中項目を変更する
-$('#BigCategoryInput').change(function () {
-    console.log('big category を変更');
+// 消費モーダルの大カテゴリが変更された時に発火
+$('#ConsumptionBigCategoryInput').change(function() {
+    console.log('hello');
 });
 
-// セレクトボックスの中身を全件削除
-$('#MiddleCategoryInput > option').remove();
+// 消費入力モーダルの大カテゴリの選択肢を削除
+$('#ConsumptionBigCategoryInput > option').remove();
 
-// categoriesの中の大項目をセレクトボックスに追加する
-categories.forEach((elm) => {
-    $('#BigCategoryInput').append($('<option>').html(elm.bigcategoryName));
+// 取得した大カテゴリをループ
+consumptionInfo.categories.forEach((elm, index) => {
+    // もしカテゴリ名がundefinedだったら
+    if (elm.categoryName !== undefined) {
+        // 選択肢にカテゴリ情報を追加
+        $('#ConsumptionBigCategoryInput').append($('<option>').html(elm.categoryName).val(elm.categoryId));
+        // 最初のカテゴリの時は中カテゴリにも選択肢を追加
+        if (index == 0) {
+            console.log('hello');
+            $('#ConsumptionMiddleCategoryInput > option').remove();
+            elm.middleCategories.forEach((midCategory) => {
+                $('#ConsumptionMiddleCategoryInput').append($('<option>').html(midCategory.categoryName).val(midCategory.categoryId));
+            });
+        }
+    }
 });

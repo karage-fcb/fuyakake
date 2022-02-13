@@ -22,7 +22,7 @@ public interface BigCategoryRepository extends JpaRepository<BigCategory, Intege
      * @return
      */
     @Query(value = ""
-        + " SELECT "
+        + " SELECT DISTINCT "
         + "  * "
         + " FROM "
         + "  big_category_master bcm "
@@ -43,6 +43,31 @@ public interface BigCategoryRepository extends JpaRepository<BigCategory, Intege
         ,nativeQuery = true
     )
     public List<BigCategory> getBigCategory(@Param("userId")String userId);
+
+    // @Query(value = ""
+    //     + " SELECT DISTINCT "
+    //     + "  b "
+    //     + " FROM "
+    //     + "  BigCategory b "
+    //     + " INNER JOIN FETCH "
+    //     + "  b.middleCategories "
+    //     + " WHERE "
+    //     + " EXIST (SELECT 1 FROM "
+    //     + "  MiddleCategory m "
+    //     + " WHERE  "
+    //     + "  m.bigCategory = b "
+    //     + " AND "
+    //     + "  (m.user_id = 'guests' "
+    //     + " OR "
+    //     + "  m.user_id = :userId)) "
+    //     + " AND "
+    //     + "  b.category_id != " + Constant.INCOM_BIG_CATEGORY_ID
+    //     + " AND "
+    //     + "  b.category_id != " + Constant.INVESTMENT_BIG_CATEGORY_ID
+    //     + " AND "
+    //     + "  b.category_id != " + Constant.SELF_INVESTMENT_BIG_CATEGORY_ID
+    // )
+    // public List<BigCategory> getBigCategory(@Param("userId")String userId);
 
     /**
      * 指定されたIDのカテゴリを取得する

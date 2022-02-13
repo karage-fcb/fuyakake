@@ -19,7 +19,7 @@ public class DateUtil {
         } else {
             // 受け取った表示年月で初日取得する
             try {
-                firstDate = Date.valueOf(displayMonth);
+                firstDate = Date.valueOf(displayMonth + "-01");
                 System.out.println("リクエストパラメータの表示年月をDate型に変換成功");
             } catch (IllegalArgumentException e) {
                 System.out.print("リクエストパラメータの表示年月をDate型に変換失敗");
@@ -53,7 +53,7 @@ public class DateUtil {
         } else {
             // 受け取った表示年月で末日を取得する
             try{
-                lastDate = Date.valueOf(displayMonth);
+                lastDate = Date.valueOf(displayMonth + "-01");
                 System.out.println("リクエストパラメータの表示年月をDate型に変換成功");
             } catch (IllegalArgumentException e) {
                 System.out.print("リクエストパラメータの表示年月をDate型に変換失敗");
@@ -118,16 +118,15 @@ public class DateUtil {
 		calendar.setTime(date);
 
         // 配列の0番目に前月の情報を格納
-        int month = calendar.get(Calendar.MONTH);
         calendar.add(Calendar.MONTH, -1);
-        retDisplayMonth[0] = sdf.format(calendar.getTime());
+        retDisplayMonth[0] = sdf.format(calendar.getTime()).substring(0, 7);
         System.out.println("DateUtil.java line 123 前月 = " + retDisplayMonth[0]);
 
         // 配列の1番目, 2番目に指定年月、次月を格納
         for (int index = 1; index < 3; index++ ) {
             // カレンダーに次の月を設定する
             calendar.add(Calendar.MONTH, 1);
-            retDisplayMonth[index] = sdf.format(calendar.getTime());
+            retDisplayMonth[index] = sdf.format(calendar.getTime()).substring(0, 7);
             System.out.println("DateUtil.java line 130 = " + retDisplayMonth[index]);
         }
 
