@@ -30,6 +30,8 @@ public interface AccountsRepository extends JpaRepository<Account, Integer>{
         + "  accounts.user_id = :userId "
         + " AND "
         + "  accounts.delete_flag = false "
+        + " ORDER BY "
+        + "  accounts.update_date "
         + " LIMIT "
         + "  3 "
         , nativeQuery = true

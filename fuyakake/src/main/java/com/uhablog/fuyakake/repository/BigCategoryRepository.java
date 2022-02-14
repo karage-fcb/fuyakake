@@ -40,6 +40,8 @@ public interface BigCategoryRepository extends JpaRepository<BigCategory, Intege
         + "  bcm.category_id != " + Constant.INVESTMENT_BIG_CATEGORY_ID
         + " AND "
         + "  bcm.category_id != " + Constant.SELF_INVESTMENT_BIG_CATEGORY_ID
+        + " ORDER BY "
+        + "  bcm.category_id "
         ,nativeQuery = true
     )
     public List<BigCategory> getBigCategory(@Param("userId")String userId);

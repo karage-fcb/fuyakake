@@ -8,7 +8,7 @@ const constant = {
     }
 }
 
-let consumptionInfo;
+let consumptionCategories;
 
 $(function () {
     console.log('jQuery 読み込み完了');
@@ -387,6 +387,9 @@ function checkInput(balance) {
     return msg;
 };
 
+/**
+ * 消費情報入力モーダルが表示された時の処理
+ */
 function getConsumptionModalInfo() {
     
     // 口座・カテゴリ情報の取得
@@ -394,10 +397,56 @@ function getConsumptionModalInfo() {
         constant.url.api + '/show-consumption-modal'
     ).done(function(data) {
         console.log(data);
-        consumptionInfo = data;
+        consumptionCategories = data.categories;
         
         // 消費入力モーダルの口座情報書き換え
         rewriteAccountSelectBox(constant.Consumption, data.accounts);
+
+        // // 消費入力モーダルの大カテゴリの選択肢を削除
+        $('#ConsumptionBigCategoryInput > option').remove();
+        
+        // 取得した大カテゴリをループして大カテゴリの選択肢を追加する
+        consumptionCategories.forEach((elm, index) => {
+            // もしカテゴリ名がundefinedだったら
+            if (elm.categoryName !== undefined) {
+                // 選択肢にカテゴリ情報を追加
+                $('#ConsumptionBigCategoryInput').append($('<option>').html(elm.categoryName).val(elm.categoryId));
+                // 最初のカテゴリの時は中カテゴリにも選択肢を追加
+                if (index == 0) {
+                    console.log('hello');
+                    $('#ConsumptionMiddleCategoryInput > option').remove();
+                    elm.middleCategories.forEach((midCategory) => {
+                        $('#ConsumptionMiddleCategoryInput').append($('<option>').html(midCategory.categoryName).val(midCategory.categoryId));
+                    });
+                }
+            }
+        });        
+
+        // 発火時処理を一旦削除
+        $('#ConsumptionBigCategoryInput').off('change');
+
+        // 消費モーダルの大カテゴリが変更された時に発火して中カテゴリを変更する
+        $('#ConsumptionBigCategoryInput').on('change', function() {
+
+            // 選択された大カテゴリIDを取得する
+            bigCategoryId = parseInt($('#ConsumptionBigCategoryInput').val());
+            
+            // 選択された大カテゴリの情報を取得する
+            bigCategory = $.grep(consumptionCategories,
+                function(elm) {
+                    return (elm.categoryId == bigCategoryId);
+                }
+            );
+
+            // 選択された大カテゴリの情報から中カテゴリを書き換える
+            $('#ConsumptionMiddleCategoryInput > option').remove();
+            bigCategory[0].middleCategories.forEach((midCategory) => {
+                $('#ConsumptionMiddleCategoryInput').append($('<option>').html(midCategory.categoryName).val(midCategory.categoryId));
+            });
+            
+        });
+
+
     });
 }
 
@@ -408,33 +457,57 @@ function getConsumptionModalInfo() {
 // 連想配列から検索して特定のオブジェクトを取得する
 // https://www.buildinsider.net/web/jqueryref/013
 // https://javascript.programmer-reference.com/jquery-grep/
-$.grep(consumptionInfo.categories,
-    function(elm, index) {
-        return (elm.categoryId == 14);
-    }
-);
+// $.grep(consumptionInfo.categories,
+//     function(elm, index) {
+//         return (elm.categoryId == 14);
+//     }
+// );
 
-// 消費モーダルの大カテゴリが変更された時に発火
-$('#ConsumptionBigCategoryInput').change(function() {
-    console.log('hello');
-});
+// // 消費モーダルの大カテゴリが変更された時に発火
+// $('#ConsumptionBigCategoryInput').change(function() {
+//     console.log('hello');
+// });
 
-// 消費入力モーダルの大カテゴリの選択肢を削除
-$('#ConsumptionBigCategoryInput > option').remove();
+// // 消費入力モーダルの大カテゴリの選択肢を削除
+// $('#ConsumptionBigCategoryInput > option').remove();
 
-// 取得した大カテゴリをループ
-consumptionInfo.categories.forEach((elm, index) => {
-    // もしカテゴリ名がundefinedだったら
-    if (elm.categoryName !== undefined) {
-        // 選択肢にカテゴリ情報を追加
-        $('#ConsumptionBigCategoryInput').append($('<option>').html(elm.categoryName).val(elm.categoryId));
-        // 最初のカテゴリの時は中カテゴリにも選択肢を追加
-        if (index == 0) {
-            console.log('hello');
-            $('#ConsumptionMiddleCategoryInput > option').remove();
-            elm.middleCategories.forEach((midCategory) => {
-                $('#ConsumptionMiddleCategoryInput').append($('<option>').html(midCategory.categoryName).val(midCategory.categoryId));
-            });
-        }
-    }
-});
+// // 取得した大カテゴリをループ
+// consumptionInfo.categories.forEach((elm, index) => {
+//     // もしカテゴリ名がundefinedだったら
+//     if (elm.categoryName !== undefined) {
+//         // 選択肢にカテゴリ情報を追加
+//         $('#ConsumptionBigCategoryInput').append($('<option>').html(elm.categoryName).val(elm.categoryId));
+//         // 最初のカテゴリの時は中カテゴリにも選択肢を追加
+//         if (index == 0) {
+//             console.log('hello');
+//             $('#ConsumptionMiddleCategoryInput > option').remove();
+//             elm.middleCategories.forEach((midCategory) => {
+//                 $('#ConsumptionMiddleCategoryInput').append($('<option>').html(midCategory.categoryName).val(midCategory.categoryId));
+//             });
+//         }
+//     }
+// });
+
+// // 消費モーダルの大カテゴリが変更された時に発火
+// $('#ConsumptionBigCategoryInput').change(function() {
+
+//     // 選択された大カテゴリIDを取得する
+//     bigCategoryId = $('#ConsumptionBigCategoryInput').val();
+//     console.log('bigCategoryId = ' + bigCategoryId);
+    
+//     // 選択された大カテゴリの情報を取得する
+//     bigCategory = $.grep(consumptionInfo.categories,
+//         function(elm, index) {
+//             return (elm.categoryId == bigCategoryId);
+//         }
+//     );
+
+//     console.log(bigCategory[0]);
+
+//     // 選択された大カテゴリの情報から中カテゴリを書き換える
+//     $('#ConsumptionMiddleCategoryInput > option').remove();
+//     bigCategory[0].middleCategories.forEach((midCategory) => {
+//         $('#ConsumptionMiddleCategoryInput').append($('<option>').html(midCategory.categoryName).val(midCategory.categoryId));
+//     });
+    
+// });

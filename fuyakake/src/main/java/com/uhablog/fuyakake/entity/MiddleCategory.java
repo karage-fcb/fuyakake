@@ -3,6 +3,7 @@ package com.uhablog.fuyakake.entity;
 import java.sql.Timestamp;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -28,9 +29,10 @@ public class MiddleCategory {
     /**
      * 大カテゴリID
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "big_category_id")
     private BigCategory bigCategory;
+    // private int bigCategoryId;
 
     /**
      * カテゴリ名
