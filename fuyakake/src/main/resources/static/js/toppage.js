@@ -102,7 +102,6 @@ $(function () {
         const date = $('#' + constant.Consumption + 'DateInput').val();
         const money = $('#' + constant.Consumption + 'MoneyInput').val();
         const accountId = $('#' + constant.Consumption + 'AccountInput').val();
-        const bigCategoryId = $('#' + constant.Consumption + 'BigCategoryInput').val();
         const middleCategoryId = $('#' + constant.Consumption + 'MiddleCategoryInput').val();
         const memo = $('#' + constant.Consumption + 'MemoTextarea').val();
 
@@ -225,8 +224,17 @@ $(function () {
             constant.url.api + '/insert-investment',
             params
         ).done(function(data) {
-            // getInvestment();
-            alert('投資情報登録成功!');
+
+            // 結果がエラーの時
+            if (data.error) {
+                alert(data.message);
+            } else if(!data.error) {
+                // 消費情報書き換え
+                rewriteBalanceInfo(constant.Investment, data.toppageModel.totalInvestment, data.toppageModel.investmentList);
+
+                // 口座情報書き換え
+                accountInfoRewriting(data.toppageModel.totalAsset, data.toppageModel.accounts);
+            }
         }).fail(function() {
             console.log('Post失敗');
         }).always(function() {
@@ -278,8 +286,6 @@ $(function () {
 
                 // 口座情報書き換え
                 accountInfoRewriting(data.toppageModel.totalAsset, data.toppageModel.accounts);
-
-                alert(data.message);
             }
         }).fail(function() {
             console.log('Post失敗');

@@ -133,8 +133,6 @@ public class ToppageRestController {
      */
     @GetMapping("/show-consumption-modal")
     public ConsumptionModalModel getConsumptionModal() {
-        // TODO カテゴリ情報と口座情報の返却
-
         return service.getConsumptionModal(getLoginUserId());
     }
 

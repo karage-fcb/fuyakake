@@ -13,6 +13,7 @@
     <title>Top ページ</title>
   </head>
   <body>
+    <!-- ヘッダー -->
     <div class="container">
         <header class="blog-header py-3">
             <div class="row flex-nowrap justify-content-between align-items-center">
@@ -44,7 +45,7 @@
               <tr>
                 <th scope="col">収入</th>
                 <th id="TotalIncom" scope="col" th:text="${model.totalIncom}">円</th>
-                <th scope="col"></th>
+                <th scope="col"><a href="#">収入一覧</a></th>
               </tr>
             </thead>
             <tbody id="IncomTBody">
@@ -64,7 +65,7 @@
               <tr>
                 <th scope="col">投資</th>
                 <th id="TotalInvestment" scope="col" th:text="${model.totalInvestment}"></th>
-                <th scope="col"></th>
+                <th scope="col"><a href="#">投資一覧</a></th>
               </tr>
             </thead>
             <tbody id="InvestmentTBody">
@@ -104,7 +105,7 @@
               <tr>
                 <th scope="col">自己投資</th>
                 <th id="TotalSelfInvestment" scope="col" th:text="${model.totalSelfInvestment}"></th>
-                <th scope="col"></th>
+                <th scope="col"><a href="#">自己投資一覧</a></th>
               </tr>
             </thead>
             <tbody id="SelfInvestmentTBody">
@@ -162,7 +163,6 @@
         </div>
       </div>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <!-- <button id="InputButton" class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#inputModal">入力</button> -->
         <button id="InputButton" class="btn btn-primary" type="button">入力</button>
       </div>
 
@@ -170,11 +170,14 @@
       <div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="InputModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
+            <!-- モーダルヘッダー -->
             <div class="modal-header">
               <h5 id="InputModalLabel" class="modal-title">家計簿入力</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <!-- モーダルタブ -->
             <ul class="nav nav-tabs" role="tablist">
+              <!-- 消費モーダル表示ボタン -->
               <li class="nav-item" role="presentation">
                 <button
                   id="ConsumptionLink"
@@ -189,6 +192,7 @@
                   消費
                 </button>
               </li>
+              <!-- 収入モーダル表示ボタン -->
               <li class="nav-item" role="presentation">
                 <button
                   id="IncomLink"
@@ -203,6 +207,7 @@
                   収入
                 </button>
               </li>
+              <!-- 投資モーダル表示ボタン -->
               <li class="nav-item" role="presentation">
                 <button
                   id="InvestmentLink"
@@ -217,6 +222,7 @@
                   投資
                 </button> 
               </li>
+              <!-- 自己投資モーダル表示ボタン -->
               <li class="nav-item" role="presentation">
                 <button
                   id="SelfInvestmentLink"
@@ -236,34 +242,34 @@
               <!-- 消費情報入力モーダル -->
               <div id="ConsumptionModal" class="tab-pane fade show active">
                 <div class="modal-body">
+                  <!-- 日付入力 -->
                   <div class="form-floating mb-3">
                     <input id="ConsumptionDateInput" type="date" class="form-control">
                     <label for="ConsumptionDateInput">日付</label>
                   </div>
+                  <!-- 金額入力 -->
                   <div class="form-floating mb-3">
                     <input id="ConsumptionMoneyInput" type="number" class="form-control">
                     <label for="ConsumptionMoneyInput">金額</label>
                   </div>
+                  <!-- 口座入力 -->
                   <div class="form-floating mb-3">
                     <select id="ConsumptionAccountInput" class="form-select" aria-label="Default select example">
                     </select>
                   </div>
                   <div class="row">
+                    <!-- 消費大カテゴリ入力 -->
                     <div class="form-floating mb-3 col">
                       <select id="ConsumptionBigCategoryInput" class="form-select" aria-label="Default select example">
-                        <option value="1">食費</option>
-                        <option value="2">日用品</option>
-                        <option value="3">趣味・娯楽</option>
                       </select>
                     </div>
+                    <!-- 消費中カテゴリ入力 -->
                     <div class="form-floating mb-3 col">
                       <select id="ConsumptionMiddleCategoryInput" class="form-select" aria-label="Default select example">
-                        <option value="1">外食</option>
-                        <option value="2">朝ご飯</option>
-                        <option value="3">昼ごはん</option>
                       </select>
                     </div>
                   </div>
+                  <!-- 消費メモ入力 -->
                   <div class="mb-3">
                     <label for="ConsumptionMemoTextarea" class="form-label">メモ</label>
                     <textarea id="ConsumptionMemoTextarea" class="form-control" rows="3"></textarea>
@@ -276,29 +282,28 @@
               </div>
               <!-- 収入情報入力モーダル -->
               <div id="IncomModal" class="tab-pane fade">
-                <h6>収入</h6>
                 <div class="modal-body">
+                  <!-- 収入日付入力 -->
                   <div class="form-floating mb-3">
                     <input id="IncomDateInput" type="date" class="form-control">
                     <label for="IncomDateInput">日付</label>
                   </div>
+                  <!-- 収入金額入力 -->
                   <div class="form-floating mb-3">
                     <input id="IncomMoneyInput" type="number" class="form-control">
                     <label for="IncomMoneyInput">金額</label>
                   </div>
+                  <!-- 収入口座入力 -->
                   <div class="form-floating mb-3">
                     <select id="IncomAccountInput" class="form-select" aria-label="Default select example">
                     </select>
                   </div>
+                  <!-- 収入中カテゴリ入力 -->
                   <div class="form-floating mb-3">
                     <select id="IncomMiddleCategoryInput" class="form-select" aria-label="Default select example">
-                      <!-- <option value="1">給与</option>
-                      <option value="2">副業収入</option>
-                      <option value="3">家賃収入</option>
-                      <option value="4">配当</option>
-                      <option value="5">その他収入</option> -->
                     </select>
                   </div>
+                  <!-- 収入メモ入力 -->
                   <div class="mb-3">
                     <label for="IncomMemotextarea" class="form-label">メモ</label>
                     <textarea id="IncomMemotextarea" class="form-control" rows="3"></textarea>
@@ -311,7 +316,6 @@
               </div>
               <!-- 投資情報入力モーダル -->
               <div id="InvestmentModal" class="tab-pane fade">
-                <h6>投資</h6>
                 <div class="modal-body">
                   <div class="form-floating mb-3">
                     <input id="InvestmentDateInput" type="date" class="form-control">
@@ -331,8 +335,6 @@
                   </div>
                   <div class="form-floating mb-3 col">
                     <select id="InvestmentMiddleCategoryInput" class="form-select" aria-label="Default select example">
-                      <option value="6">株式</option>
-                      <option value="7">投資信託</option>
                     </select>
                   </div>
                   <div class="mb-3">
@@ -347,7 +349,6 @@
               </div>
               <!-- 自己投資情報入力モーダル -->
               <div id="SelfInvestmentModal" class="tab-pane fade">
-                <h6>自己投資</h6>
                 <div class="modal-body">
                   <div class="form-floating mb-3">
                     <input id="SelfInvestmentDateInput" type="date" class="form-control">
@@ -363,8 +364,6 @@
                   </div>
                   <div class="form-floating mb-3 col">
                     <select id="SelfInvestmentMiddleCategoryInput" class="form-select" aria-label="Default select example">
-                      <option value="8">書籍</option>
-                      <option value="9">スクール代</option>
                     </select>
                   </div>
                   <div class="mb-3">
