@@ -92,6 +92,12 @@ public class DateUtil {
         return days;
     }
 
+    /**
+     * 指定された年月の前月、当月、次月の文字列を返却する
+     * yyyy-MM形式
+     * @param displayMonth
+     * @return
+     */
     public static String[] getStringDisplayMonth(String displayMonth) {
 
         String[] retDisplayMonth = new String[3];
