@@ -73,6 +73,8 @@ public interface AccountsRepository extends JpaRepository<Account, Integer>{
         + "  accounts.user_id = :userId "
         + " AND "
         + "  accounts.delete_flag = false "
+        + " ORDER BY "
+        + "  accounts.account_id "
         , nativeQuery = true
     )
     public List<Account> getAllAccount(@Param("userId")String userId);

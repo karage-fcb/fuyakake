@@ -16,4 +16,14 @@ public class Constant {
      * ビックカテゴリの自己投資のID
      */
     public static final int SELF_INVESTMENT_BIG_CATEGORY_ID = 3;
+
+    /**
+     * 削除フラグ：未削除
+     */
+    public static final int UNDELETED = 0;
+
+    /**
+     * 削除フラグ：削除済み
+     */
+    public static final int DELETED = 1;
 }
