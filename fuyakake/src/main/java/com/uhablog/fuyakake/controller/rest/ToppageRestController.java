@@ -169,6 +169,7 @@ public class ToppageRestController {
      * ログイン中のユーザー情報を取得する
      * @return ログイン中のユーザーID
      */
+    // TODO ベースコントローラ作成して、ログインユーザー取得メソッドを作成する
     private String getLoginUserId() {
         // ログインユーザーIDを取得して返却する
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

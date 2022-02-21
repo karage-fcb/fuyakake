@@ -24,6 +24,7 @@ public class TopPageController {
         Model model
     ) {
 
+        // TODO ベースコントローラ作成して、ログインユーザー取得メソッドを作成する
         // ログインユーザーID取得
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userId = auth.getName();
