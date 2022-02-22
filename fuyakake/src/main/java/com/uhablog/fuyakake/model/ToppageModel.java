@@ -1,6 +1,5 @@
 package com.uhablog.fuyakake.model;
 
-import java.sql.Date;
 import java.util.List;
 
 import com.uhablog.fuyakake.entity.Account;
