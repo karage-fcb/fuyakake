@@ -176,7 +176,7 @@ public class ToppageService extends BaseService implements IToppageService {
         balanceConfirmation(consumptionForm.getAccountId(), consumptionForm.getMoney());
 
         // 消費情報を口座に反映
-        ret = getAccountsRepository().updateConsumptionAmount(consumptionForm.getAccountId(), consumptionForm.getMoney());
+        ret = getAccountsRepository().substractMoney(consumptionForm.getAccountId(), consumptionForm.getMoney());
 
         // 消費情報の反映に失敗
         if(ret != 1) {
@@ -214,7 +214,7 @@ public class ToppageService extends BaseService implements IToppageService {
         } 
 
         // 収入情報を口座に反映
-        ret = getAccountsRepository().updateIncomAmount(incom.getAccountId(), incom.getMoney());
+        ret = getAccountsRepository().addMoney(incom.getAccountId(), incom.getMoney());
 
         // 口座情報の反映に成功
         if(ret != 1) {
@@ -256,14 +256,14 @@ public class ToppageService extends BaseService implements IToppageService {
         balanceConfirmation(investment.getAccountId(), investment.getMoney());
 
         // 金額を投資元から差し引く
-        ret = getAccountsRepository().updateConsumptionAmount(investment.getAccountId(), investment.getMoney());
+        ret = getAccountsRepository().substractMoney(investment.getAccountId(), investment.getMoney());
 
         if (ret != 1) {
             throw new FuyakakeException("口座情報に反映失敗(投資元)");
         }
 
         // 口座情報に投資情報を反映
-        ret = getAccountsRepository().updateIncomAmount(investment.getToAccountId(), investment.getMoney());
+        ret = getAccountsRepository().addMoney(investment.getToAccountId(), investment.getMoney());
 
         if (ret != 1) {
             throw new FuyakakeException("口座情報に反映失敗(投資先)");
@@ -299,7 +299,7 @@ public class ToppageService extends BaseService implements IToppageService {
         }
 
         // 自己投資情報を口座に反映
-        ret = getAccountsRepository().updateConsumptionAmount(selfInvestment.getAccountId(), selfInvestment.getMoney());
+        ret = getAccountsRepository().substractMoney(selfInvestment.getAccountId(), selfInvestment.getMoney());
 
         if(ret != 1) {
             throw new FuyakakeException("自己投資情報の口座への反映失敗");

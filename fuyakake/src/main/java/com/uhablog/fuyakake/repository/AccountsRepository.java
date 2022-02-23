@@ -109,7 +109,7 @@ public interface AccountsRepository extends JpaRepository<Account, Integer>{
         + "  account_id = :accountId "
         , nativeQuery = true
     )
-    public int updateIncomAmount(
+    public int addMoney(
         @Param("accountId")Integer accountId,
         @Param("assetAmount")int assetAmount
     );
@@ -130,7 +130,7 @@ public interface AccountsRepository extends JpaRepository<Account, Integer>{
         + "  account_id = :accountId "
         , nativeQuery = true
     )
-    public int updateConsumptionAmount(
+    public int substractMoney(
         @Param("accountId")Integer accountId,
         @Param("assetAmount")int assetAmount
     );
